@@ -2,24 +2,44 @@ import React, { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Star, Quote } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { reviews } from "../data/data";
+import { reviews } from "../../data/data";
+
+import CustomerReviewsSectionSkeleton from "../skeletons/CustomerReviewsSectionSkeleton";
 
 const CustomerReviewsSection = () => {
+  const [loading, setLoading] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
+    const loadingTimer = setTimeout(() => {
+      setLoading(false);
+    }, 1200);
+
+    return () => clearTimeout(loadingTimer);
+  }, []);
+
+  useEffect(() => {
+    if (loading) return;
+
     const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev === reviews.length - 1 ? 0 : prev + 1));
+      setActiveIndex((prev) =>
+        prev === reviews.length - 1 ? 0 : prev + 1
+      );
     }, 4000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [loading]);
+
+  if (loading) {
+    return <CustomerReviewsSectionSkeleton />;
+  }
 
   const activeReview = reviews[activeIndex];
 
   return (
     <section className="w-full bg-[#f8f8f8] py-20 px-4 md:px-10 rounded-[30px] overflow-hidden">
       <div className="max-w-5xl mx-auto text-center relative">
+
         {/* Heading */}
         <div className="mb-16">
           <p className="text-orange-500 uppercase tracking-[4px] text-sm font-semibold">
@@ -55,7 +75,9 @@ const CustomerReviewsSection = () => {
                   opacity: activeIndex === index ? 1 : 0.4,
                 }}
                 transition={{ duration: 0.4 }}
-                className={`absolute ${positions[index]} w-14 h-14 rounded-full object-cover border-4 border-white shadow-xl`}
+                className={`absolute ${
+                  positions[index % positions.length]
+                } w-14 h-14 rounded-full object-cover border-4 border-white shadow-xl`}
               />
             );
           })}
@@ -72,6 +94,7 @@ const CustomerReviewsSection = () => {
           >
             <Card className="max-w-2xl mx-auto border-0 shadow-none bg-transparent">
               <CardContent className="flex flex-col items-center">
+
                 {/* Avatar */}
                 <div className="relative">
                   <img
@@ -125,10 +148,12 @@ const CustomerReviewsSection = () => {
                     />
                   ))}
                 </div>
+
               </CardContent>
             </Card>
           </motion.div>
         </AnimatePresence>
+
       </div>
     </section>
   );

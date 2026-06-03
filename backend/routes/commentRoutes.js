@@ -1,46 +1,25 @@
 import express from "express";
 
 import {
-    addComment,
-    getComments,
-    replyComment,
-    deleteComment
+  addComment,
+  getComments,
+  addReply,
+  deleteComment
 } from "../controllers/commentController.js";
+import {isAuthenticated } from "../middleware/isAuthenticated.js";
 
-import { isAuthenticated }
-from "../middleware/isAuthenticated.js";
 
 const router = express.Router();
 
+/* ADD COMMENT */
+router.post("/:destinationId", isAuthenticated, addComment);
 
+/* GET COMMENTS */
+router.get("/:destinationId", getComments);
 
-router.post(
-    "/",
-    isAuthenticated,
-    addComment
-);
+/* REPLY */
+router.post("/reply/:commentId", isAuthenticated, addReply);
 
-
-
-router.get(
-    "/:destinationId",
-    getComments
-);
-
-
-
-router.post(
-    "/reply/:commentId",
-    isAuthenticated,
-    replyComment
-);
-
-
-
-router.delete(
-    "/:commentId",
-    isAuthenticated,
-    deleteComment
-);
+router.delete("/:commentId", isAuthenticated, deleteComment);
 
 export default router;

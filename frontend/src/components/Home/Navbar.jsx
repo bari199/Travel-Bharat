@@ -39,10 +39,10 @@ import {
 
 import { Input } from "@/components/ui/input";
 
-import { navItems } from "../data/data";
+import { navItems } from "../../data/data";
 
-import LoginDialog from "../pages/LoginDialog";
-import SignupDialog from "../pages/SignupDialog";
+import LoginDialog from "../../pages/LoginDialog";
+import SignupDialog from "../../pages/SignupDialog";
 
 const Navbar = () => {
   const { user, setUser } = getData();
@@ -86,7 +86,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-orange-200 bg-white/80 backdrop-blur-md shadow-sm">
+    <nav className="sticky top-0 z-50 border-b border-orange-200 bg-orange-300/80 backdrop-blur-md shadow-sm">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
 
         {/* Logo */}
@@ -94,7 +94,7 @@ const Navbar = () => {
           to="/"
           className="flex items-center gap-2 shrink-0"
         >
-          <Globe2Icon className="h-7 w-7 text-orange-700" />
+          <Globe2Icon className="h-7 w-7 text-orange-700/80" />
 
           <h1 className="font-bold text-2xl">
             <span className="text-orange-600">
@@ -129,9 +129,10 @@ const Navbar = () => {
                       px-4 py-2
                       text-[16px]
                       font-medium
+                      text-gray-700/80
                       rounded-md
-                      hover:bg-green-100
-                      hover:text-green-700
+                      hover:bg-orange-300/80
+                      hover:text-orange-700/80
                       transition-all
                       duration-200
                     "

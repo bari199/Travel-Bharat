@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Autoplay from "embla-carousel-autoplay";
+
 import SearchBox from "./SearchBox";
 import { getData } from "@/context/userContext";
-import { carouselImages } from "../data/data";
+import { carouselImages } from "../../data/data";
+
+import HeroSkeleton from "../Skeletons/HeroSkeleton";
 
 import {
   Carousel,
@@ -16,6 +19,20 @@ import {
 const Hero = () => {
   const { user } = getData();
   const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1200);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <HeroSkeleton />;
+  }
 
   return (
     <section className="w-full bg-white py-6 md:py-8">
@@ -58,6 +75,7 @@ const Hero = () => {
 
                     <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                       <div className="text-white px-4 text-center">
+
                         <h1 className="text-2xl md:text-4xl font-bold">
                           {item.title}
                         </h1>
@@ -72,6 +90,7 @@ const Hero = () => {
                         >
                           Explore Now
                         </button>
+
                       </div>
                     </div>
 
@@ -84,7 +103,6 @@ const Hero = () => {
             <CarouselNext className="right-3 top-1/2 -translate-y-1/2 z-20" />
           </Carousel>
 
-          {/* Optional SearchBox */}
           {/* <SearchBox /> */}
 
         </div>

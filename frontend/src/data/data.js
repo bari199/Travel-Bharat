@@ -1199,3 +1199,43 @@ export const states = [
     ],
   },
 ];
+
+
+export const activities = [
+  {
+    title: "Kerala Cruise",
+    image:
+      "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?q=80&w=1200",
+    className: "md:col-span-1 md:row-span-1 h-[220px]",
+  },
+  {
+    title: "Jaipur Tour",
+    image:
+      "https://images.unsplash.com/photo-1477587458883-47145ed94245?q=80&w=1200",
+    className: "md:col-span-1 md:row-span-2 h-[460px]",
+  },
+  {
+    title: "Goa Beaches",
+    image:
+      "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=1200",
+    className: "md:col-span-1 md:row-span-1 h-[220px]",
+  },
+  {
+    title: "Temple Visit",
+    image:
+      "https://images.unsplash.com/photo-1587474260584-136574528ed5?q=80&w=1200",
+    className: "md:col-span-1 md:row-span-1 h-[220px]",
+  },
+  {
+    title: "Ladakh Hiking",
+    image:
+      "https://images.unsplash.com/photo-1593181629936-11c609b8db9b?q=80&w=1200",
+    className: "md:col-span-1 md:row-span-1 h-[220px]",
+  },
+  {
+    title: "Kashmir Adventure",
+    image:
+      "https://images.unsplash.com/photo-1598091383021-15ddea10925d?q=80&w=1200",
+    className: "md:col-span-1 md:row-span-1 h-[220px]",
+  },
+];

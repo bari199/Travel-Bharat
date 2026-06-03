@@ -1,88 +1,229 @@
 import mongoose from "mongoose";
 
+/*
+|--------------------------------------------------------------------------
+| Nearby Attraction Schema
+|--------------------------------------------------------------------------
+*/
+const nearbyAttractionSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      default: "",
+    },
+
+    description: {
+      type: String,
+      default: "",
+    },
+
+    image: {
+      type: String,
+      default: "",
+    },
+
+    mapLink: {
+      type: String,
+      default: "",
+    },
+  },
+  { _id: false }
+);
+
+/*
+|--------------------------------------------------------------------------
+| Best Experience Schema
+|--------------------------------------------------------------------------
+*/
+const bestExperienceSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      default: "",
+    },
+
+    description: {
+      type: String,
+      default: "",
+    },
+
+    image: {
+      type: String,
+      default: "",
+    },
+
+    buttonLink: {
+      type: String,
+      default: "",
+    },
+  },
+  { _id: false }
+);
+
+/*
+|--------------------------------------------------------------------------
+| Destination Schema
+|--------------------------------------------------------------------------
+*/
 const destinationSchema = new mongoose.Schema(
   {
     name: {
       type: String,
       required: true,
+      trim: true,
     },
 
     state: {
       type: String,
       required: true,
+      trim: true,
     },
 
     city: {
       type: String,
       required: true,
+      trim: true,
     },
 
     category: {
       type: String,
       required: true,
+      trim: true,
     },
 
     title: {
       type: String,
       required: true,
+      trim: true,
     },
 
-    bestTimeToVisit: {
-      type: String,
-      required: true,
-    },
-    entryFee: {
-      type: String,
-      required: true,
-    },
     location: {
       type: String,
       required: true,
-    },
-
-    description: {
-      type: String,
-      required: true,
+      trim: true,
     },
 
     shortDescription: {
       type: String,
       required: true,
+      trim: true,
     },
 
-    images: [
+    description: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    bestTimeToVisit: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    entryFee: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    /*
+    |--------------------------------------------------------------------------
+    | Images
+    |--------------------------------------------------------------------------
+    */
+
+    images: {
+      type: [String],
+      default: [],
+    },
+
+    placeImages: {
+      type: [String],
+      default: [],
+    },
+
+    experienceCardImage: {
+      type: [String],
+      default: [],
+    },
+
+    /*
+    |--------------------------------------------------------------------------
+    | Highlights
+    |--------------------------------------------------------------------------
+    */
+
+    highlights: {
+      type: [String],
+      default: [],
+    },
+
+    /*
+    |--------------------------------------------------------------------------
+    | Nearby Attractions
+    |--------------------------------------------------------------------------
+    */
+
+    nearbyAttractions: {
+      type: [nearbyAttractionSchema],
+      default: [],
+    },
+
+    /*
+    |--------------------------------------------------------------------------
+    | Best Experiences
+    |--------------------------------------------------------------------------
+    */
+
+    bestExperiences: {
+      type: [bestExperienceSchema],
+      default: [],
+    },
+
+    /*
+    |--------------------------------------------------------------------------
+    | User Interactions
+    |--------------------------------------------------------------------------
+    */
+
+    likes: [
       {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
       },
     ],
 
-    nearbyAttraction: {
-      type: String,
-    },
-
-    attractionDetails: {
-      type: String,
-    },
-
-    placeImages: [
+    dislikes: [
       {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
       },
     ],
 
-    bestImages:[
-      {
-        type: String,
-      }
-    ],
+    shares: {
+      type: Number,
+      default: 0,
+    },
 
-    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    shares: { type: Number, default: 0 },
+    rating: {
+      type: Number,
+      default: 4.5,
+      min: 0,
+      max: 5,
+    },
+
+    featured: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
-  },
+  }
 );
 
-export const Destination = mongoose.model("Destination", destinationSchema);
+export const Destination = mongoose.model(
+  "Destination",
+  destinationSchema
+);

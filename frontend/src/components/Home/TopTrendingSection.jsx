@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Card,
   CardContent,
@@ -12,11 +12,22 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { trendingDestinations } from "../data/data";
 
+import { trendingDestinations } from "../../data/data";
+import TopTrendingSectionSkeleton from "../skeletons/TopTrendingSectionSkeleton";
 
 const TopTrendingSection = () => {
+  const [loading, setLoading] = useState(true);
+
   const scrollRef = useRef(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1200);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const scroll = (direction) => {
     if (scrollRef.current) {
@@ -29,9 +40,14 @@ const TopTrendingSection = () => {
     }
   };
 
+  if (loading) {
+    return <TopTrendingSectionSkeleton />;
+  }
+
   return (
-    <section className="w-full bg-[#f5dac4] py-16 px-4 md:px-8 ">
+    <section className="w-full bg-[#f5dac4] py-16 px-4 md:px-8">
       <div className="max-w-4xl mx-auto">
+
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -54,6 +70,7 @@ const TopTrendingSection = () => {
 
         {/* Slider Section */}
         <div className="relative">
+
           {/* Left Button */}
           <button
             onClick={() => scroll("left")}
@@ -72,7 +89,6 @@ const TopTrendingSection = () => {
                 key={item.id}
                 className="min-w-[280px] max-w-[280px] rounded-3xl border-0 shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 bg-white overflow-hidden"
               >
-                {/* Image */}
                 <div className="relative group overflow-hidden">
                   <img
                     src={item.image}
@@ -86,18 +102,16 @@ const TopTrendingSection = () => {
                 </div>
 
                 <CardContent className="p-2">
-                  {/* Location */}
-                  <div className="flex items-center gap-1 text-gray-500 text-sm ">
+
+                  <div className="flex items-center gap-1 text-gray-500 text-sm">
                     <MapPin className="w-4 h-4" />
                     <span>{item.location}</span>
                   </div>
 
-                  {/* Title */}
                   <h3 className="text-lg font-semibold text-gray-900 leading-snug line-clamp-2">
                     {item.title}
                   </h3>
 
-                  {/* Rating */}
                   <div className="flex items-center gap-2 mt-2">
                     <div className="flex items-center text-orange-500">
                       <Star className="w-4 h-4 fill-orange-400 stroke-orange-400" />
@@ -111,7 +125,6 @@ const TopTrendingSection = () => {
                     </span>
                   </div>
 
-                  {/* Footer */}
                   <div className="flex items-center justify-between mt-3 pt-3 border-t">
                     <div className="flex items-center gap-1 text-sm text-gray-500">
                       <Clock3 className="w-3 h-3" />
@@ -119,12 +132,16 @@ const TopTrendingSection = () => {
                     </div>
 
                     <div className="text-right">
-                      <p className="text-xs text-gray-400">Starting From</p>
+                      <p className="text-xs text-gray-400">
+                        Starting From
+                      </p>
+
                       <p className="font-bold text-lg text-orange-500">
                         {item.price}
                       </p>
                     </div>
                   </div>
+
                 </CardContent>
               </Card>
             ))}
@@ -140,7 +157,6 @@ const TopTrendingSection = () => {
         </div>
       </div>
 
-      {/* Hide Scrollbar */}
       <style jsx>{`
         .no-scrollbar::-webkit-scrollbar {
           display: none;
@@ -153,6 +169,6 @@ const TopTrendingSection = () => {
       `}</style>
     </section>
   );
-}
+};
 
-export default TopTrendingSection
+export default TopTrendingSection;

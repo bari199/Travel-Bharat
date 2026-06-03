@@ -5,20 +5,19 @@ import {
 } from "react-router-dom";
 
 import Home from "./pages/Home";
-
 import VerifyEmail from "./pages/VerifyEmail";
 import Verify from "./pages/Verify";
 
-import Navbar from "./components/Navbar";
+import Navbar from "./components/Home/Navbar";
 import LoginDialog from "./pages/LoginDialog";
 import SignupDialog from "./pages/SignupDialog";
-import ProtectedRoute from "./components/ProtectedRoute";
 
 import ForgotPassword from "./pages/ForgotPassword";
 import VerifyOTP from "./pages/VerifyOTP";
 import ChangePassword from "./pages/ChangePassword";
 
 import AuthSuccess from "./pages/AuthSuccess";
+
 import Destination from "./pages/Destination";
 
 const router = createBrowserRouter([
@@ -28,22 +27,19 @@ const router = createBrowserRouter([
       <>
         <Navbar />
         <Home />
-
       </>
     ),
   },
 
-
   {
-    path:"/login",
-    element:<LoginDialog/>
+    path: "/login",
+    element: <LoginDialog />,
   },
 
   {
-    path:"/signup",
-    element:<SignupDialog/>
+    path: "/signup",
+    element: <SignupDialog />,
   },
-
 
   {
     path: "/verify",
@@ -74,15 +70,17 @@ const router = createBrowserRouter([
     path: "/change-password/:email",
     element: <ChangePassword />,
   },
+
+  /* DESTINATION PAGE */
   {
-  path: "/destinations",
-  element: (
-    <>
-      <Navbar />
-      <Destination />
-    </>
-  ),
-}
+    path: "/destination/:id",
+    element: (
+      <>
+        <Navbar />
+        <Destination />
+      </>
+    ),
+  },
 ]);
 
 const App = () => {

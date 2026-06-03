@@ -112,6 +112,7 @@ export const loginUser = async (req, res) => {
                 message: "Unauthorized access"
             })
         }
+    
         const passwordCheck = await bcrypt.compare(password, user.password)
         if (!passwordCheck) {
             return res.status(402).json({

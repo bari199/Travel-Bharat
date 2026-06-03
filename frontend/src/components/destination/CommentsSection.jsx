@@ -1,316 +1,486 @@
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from "react";
 import {
   Star,
   ThumbsUp,
   ThumbsDown,
   Send,
+  Trash2,
 } from "lucide-react";
 
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
+import api from "@/lib/api";
 
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-
 import { Textarea } from "@/components/ui/textarea";
-
 import { Input } from "@/components/ui/input";
-
 import {
   Avatar,
   AvatarFallback,
 } from "@/components/ui/avatar";
 
-const initialReviews = [
-  {
-    id: 1,
-    name: "Ali Tufan",
-    date: "April 2023",
-    rating: 5,
-    title: "Take this tour! Its fantastic!",
-    text: "Great for 4-5 hours to explore. Really a lot to see and tons of photo spots. Even have a passport for you to collect all the stamps as a souvenir. Must see for a Harry Potter fan.",
-    images: [
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=500",
-      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=500",
-      "https://images.unsplash.com/photo-1519677100203-a0e668c92439?q=80&w=500",
-    ],
-    replies: [
-      {
-        id: 11,
-        name: "TravelBharat",
-        text: "Thank you for sharing your amazing experience with us ❤️",
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: "Ali Tufan",
-    date: "April 2023",
-    rating: 5,
-    title: "Beautiful journey and amazing views!",
-    text: "Loved the complete Darjeeling trip. Tea gardens, toy train and sunrise point were unforgettable.",
-    images: [
-      "https://images.unsplash.com/photo-1526772662000-3f88f10405ff?q=80&w=500",
-      "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=500",
-      "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&w=500",
-    ],
-    replies: [],
-  },
-];
+import { getData } from "@/context/userContext";
 
-const StarRating = ({ rating }) => {
+const StarRating = ({ rating = 0 }) => {
   return (
-    <div className="flex items-center gap-[2px]">
+    <div className="flex items-center gap-1">
       {[1, 2, 3, 4, 5].map((item) => (
         <Star
           key={item}
           size={14}
-          className={`${
+          className={
             item <= rating
               ? "fill-yellow-400 text-yellow-400"
               : "text-gray-300"
-          }`}
+          }
         />
       ))}
     </div>
   );
 };
 
-const CommentsSection = () => {
-  const [reviews, setReviews] = useState(initialReviews);
+const CommentsSection = ({ destinationId }) => {
+  const { user } = getData();
 
+  const [reviews, setReviews] = useState([]);
   const [commentText, setCommentText] = useState("");
-
   const [rating, setRating] = useState(5);
+  const [loading, setLoading] = useState(false);
 
   const [replyText, setReplyText] = useState({});
-
   const [openReply, setOpenReply] = useState(null);
 
-  // ADD REVIEW
-  const handleAddReview = () => {
+  const [averageRating, setAverageRating] = useState(0);
+  const [totalRatings, setTotalRatings] = useState(0);
+
+  const getToken = () => {
+    return localStorage.getItem("accessToken");
+  };
+
+  /*
+  |--------------------------------------------------------------------------
+  | FETCH COMMENTS
+  |--------------------------------------------------------------------------
+  */
+  const fetchComments = async () => {
+    try {
+      const res = await api.get(
+        `/comments/${destinationId}`
+      );
+
+      setReviews(res.data.comments || []);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  /*
+  |--------------------------------------------------------------------------
+  | FETCH RATINGS
+  |--------------------------------------------------------------------------
+  */
+  const fetchRatings = async () => {
+    try {
+      const res = await api.get(
+        `/ratings/${destinationId}`
+      );
+
+      setAverageRating(
+        Number(res.data.averageRating || 0)
+      );
+
+      setTotalRatings(
+        res.data.totalRatings || 0
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  /*
+  |--------------------------------------------------------------------------
+  | SUBMIT RATING
+  |--------------------------------------------------------------------------
+  */
+  const submitRating = async (
+    selectedRating
+  ) => {
+    try {
+      const token = getToken();
+
+      await api.post(
+        "/ratings",
+        {
+          destinationId,
+          rating: selectedRating,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      fetchRatings();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  /*
+  |--------------------------------------------------------------------------
+  | ADD COMMENT
+  |--------------------------------------------------------------------------
+  */
+  const handleAddReview = async () => {
     if (!commentText.trim()) return;
 
-    const newReview = {
-      id: Date.now(),
-      name: "Guest User",
-      date: "Now",
-      rating,
-      title: "Wonderful Experience!",
-      text: commentText,
-      images: [],
-      replies: [],
-    };
+    try {
+      setLoading(true);
 
-    setReviews([newReview, ...reviews]);
+      const token = getToken();
 
-    setCommentText("");
-    setRating(5);
+      await api.post(
+        "/ratings",
+        {
+          destinationId,
+          rating,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      await api.post(
+        `/comments/${destinationId}`,
+        {
+          message: commentText,
+          rating,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setCommentText("");
+      setRating(5);
+
+      fetchComments();
+      fetchRatings();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // ADD REPLY
-  const handleReply = (reviewId) => {
-    if (!replyText[reviewId]) return;
+  /*
+  |--------------------------------------------------------------------------
+  | DELETE COMMENT
+  |--------------------------------------------------------------------------
+  */
+  const handleDeleteComment = async (
+    commentId
+  ) => {
+    try {
+      const token = getToken();
 
-    const updated = reviews.map((review) => {
-      if (review.id === reviewId) {
-        return {
-          ...review,
-          replies: [
-            ...review.replies,
-            {
-              id: Date.now(),
-              name: "TravelBharat",
-              text: replyText[reviewId],
-            },
-          ],
-        };
-      }
+      await api.delete(
+        `/comments/${commentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-      return review;
-    });
-
-    setReviews(updated);
-
-    setReplyText({
-      ...replyText,
-      [reviewId]: "",
-    });
-
-    setOpenReply(null);
+      fetchComments();
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  /*
+  |--------------------------------------------------------------------------
+  | REPLY
+  |--------------------------------------------------------------------------
+  */
+  const handleReply = async (
+    commentId
+  ) => {
+    if (
+      !replyText[commentId]?.trim()
+    )
+      return;
+
+    try {
+      const token = getToken();
+
+      await api.post(
+        `/comments/reply/${commentId}`,
+        {
+          message:
+            replyText[commentId],
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setReplyText({
+        ...replyText,
+        [commentId]: "",
+      });
+
+      setOpenReply(null);
+
+      fetchComments();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (destinationId) {
+      fetchComments();
+      fetchRatings();
+    }
+  }, [destinationId]);
 
   return (
     <section className="w-full py-12 bg-white">
-
       <div className="max-w-5xl mx-auto px-5">
 
-        {/* HEADING */}
-        <div className="mb-10">
-
-          <span className="bg-orange-100 text-orange-600 text-xs font-medium px-3 py-1 rounded-full">
+        {/* HEADER */}
+        <div className="mb-8">
+          <span className="bg-orange-100 text-orange-600 text-xs px-3 py-1 rounded-full">
             Reviews
           </span>
 
-          <h2 className="text-[32px] font-bold text-slate-900 mt-4">
+          <h2 className="text-3xl font-bold mt-4">
             Comments & Reviews
           </h2>
 
-          <p className="text-gray-500 mt-3 text-sm leading-7 max-w-2xl">
-            Read traveler experiences, reviews, feedback, and replies
-            shared by visitors who explored this destination.
+          <p className="text-gray-500 mt-2">
+            Share your experience and
+            read traveler feedback.
           </p>
-
         </div>
 
-        {/* REVIEW FORM */}
-        <Card className="border border-gray-200 rounded-3xl shadow-sm mb-10">
+        {/* OVERALL RATING */}
+        <Card className="mb-6 border-orange-100">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
 
+              <div>
+                <p className="text-sm text-gray-500">
+                  Overall Rating
+                </p>
+
+                <div className="flex items-center gap-3 mt-2">
+                  <span className="text-4xl font-bold text-orange-500">
+                    {averageRating}
+                  </span>
+
+                  <StarRating
+                    rating={Math.round(
+                      averageRating
+                    )}
+                  />
+                </div>
+              </div>
+
+              <div className="text-right">
+                <p className="text-3xl font-bold">
+                  {totalRatings}
+                </p>
+
+                <p className="text-gray-500 text-sm">
+                  Total Ratings
+                </p>
+              </div>
+
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* COMMENT FORM */}
+        <Card className="rounded-3xl mb-8">
           <CardContent className="p-6 space-y-5">
 
             <div>
-              <h3 className="text-xl font-semibold text-slate-900">
+              <h3 className="font-semibold text-xl">
                 Leave a Review
               </h3>
+            </div>
 
-              <p className="text-sm text-gray-500 mt-2">
-                Share your experience about this trip.
+            <div>
+              <p className="text-sm mb-3">
+                Rate this destination
               </p>
+
+              <div className="flex gap-2">
+                {[1, 2, 3, 4, 5].map(
+                  (star) => (
+                    <Star
+                      key={star}
+                      size={28}
+                      onClick={() =>
+                        setRating(star)
+                      }
+                      className={`cursor-pointer transition ${
+                        star <= rating
+                          ? "fill-yellow-400 text-yellow-400"
+                          : "text-gray-300"
+                      }`}
+                    />
+                  )
+                )}
+              </div>
             </div>
 
-            {/* STAR SELECT */}
-            <div className="flex items-center gap-2">
-
-              {[1, 2, 3, 4, 5].map((star) => (
-                <Star
-                  key={star}
-                  size={22}
-                  onClick={() => setRating(star)}
-                  className={`cursor-pointer transition ${
-                    star <= rating
-                      ? "fill-yellow-400 text-yellow-400"
-                      : "text-gray-300"
-                  }`}
-                />
-              ))}
-
-            </div>
-
-            {/* TEXTAREA */}
             <Textarea
-              placeholder="Write your review..."
-              className="min-h-[130px] rounded-2xl border-gray-200 focus-visible:ring-0"
               value={commentText}
-              onChange={(e) => setCommentText(e.target.value)}
+              onChange={(e) =>
+                setCommentText(
+                  e.target.value
+                )
+              }
+              placeholder="Write your review..."
+              className="min-h-[130px]"
             />
 
-            {/* BUTTON */}
             <Button
-              onClick={handleAddReview}
-              className="rounded-2xl h-11 px-6"
+              disabled={loading}
+              onClick={
+                handleAddReview
+              }
             >
-              Post Review
+              {loading
+                ? "Posting..."
+                : "Post Review"}
             </Button>
 
           </CardContent>
-
         </Card>
 
-        {/* REVIEWS */}
-        <div className="space-y-10">
+        {/* COMMENTS */}
+        <div className="max-h-[700px] overflow-y-auto pr-2 space-y-8">
+
+          {reviews.length === 0 && (
+            <div className="text-center text-gray-500 py-10">
+              No comments yet.
+            </div>
+          )}
 
           {reviews.map((review) => (
             <div
-              key={review.id}
-              className="border-b border-gray-200 pb-10"
+              key={review._id}
+              className="border-b pb-8"
             >
+              <div className="flex justify-between">
 
-              {/* TOP */}
-              <div className="flex items-start justify-between gap-4">
+                <div className="flex gap-4">
 
-                <div className="flex items-center gap-4">
-
-                  {/* AVATAR */}
-                  <Avatar className="w-12 h-12">
-                    <AvatarFallback className="bg-slate-900 text-white">
-                      {review.name
-                        .split(" ")
-                        .map((word) => word[0])
-                        .join("")}
+                  <Avatar>
+                    <AvatarFallback>
+                      {review.username
+                        ?.split(" ")
+                        .map(
+                          (w) => w[0]
+                        )
+                        .join("")
+                        .toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
 
-                  {/* USER INFO */}
                   <div>
-
-                    <h4 className="font-semibold text-slate-900">
-                      {review.name}
+                    <h4 className="font-semibold">
+                      {
+                        review.username
+                      }
                     </h4>
 
                     <div className="flex items-center gap-2 mt-1">
-                      <StarRating rating={review.rating} />
+                      <StarRating
+                        rating={
+                          review.rating ||
+                          5
+                        }
+                      />
 
-                      <span className="text-sm font-medium text-slate-700">
-                        {review.title}
+                      <span className="text-sm text-gray-500">
+                        Traveler
                       </span>
                     </div>
-
                   </div>
 
                 </div>
 
-                {/* DATE */}
-                <p className="text-sm text-gray-400">
-                  {review.date}
-                </p>
+                <div className="text-right">
+
+                  <p className="text-sm text-gray-400">
+                    {new Date(
+                      review.createdAt
+                    ).toLocaleDateString()}
+                  </p>
+
+                  {user &&
+                    review.user?._id ===
+                      user?._id && (
+                      <button
+                        onClick={() =>
+                          handleDeleteComment(
+                            review._id
+                          )
+                        }
+                        className="flex items-center gap-1 text-red-500 text-sm mt-2"
+                      >
+                        <Trash2
+                          size={14}
+                        />
+                        Delete
+                      </button>
+                    )}
+                </div>
 
               </div>
 
-              {/* REVIEW TEXT */}
-              <p className="text-gray-600 text-[15px] leading-8 mt-5 max-w-4xl">
-                {review.text}
+              <p className="mt-4 text-gray-600 leading-7">
+                {review.message}
               </p>
 
-              {/* IMAGES */}
-              {review.images.length > 0 && (
-                <div className="flex flex-wrap gap-4 mt-6">
+              <div className="flex gap-6 mt-5">
 
-                  {review.images.map((img, index) => (
-                    <img
-                      key={index}
-                      src={img}
-                      alt="review"
-                      className="w-[120px] h-[90px] object-cover rounded-2xl"
-                    />
-                  ))}
-
-                </div>
-              )}
-
-              {/* ACTIONS */}
-              <div className="flex items-center gap-6 mt-6">
-
-                <button className="flex items-center gap-2 text-sm text-slate-700 hover:text-black transition">
-                  <ThumbsUp size={15} />
+                <button className="flex items-center gap-2 text-sm">
+                  <ThumbsUp
+                    size={15}
+                  />
                   Helpful
                 </button>
 
-                <button className="flex items-center gap-2 text-sm text-slate-700 hover:text-black transition">
-                  <ThumbsDown size={15} />
-                  Not helpful
+                <button className="flex items-center gap-2 text-sm">
+                  <ThumbsDown
+                    size={15}
+                  />
+                  Not Helpful
                 </button>
 
                 <button
                   onClick={() =>
                     setOpenReply(
-                      openReply === review.id
+                      openReply ===
+                        review._id
                         ? null
-                        : review.id
+                        : review._id
                     )
                   }
-                  className="flex items-center gap-2 text-sm text-orange-500 hover:text-orange-600 transition"
+                  className="flex items-center gap-2 text-sm text-orange-500"
                 >
                   <Send size={14} />
                   Reply
@@ -318,63 +488,73 @@ const CommentsSection = () => {
 
               </div>
 
-              {/* REPLY BOX */}
-              {openReply === review.id && (
-                <div className="mt-5 flex gap-3">
-
+              {openReply ===
+                review._id && (
+                <div className="mt-4 flex gap-3">
                   <Input
-                    placeholder="Write your reply..."
-                    className="rounded-2xl h-11"
-                    value={replyText[review.id] || ""}
+                    placeholder="Write reply..."
+                    value={
+                      replyText[
+                        review._id
+                      ] || ""
+                    }
                     onChange={(e) =>
                       setReplyText({
                         ...replyText,
-                        [review.id]: e.target.value,
+                        [review._id]:
+                          e.target
+                            .value,
                       })
                     }
                   />
 
                   <Button
-                    onClick={() => handleReply(review.id)}
-                    className="rounded-2xl h-11 px-5"
+                    onClick={() =>
+                      handleReply(
+                        review._id
+                      )
+                    }
                   >
                     Send
                   </Button>
-
                 </div>
               )}
 
-              {/* REPLIES */}
-              {review.replies.length > 0 && (
-                <div className="mt-6 ml-6 border-l border-gray-200 pl-6 space-y-4">
+              {review.replies
+                ?.length > 0 && (
+                <div className="ml-6 mt-5 border-l pl-5 space-y-3">
 
-                  {review.replies.map((reply) => (
-                    <div
-                      key={reply.id}
-                      className="bg-gray-50 rounded-2xl p-4"
-                    >
+                  {review.replies.map(
+                    (
+                      reply,
+                      index
+                    ) => (
+                      <div
+                        key={index}
+                        className="bg-gray-50 p-4 rounded-xl"
+                      >
+                        <h5 className="font-medium text-sm">
+                          {
+                            reply.username
+                          }
+                        </h5>
 
-                      <h5 className="font-semibold text-sm text-slate-900">
-                        {reply.name}
-                      </h5>
-
-                      <p className="text-sm text-gray-600 leading-7 mt-2">
-                        {reply.text}
-                      </p>
-
-                    </div>
-                  ))}
+                        <p className="text-sm text-gray-600 mt-2">
+                          {
+                            reply.message
+                          }
+                        </p>
+                      </div>
+                    )
+                  )}
 
                 </div>
               )}
-
             </div>
           ))}
-
         </div>
 
       </div>
-
     </section>
   );
 };

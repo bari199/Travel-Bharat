@@ -40,7 +40,7 @@ import Google from "../assets/googleLogo.png";
 
 import { motion } from "framer-motion";
 
-const LoginDialog = ({ open, setOpen }) => {
+const LoginDialog = ({ open, setOpen, showTrigger = true, }) => {
   const { setUser } = getData();
 
   const [showPassword, setShowPassword] =
@@ -112,7 +112,7 @@ const LoginDialog = ({ open, setOpen }) => {
       open={open}
       onOpenChange={setOpen}
     >
-
+      {showTrigger && (
       <DialogTrigger asChild>
 
         <Button
@@ -128,6 +128,7 @@ const LoginDialog = ({ open, setOpen }) => {
         </Button>
 
       </DialogTrigger>
+      )}
 
       <DialogContent className="bg-transparent border-none shadow-none p-2 sm:max-w-[390px]">
 

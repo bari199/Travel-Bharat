@@ -1,28 +1,40 @@
-import React from "react";
-
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-
 import {
   CalendarDays,
   ArrowUpRight,
 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
-
 import { Button } from "@/components/ui/button";
-import { articles } from "../data/data";
+
+import { articles } from "../../data/data";
+
+import TravelArticlesSectionSkeleton from "../skeletons/TravelArticlesSectionSkeleton";
 
 export default function TravelArticlesSection() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1200);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <TravelArticlesSectionSkeleton />;
+  }
+
   return (
     <section className="w-full py-16 px-4 md:px-8 bg-white">
-
       <div className="max-w-7xl mx-auto">
 
         {/* Header */}
         <div className="flex items-center justify-between mb-10">
 
           <div>
-
             <p className="text-orange-500 uppercase tracking-[3px] text-sm font-semibold">
               Latest Blogs
             </p>
@@ -30,18 +42,14 @@ export default function TravelArticlesSection() {
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mt-2">
               Travel Articles
             </h2>
-
           </div>
 
           <Button
             variant="ghost"
             className="hidden md:flex items-center gap-2 text-sm hover:bg-orange-50 hover:text-orange-500"
           >
-
             See All
-
             <ArrowUpRight className="w-4 h-4" />
-
           </Button>
 
         </div>
@@ -171,11 +179,9 @@ export default function TravelArticlesSection() {
                       transition-all
                     "
                   >
-
                     Read More
 
                     <ArrowUpRight className="w-4 h-4" />
-
                   </button>
 
                 </div>
@@ -189,7 +195,6 @@ export default function TravelArticlesSection() {
         </div>
 
       </div>
-
     </section>
   );
 }

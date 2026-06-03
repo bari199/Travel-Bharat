@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/button";
 
 export default function TravelBharatFooter() {
   return (
-    <footer className="w-full bg-[#faf7f5] pt-20 pb-8 px-4 md:px-8 rounded-t-[40px] overflow-hidden">
+    <footer className="w-full bg-orange-300/80 pt-20 pb-8 px-4 md:px-8 rounded-t-[40px] overflow-hidden">
       <div className="max-w-7xl mx-auto">
 
         {/* Top CTA */}

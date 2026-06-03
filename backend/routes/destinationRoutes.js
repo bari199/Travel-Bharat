@@ -1,161 +1,63 @@
 import express from "express";
+import upload from "../middleware/uploadMiddleware.js";
 
 import {
-
   addDestination,
-
-  deleteDestination,
-
-  getBestExperiences,
-
   getDestinations,
-
   getSingleDestination,
-
   updateDestination,
-
+  deleteDestination,
 } from "../controllers/destinationController.js";
-
-import { authMiddleware }
-from "../middleware/authMiddleware.js";
-
-import upload
-from "../middleware/uploadMiddleware.js";
 
 const router = express.Router();
 
-
-
-/*
-|--------------------------------------------------------------------------
-| BEST EXPERIENCES
-|--------------------------------------------------------------------------
-*/
-router.get(
-  "/best/experiences",
-  getBestExperiences
-);
-
-
-
-/*
-|--------------------------------------------------------------------------
-| GET ALL DESTINATIONS
-|--------------------------------------------------------------------------
-*/
-router.get(
-  "/",
-  getDestinations
-);
-
-
-
-/*
-|--------------------------------------------------------------------------
-| GET SINGLE DESTINATION
-|--------------------------------------------------------------------------
-*/
-router.get(
-  "/:id",
-  getSingleDestination
-);
-
-
-
-
-
-/*
-|--------------------------------------------------------------------------
-| ADD DESTINATION
-|--------------------------------------------------------------------------
-*/
+/* ADD */
 router.post(
-
   "/",
-
-  authMiddleware,
-
   upload.fields([
-
     {
       name: "images",
-      maxCount: 5,
+      maxCount: 10,
     },
-
     {
       name: "placeImages",
-      maxCount: 5,
+      maxCount: 10,
     },
-
     {
       name: "experienceCardImage",
-      maxCount: 1,
+      maxCount: 10,
     },
-
   ]),
-
   addDestination
-
 );
 
+/* GET ALL */
+router.get("/", getDestinations);
 
+/* SINGLE */
+router.get("/:id", getSingleDestination);
 
-
-
-
-/*
-|--------------------------------------------------------------------------
-| UPDATE DESTINATION
-|--------------------------------------------------------------------------
-*/
+/* UPDATE */
 router.put(
-
   "/:id",
-
-  authMiddleware,
-
   upload.fields([
-
     {
       name: "images",
-      maxCount: 5,
+      maxCount: 10,
     },
-
     {
       name: "placeImages",
-      maxCount: 5,
+      maxCount: 10,
     },
-
     {
       name: "experienceCardImage",
-      maxCount: 1,
+      maxCount: 10,
     },
-
   ]),
-
   updateDestination
-
 );
 
-
-
-
-
-
-/*
-|--------------------------------------------------------------------------
-| DELETE DESTINATION
-|--------------------------------------------------------------------------
-*/
-router.delete(
-
-  "/:id",
-
-  authMiddleware,
-
-  deleteDestination
-
-);
-
+/* DELETE */
+router.delete("/:id", deleteDestination);
 
 export default router;

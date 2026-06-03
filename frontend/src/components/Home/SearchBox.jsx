@@ -1,5 +1,6 @@
-import React, { useMemo, useState } from "react";
-import axios from "axios";
+import React, { useMemo, useState, useEffect } from "react";
+import api from "@/lib/api";
+import { useNavigate } from "react-router-dom";
 
 import {
   MapPin,
@@ -11,9 +12,15 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import { states } from "../data/data";
+import { states } from "../../data/data";
+
+import SearchBoxSkeleton from "../Skeletons/SearchBoxSkeleton";
 
 const SearchBox = () => {
+  const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(true);
+
   const [searchData, setSearchData] = useState({
     state: "",
     city: "",
@@ -24,6 +31,14 @@ const SearchBox = () => {
   const [destinations, setDestinations] = useState([]);
 
   const [activeDropdown, setActiveDropdown] = useState("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1200);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   /* ---------------- STATES ---------------- */
 
@@ -94,28 +109,42 @@ const SearchBox = () => {
   /* ---------------- SEARCH API ---------------- */
 
   const handleSearch = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:8000/api/search",
-        searchData
+  try {
+    const response = await api.post(
+      "/search",
+      searchData
+    );
+
+    console.log(response.data);
+
+    setDestinations(response.data.destinations);
+
+    if (
+      response.data.destinations &&
+      response.data.destinations.length > 0
+    ) {
+      navigate(
+        `/destination/${response.data.destinations[0]._id}`
       );
-
-      console.log(response.data);
-
-      setDestinations(response.data.destinations);
-    } catch (error) {
-      console.log(error);
     }
-  };
+  } catch (error) {
+    console.log(error.response?.data);
+  }
+};
+
+
+  if (loading) {
+    return <SearchBoxSkeleton />;
+  }
 
   return (
     <div className="w-full flex flex-col items-center px-4 relative">
+
       <div className="w-full max-w-5xl bg-white border rounded-2xl shadow-sm px-3 py-2 flex flex-col lg:flex-row items-center gap-2">
 
-        {/* ---------------- STATE ---------------- */}
+        {/* STATE */}
 
         <div className="relative flex items-center gap-2 w-full lg:border-r lg:pr-4">
-
           <div className="bg-gray-100 p-2 rounded-full shrink-0">
             <MapPin className="h-4 w-4 text-gray-500" />
           </div>
@@ -131,9 +160,7 @@ const SearchBox = () => {
               placeholder="Search state"
               value={searchData.state}
               onChange={handleChange}
-              onFocus={() =>
-                setActiveDropdown("state")
-              }
+              onFocus={() => setActiveDropdown("state")}
               className="h-5 text-xs border-0 shadow-none px-0 focus-visible:ring-0"
             />
 
@@ -155,10 +182,9 @@ const SearchBox = () => {
           </div>
         </div>
 
-        {/* ---------------- CITY ---------------- */}
+        {/* CITY */}
 
         <div className="relative flex items-center gap-2 w-full lg:border-r lg:pr-4">
-
           <div className="bg-gray-100 p-2 rounded-full shrink-0">
             <Flag className="h-4 w-4 text-gray-500" />
           </div>
@@ -174,9 +200,7 @@ const SearchBox = () => {
               placeholder="Search city"
               value={searchData.city}
               onChange={handleChange}
-              onFocus={() =>
-                setActiveDropdown("city")
-              }
+              onFocus={() => setActiveDropdown("city")}
               className="h-5 text-xs border-0 shadow-none px-0 focus-visible:ring-0"
             />
 
@@ -198,10 +222,9 @@ const SearchBox = () => {
           </div>
         </div>
 
-        {/* ---------------- CATEGORY ---------------- */}
+        {/* CATEGORY */}
 
         <div className="relative flex items-center gap-2 w-full lg:border-r lg:pr-4">
-
           <div className="bg-gray-100 p-2 rounded-full shrink-0">
             <LayoutGrid className="h-4 w-4 text-gray-500" />
           </div>
@@ -241,10 +264,9 @@ const SearchBox = () => {
           </div>
         </div>
 
-        {/* ---------------- DESTINATION ---------------- */}
+        {/* DESTINATION */}
 
         <div className="relative flex items-center gap-2 w-full">
-
           <div className="bg-gray-100 p-2 rounded-full shrink-0">
             <Search className="h-4 w-4 text-gray-500" />
           </div>
@@ -284,7 +306,7 @@ const SearchBox = () => {
           </div>
         </div>
 
-        {/* ---------------- BUTTON ---------------- */}
+        {/* BUTTON */}
 
         <Button
           onClick={handleSearch}
@@ -295,21 +317,28 @@ const SearchBox = () => {
         </Button>
       </div>
 
-      {/* ---------------- RESULTS ---------------- */}
+      {/* RESULTS */}
 
       <div className="mt-10 w-full max-w-5xl">
         {destinations.map((item) => (
           <div
             key={item._id}
-            className="border rounded-xl p-4 mb-4"
+            onClick={() =>
+              navigate(`/destination/${item._id}`)
+            }
+            className="border rounded-xl p-4 mb-4 cursor-pointer hover:shadow-md transition"
           >
-            <h1 className="font-semibold">
+            <h1 className="font-semibold text-lg">
               {item.name}
             </h1>
 
-            <p>{item.city}</p>
+            <p className="text-sm text-gray-500 mt-1">
+              {item.city}
+            </p>
 
-            <p>{item.state}</p>
+            <p className="text-sm text-gray-500">
+              {item.state}
+            </p>
           </div>
         ))}
       </div>

@@ -1,49 +1,29 @@
+import React, { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { ArrowUpRight } from "lucide-react";
+import { activities } from "../../data/data";
 
-const activities = [
-  {
-    title: "Kerala Cruise",
-    image:
-      "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?q=80&w=1200",
-    className: "md:col-span-1 md:row-span-1 h-[220px]",
-  },
-  {
-    title: "Jaipur Tour",
-    image:
-      "https://images.unsplash.com/photo-1477587458883-47145ed94245?q=80&w=1200",
-    className: "md:col-span-1 md:row-span-2 h-[460px]",
-  },
-  {
-    title: "Goa Beaches",
-    image:
-      "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=1200",
-    className: "md:col-span-1 md:row-span-1 h-[220px]",
-  },
-  {
-    title: "Temple Visit",
-    image:
-      "https://images.unsplash.com/photo-1587474260584-136574528ed5?q=80&w=1200",
-    className: "md:col-span-1 md:row-span-1 h-[220px]",
-  },
-  {
-    title: "Ladakh Hiking",
-    image:
-      "https://images.unsplash.com/photo-1593181629936-11c609b8db9b?q=80&w=1200",
-    className: "md:col-span-1 md:row-span-1 h-[220px]",
-  },
-  {
-    title: "Kashmir Adventure",
-    image:
-      "https://images.unsplash.com/photo-1598091383021-15ddea10925d?q=80&w=1200",
-    className: "md:col-span-1 md:row-span-1 h-[220px]",
-  },
-];
+import PopularThingsToDoSkeleton from "../skeletons/PopularThingsToDoSkeleton";
 
-export default function PopularThingsToDo() {
+const PopularThingsToDo = () => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1200);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <PopularThingsToDoSkeleton />;
+  }
+
   return (
     <section className="w-full py-14 bg-white">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
+
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-3xl font-bold text-slate-900">
@@ -58,6 +38,7 @@ export default function PopularThingsToDo() {
 
         {/* Layout */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[220px]">
+
           {/* Left Small */}
           <Card className="relative overflow-hidden rounded-2xl border-0 group cursor-pointer h-[220px]">
             <img
@@ -133,8 +114,6 @@ export default function PopularThingsToDo() {
             </div>
           </Card>
 
-          
-
           {/* Bottom Right Landscape */}
           <Card className="relative overflow-hidden rounded-2xl border-0 group cursor-pointer col-span-2 md:col-span-2 h-[220px]">
             <img
@@ -143,10 +122,8 @@ export default function PopularThingsToDo() {
               className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
             />
 
-            {/* Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-            {/* Content */}
             <div className="absolute bottom-5 left-5">
               <h3 className="text-white text-xl font-semibold">
                 {activities[5].title}
@@ -157,8 +134,11 @@ export default function PopularThingsToDo() {
               </p>
             </div>
           </Card>
+
         </div>
       </div>
     </section>
   );
 }
+
+export default PopularThingsToDo;

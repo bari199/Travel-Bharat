@@ -5,7 +5,6 @@ import userRoute from "./routes/userRoute.js"
 import authRoute from "./routes/authRoute.js"
 import cors from 'cors'
 import "./config/passport.js"
-
 import destinationRoutes from "./routes/destinationRoutes.js";
 import stateRoutes from "./routes/stateRoutes.js";
 import commentRoutes from "./routes/commentRoutes.js";
