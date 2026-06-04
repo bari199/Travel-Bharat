@@ -13,13 +13,16 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import api from "@/lib/api";
 
-const DestinationHero = ({ destination,  setOpenLogin}) => {
+const DestinationHero = ({ destination, setOpenLogin }) => {
   const images = destination.images || [];
 
   const [open, setOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [wishlistId, setWishlistId] = useState(null);
+  const [averageRating, setAverageRating] = useState(0);
+
+  const [totalRatings, setTotalRatings] = useState(0);
 
   const handleOpen = (index) => {
     if (!images.length) return;
@@ -64,6 +67,18 @@ const DestinationHero = ({ destination,  setOpenLogin}) => {
     }
   };
 
+  const fetchRatings = async () => {
+    try {
+      const res = await api.get(`/ratings/${destination._id}`);
+
+      setAverageRating(res.data.averageRating || 0);
+
+      setTotalRatings(res.data.totalRatings || 0);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleWishlist = async () => {
     try {
       const token = localStorage.getItem("accessToken");
@@ -94,11 +109,19 @@ const DestinationHero = ({ destination,  setOpenLogin}) => {
   };
 
   useEffect(() => {
+    // Wishlist logic
     const token = localStorage.getItem("accessToken");
 
     if (!token || !destination?._id) return;
 
     fetchWishlistStatus();
+  }, [destination?._id]);
+
+  useEffect(() => {
+    // Rating logic
+    if (!destination?._id) return;
+
+    fetchRatings();
   }, [destination?._id]);
 
   return (
@@ -136,17 +159,22 @@ const DestinationHero = ({ destination,  setOpenLogin}) => {
             {/* Review */}
             <div className="flex flex-wrap items-center gap-5 mt-4 text-sm text-gray-600">
               <div className="flex items-center gap-2">
-                <div className="flex text-yellow-400">
-                  <Star size={14} fill="currentColor" />
-                  <Star size={14} fill="currentColor" />
-                  <Star size={14} fill="currentColor" />
-                  <Star size={14} fill="currentColor" />
-                  <Star size={14} fill="currentColor" />
+                <div className="flex">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star
+                      key={star}
+                      size={14}
+                      className={
+                        star <= Math.round(averageRating)
+                          ? "fill-yellow-400 text-yellow-400"
+                          : "text-gray-300"
+                      }
+                    />
+                  ))}
                 </div>
 
                 <span className="font-semibold text-black">
-                  {destination?.rating || "4.8"}(
-                  {destination?.totalReviews || "243"})
+                  {averageRating} ({totalRatings} Reviews)
                 </span>
               </div>
 

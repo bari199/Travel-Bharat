@@ -8,7 +8,6 @@ import TourInfoCards from "@/components/destination/TourInfoCards";
 import TourMap from "@/components/destination/TourMap";
 import BestExperiences from "@/components/destination/BestExperiences";
 import CommentsSection from "@/components/destination/CommentsSection";
-import RatingSection from "@/components/destination/RatingSection";
 import Footer from "@/components/Home/Footer";
 
 const Destination = () => {
@@ -46,8 +45,6 @@ const Destination = () => {
       <BestExperiences destination={destination} />
 
       <TourMap destination={destination} />
-
-      <RatingSection destinationId={destination._id} />
 
       <CommentsSection destinationId={destination._id} />
 

@@ -8,13 +8,14 @@ import { Comment } from "../models/commentModel.js";
 export const addComment = async (req, res) => {
   try {
     const { destinationId } = req.params;
-    const { message } = req.body;
+    const { message, rating } = req.body;
 
     const comment = await Comment.create({
       destination: destinationId,
       user: req.user._id,
       username: req.user.username,
       message,
+      rating,
     });
     console.log("REQ USER:", req.user);
     return res.status(201).json({
