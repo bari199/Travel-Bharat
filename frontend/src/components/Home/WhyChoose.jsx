@@ -19,7 +19,7 @@ const WhyChoose = () => {
   }
 
   return (
-    <section className="w-full py-16 px-4 lg:px-16 bg-[#f8f8f8]">
+    <section className="w-full py-16 px-4 lg:px-16 bg-orange-200/90">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Heading */}

@@ -27,7 +27,7 @@ const nearbyAttractionSchema = new mongoose.Schema(
       default: "",
     },
   },
-  { _id: false }
+  { _id: false },
 );
 
 /*
@@ -57,7 +57,7 @@ const bestExperienceSchema = new mongoose.Schema(
       default: "",
     },
   },
-  { _id: false }
+  { _id: false },
 );
 
 /*
@@ -181,25 +181,30 @@ const destinationSchema = new mongoose.Schema(
       default: [],
     },
 
+    likes: {
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+      ],
+      default: [],
+    },
+
+    dislikes: {
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+      ],
+      default: [],
+    },
     /*
     |--------------------------------------------------------------------------
     | User Interactions
     |--------------------------------------------------------------------------
     */
-
-    likes: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
-
-    dislikes: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
 
     shares: {
       type: Number,
@@ -220,10 +225,7 @@ const destinationSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
-export const Destination = mongoose.model(
-  "Destination",
-  destinationSchema
-);
+export const Destination = mongoose.model("Destination", destinationSchema);

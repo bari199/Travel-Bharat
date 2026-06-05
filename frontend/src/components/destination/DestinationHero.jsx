@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   Star,
   MapPin,
@@ -7,49 +7,187 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
+  Users,
+  ImageOff,
+  CheckCircle2,
+  BadgePercent,
 } from "lucide-react";
 
 import { motion, AnimatePresence } from "framer-motion";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
 
 import api from "@/lib/api";
 
+/*
+|--------------------------------------------------------------------------
+| Skeleton — shown while ratings / wishlist status load
+|--------------------------------------------------------------------------
+*/
+const HeroSkeleton = () => (
+  <section className="w-full bg-white py-8">
+    <div className="max-w-5xl mx-auto px-5 lg:px-2 space-y-5">
+      {/* Breadcrumb */}
+      <div className="flex items-center gap-2">
+        <Skeleton className="h-4 w-10 rounded" />
+        <Skeleton className="h-4 w-3 rounded" />
+        <Skeleton className="h-4 w-10 rounded" />
+        <Skeleton className="h-4 w-3 rounded" />
+        <Skeleton className="h-4 w-28 rounded" />
+      </div>
+
+      {/* Tags */}
+      <div className="flex gap-3">
+        <Skeleton className="h-7 w-24 rounded-full" />
+        <Skeleton className="h-7 w-36 rounded-full" />
+      </div>
+
+      {/* Title block */}
+      <div className="space-y-3">
+        <Skeleton className="h-8 w-3/4 rounded-lg" />
+        <Skeleton className="h-8 w-1/2 rounded-lg" />
+        <div className="flex gap-4 mt-2">
+          <Skeleton className="h-5 w-36 rounded" />
+          <Skeleton className="h-5 w-28 rounded" />
+          <Skeleton className="h-5 w-24 rounded" />
+        </div>
+      </div>
+
+      {/* Gallery skeleton */}
+      <div className="flex flex-col lg:flex-row gap-4">
+        <Skeleton className="lg:w-[57%] h-[280px] md:h-[450px] rounded-[24px]" />
+        <div className="lg:w-[43%] h-[280px] md:h-[450px] grid grid-cols-2 grid-rows-2 gap-4">
+          {[0, 1, 2, 3].map((i) => (
+            <Skeleton key={i} className="w-full h-full rounded-[20px]" />
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+/*
+|--------------------------------------------------------------------------
+| Star Row — display only
+|--------------------------------------------------------------------------
+*/
+const StarRow = ({ rating, size = 14 }) => (
+  <div className="flex items-center">
+    {[1, 2, 3, 4, 5].map((star) => (
+      <Star
+        key={star}
+        size={size}
+        className={
+          star <= Math.round(rating)
+            ? "fill-yellow-400 text-yellow-400"
+            : "fill-gray-200 text-gray-200"
+        }
+      />
+    ))}
+  </div>
+);
+
+/*
+|--------------------------------------------------------------------------
+| Gallery Image Tile
+|--------------------------------------------------------------------------
+*/
+const GalleryTile = ({ src, alt, onClick, className, children }) => (
+  <motion.div
+    whileHover={{ scale: 1.02 }}
+    transition={{ duration: 0.25, ease: "easeOut" }}
+    className={`relative overflow-hidden cursor-pointer ${className}`}
+    onClick={onClick}
+  >
+    <img
+      src={src}
+      alt={alt}
+      loading="lazy"
+      className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+    />
+    {children}
+  </motion.div>
+);
+
+/*
+|--------------------------------------------------------------------------
+| DestinationHero
+|--------------------------------------------------------------------------
+*/
 const DestinationHero = ({ destination, setOpenLogin }) => {
-  const images = destination.images || [];
+  const images = destination?.images || [];
 
-  const [open, setOpen] = useState(false);
-  const [currentImage, setCurrentImage] = useState(0);
-  const [isWishlisted, setIsWishlisted] = useState(false);
-  const [wishlistId, setWishlistId] = useState(null);
+  const [pageReady, setPageReady]         = useState(false);
+  const [open, setOpen]                   = useState(false);
+  const [currentImage, setCurrentImage]   = useState(0);
+  const [isWishlisted, setIsWishlisted]   = useState(false);
+  const [wishlistId, setWishlistId]       = useState(null);
+  const [wishlistLoading, setWishlistLoading] = useState(false);
   const [averageRating, setAverageRating] = useState(0);
+  const [totalRatings, setTotalRatings]   = useState(0);
+  const [copied, setCopied]               = useState(false);
 
-  const [totalRatings, setTotalRatings] = useState(0);
-
+  /*
+  |--------------------------------------------------------------------------
+  | Lightbox navigation
+  |--------------------------------------------------------------------------
+  */
   const handleOpen = (index) => {
     if (!images.length) return;
     setCurrentImage(index);
     setOpen(true);
   };
 
-  const nextSlide = () => {
+  const nextSlide = useCallback(() => {
     if (!images.length) return;
     setCurrentImage((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-  };
+  }, [images.length]);
 
-  const prevSlide = () => {
+  const prevSlide = useCallback(() => {
     if (!images.length) return;
     setCurrentImage((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  }, [images.length]);
+
+  // Keyboard navigation for lightbox
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e) => {
+      if (e.key === "ArrowRight") nextSlide();
+      if (e.key === "ArrowLeft")  prevSlide();
+      if (e.key === "Escape")     setOpen(false);
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [open, nextSlide, prevSlide]);
+
+  /*
+  |--------------------------------------------------------------------------
+  | Share — copies URL to clipboard
+  |--------------------------------------------------------------------------
+  */
+  const handleShare = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      /* silent fail — browser may block on http */
+    }
   };
 
-  const fetchWishlistStatus = async () => {
+  /*
+  |--------------------------------------------------------------------------
+  | Wishlist status fetch
+  |--------------------------------------------------------------------------
+  */
+  const fetchWishlistStatus = useCallback(async () => {
     try {
-      const res = await api.get("/wishlist");
-
+      const res      = await api.get("/wishlist");
       const wishlist = res?.data?.wishlist || [];
-
       const existing = wishlist.find(
         (item) =>
           item?.destination?._id === destination?._id ||
-          item?.destination === destination?._id,
+          item?.destination === destination?._id
       );
 
       if (existing) {
@@ -59,259 +197,355 @@ const DestinationHero = ({ destination, setOpenLogin }) => {
         setIsWishlisted(false);
         setWishlistId(null);
       }
-    } catch (error) {
-      console.log("Wishlist fetch error:", error);
-
+    } catch {
       setIsWishlisted(false);
       setWishlistId(null);
     }
-  };
-
-  const fetchRatings = async () => {
-    try {
-      const res = await api.get(`/ratings/${destination._id}`);
-
-      setAverageRating(res.data.averageRating || 0);
-
-      setTotalRatings(res.data.totalRatings || 0);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleWishlist = async () => {
-    try {
-      const token = localStorage.getItem("accessToken");
-      if (!token) {
-        setOpenLogin(true);
-        return;
-      }
-      if (isWishlisted) {
-        await api.delete(`/wishlist/${wishlistId}`);
-
-        setIsWishlisted(false);
-        setWishlistId(null);
-
-        return;
-      }
-
-      const res = await api.post("/wishlist", {
-        destinationId: destination._id,
-      });
-
-      setIsWishlisted(true);
-      setWishlistId(res.data.wishlist._id);
-    } catch (error) {
-      console.log(error);
-
-      alert(error?.response?.data?.message || "Something went wrong");
-    }
-  };
-
-  useEffect(() => {
-    // Wishlist logic
-    const token = localStorage.getItem("accessToken");
-
-    if (!token || !destination?._id) return;
-
-    fetchWishlistStatus();
   }, [destination?._id]);
 
+  /*
+  |--------------------------------------------------------------------------
+  | Ratings fetch
+  |--------------------------------------------------------------------------
+  */
+ const fetchRatings = useCallback(async () => {
+  try {
+    const res = await api.get(`/ratings/${destination._id}`);
+
+    console.log("Ratings API:", res.data);
+
+    setAverageRating(Number(res.data.averageRating) || 0);
+    setTotalRatings(Number(res.data.totalRatings) || 0);
+  } catch (error) {
+    console.log(error);
+  }
+}, [destination?._id]);
+
+  /*
+  |--------------------------------------------------------------------------
+  | Initial data load
+  |--------------------------------------------------------------------------
+  */
   useEffect(() => {
-    // Rating logic
     if (!destination?._id) return;
 
-    fetchRatings();
-  }, [destination?._id]);
+    const token = localStorage.getItem("accessToken");
 
+    const boot = async () => {
+      await Promise.all([
+        fetchRatings(),
+        token ? fetchWishlistStatus() : Promise.resolve(),
+      ]);
+      setPageReady(true);
+    };
+
+    boot();
+  }, [destination?._id, fetchRatings, fetchWishlistStatus]);
+
+  /*
+  |--------------------------------------------------------------------------
+  | Wishlist toggle
+  |--------------------------------------------------------------------------
+  */
+  const handleWishlist = async () => {
+    const token = localStorage.getItem("accessToken");
+
+    if (!token) {
+      setOpenLogin(true);
+      return;
+    }
+
+    try {
+      setWishlistLoading(true);
+
+      if (isWishlisted) {
+        await api.delete(`/wishlist/${wishlistId}`);
+        setIsWishlisted(false);
+        setWishlistId(null);
+      } else {
+        const res = await api.post("/wishlist", {
+          destinationId: destination._id,
+        });
+        setIsWishlisted(true);
+        setWishlistId(res.data.wishlist._id);
+      }
+    } catch (error) {
+      alert(error?.response?.data?.message || "Something went wrong");
+    } finally {
+      setWishlistLoading(false);
+    }
+  };
+
+  /*
+  |--------------------------------------------------------------------------
+  | Show skeleton until data is ready
+  |--------------------------------------------------------------------------
+  */
+  if (!pageReady) return <HeroSkeleton />;
+
+  /*
+  |--------------------------------------------------------------------------
+  | Render
+  |--------------------------------------------------------------------------
+  */
   return (
     <section className="w-full bg-white py-8">
-      {/* Main Container */}
       <div className="max-w-5xl mx-auto px-5 lg:px-2">
-        {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-sm text-gray-500 mb-5">
-          <span>Home</span>
-          <span>&gt;</span>
-          <span>Tours</span>
-          <span>&gt;</span>
 
-          <span className="text-black font-medium">{destination?.name}</span>
+        {/* ── Breadcrumb ── */}
+        <nav
+          className="flex items-center gap-1.5 text-xs text-gray-400 mb-5 flex-wrap"
+          aria-label="Breadcrumb"
+        >
+          {["Home", "Tours", destination?.state, destination?.city].map(
+            (crumb, i, arr) => (
+              <React.Fragment key={i}>
+                <span
+                  className={
+                    i === arr.length - 1
+                      ? "text-gray-700 font-semibold"
+                      : "hover:text-gray-600 cursor-pointer transition"
+                  }
+                >
+                  {crumb}
+                </span>
+                {i < arr.length - 1 && (
+                  <ChevronRight size={12} className="text-gray-300" />
+                )}
+              </React.Fragment>
+            )
+          )}
+        </nav>
+
+        {/* ── Badge tags ── */}
+        <div className="flex items-center gap-2 mb-5 flex-wrap">
+          <Badge className="bg-orange-100 text-orange-600 hover:bg-orange-100 border-0 text-xs font-semibold px-3 py-1 rounded-full gap-1">
+            <BadgePercent size={11} />
+            Best Seller
+          </Badge>
+          <Badge
+            variant="outline"
+            className="text-gray-600 border-gray-200 text-xs font-medium px-3 py-1 rounded-full gap-1"
+          >
+            <CheckCircle2 size={11} className="text-green-500" />
+            Free Cancellation
+          </Badge>
         </div>
 
-        {/* Tags */}
-        <div className="flex items-center gap-3 mb-5">
-          <button className="bg-orange-100 text-orange-500 text-xs font-medium px-4 py-2 rounded-full">
-            Best seller
-          </button>
-
-          <button className="bg-gray-100 text-gray-700 text-xs font-medium px-4 py-2 rounded-full">
-            Free cancellation
-          </button>
-        </div>
-
-        {/* Heading */}
-        <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-6 mb-7">
-          <div className="max-w-3xl">
-            <h1 className="text-2xl lg:text-3xl font-bold text-slate-900 leading-snug">
+        {/* ── Title row ── */}
+        <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-5 mb-7">
+          <div className="max-w-2xl">
+            <h1 className="text-2xl lg:text-[1.85rem] font-extrabold text-slate-900 leading-snug tracking-tight">
               {destination?.title}
             </h1>
 
-            {/* Review */}
-            <div className="flex flex-wrap items-center gap-5 mt-4 text-sm text-gray-600">
-              <div className="flex items-center gap-2">
-                <div className="flex">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <Star
-                      key={star}
-                      size={14}
-                      className={
-                        star <= Math.round(averageRating)
-                          ? "fill-yellow-400 text-yellow-400"
-                          : "text-gray-300"
-                      }
-                    />
-                  ))}
-                </div>
-
-                <span className="font-semibold text-black">
-                  {averageRating} ({totalRatings} Reviews)
+            {/* Meta strip */}
+            <div className="flex flex-wrap items-center gap-4 mt-3 text-sm text-gray-500">
+              {/* Stars */}
+              <div className="flex items-center gap-1.5">
+                <StarRow rating={averageRating} />
+                <span className="font-bold text-gray-800 text-sm">
+                  {averageRating > 0 ? averageRating.toFixed(1) : "—"}
+                </span>
+                <span className="text-gray-400 text-xs">
+                  ({totalRatings} {totalRatings === 1 ? "review" : "reviews"})
                 </span>
               </div>
 
-              <div className="flex items-center gap-1">
-                <MapPin size={14} />
+              {/* Divider */}
+              <span className="hidden sm:block w-px h-4 bg-gray-200" />
+
+              {/* Location */}
+              <div className="flex items-center gap-1 text-gray-500 text-xs">
+                <MapPin size={13} className="text-orange-400 shrink-0" />
                 <span>{destination?.location}</span>
               </div>
 
-              <div>
-                <span className="font-semibold text-black">
-                  {destination?.totalVisitors || "30K+"}
-                </span>{" "}
-                visitors
+              {/* Divider */}
+              <span className="hidden sm:block w-px h-4 bg-gray-200" />
+
+              {/* Visitors */}
+              <div className="flex items-center gap-1 text-xs text-gray-500">
+                <Users size={13} className="text-blue-400 shrink-0" />
+                <span>
+                  <strong className="text-gray-800">
+                    {destination?.totalVisitors || "30K+"}
+                  </strong>{" "}
+                  visitors
+                </span>
               </div>
             </div>
           </div>
 
-          {/* Actions */}
-          <div className="flex items-center gap-5 text-sm text-gray-600">
-            <button className="flex items-center gap-2 hover:text-black transition">
-              <Share2 size={17} />
-              Share
+          {/* ── Action buttons ── */}
+          <div className="flex items-center gap-3 shrink-0">
+            {/* Share */}
+            <button
+              onClick={handleShare}
+              title="Copy link"
+              className="flex items-center gap-2 text-sm text-gray-500 px-3 py-2 rounded-full border border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-all"
+            >
+              {copied ? (
+                <>
+                  <CheckCircle2 size={15} className="text-green-500" />
+                  <span className="text-green-600 text-xs font-medium">
+                    Copied!
+                  </span>
+                </>
+              ) : (
+                <>
+                  <Share2 size={15} />
+                  <span className="text-xs font-medium">Share</span>
+                </>
+              )}
             </button>
 
+            {/* Wishlist */}
             <button
               onClick={handleWishlist}
-              className="flex items-center gap-2 hover:text-black transition"
+              disabled={wishlistLoading}
+              title={isWishlisted ? "Remove from wishlist" : "Save to wishlist"}
+              className={`flex items-center gap-2 text-sm px-3 py-2 rounded-full border transition-all ${
+                isWishlisted
+                  ? "bg-red-50 border-red-200 text-red-500"
+                  : "border-gray-200 text-gray-500 hover:border-red-200 hover:bg-red-50 hover:text-red-400"
+              }`}
             >
               <Heart
-                size={17}
+                size={15}
                 className={`transition-all duration-300 ${
-                  isWishlisted
-                    ? "fill-red-500 text-red-500"
-                    : "text-gray-500 hover:text-red-500"
+                  isWishlisted ? "fill-red-500 text-red-500" : ""
                 }`}
               />
-
-              {isWishlisted ? "Saved" : "Wishlist"}
+              <span className="text-xs font-medium">
+                {wishlistLoading ? "…" : isWishlisted ? "Saved" : "Wishlist"}
+              </span>
             </button>
           </div>
         </div>
-        {/* Gallery */}
-        {images.length > 0 && (
-          <div className="flex flex-col lg:flex-row gap-4 overflow-hidden">
-            {/* Left Big Image */}
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.3 }}
-              className="lg:w-[57%] h-[280px] md:h-[450px] cursor-pointer overflow-hidden"
+
+        {/* ── Gallery ── */}
+        {images.length > 0 ? (
+          <div className="flex flex-col lg:flex-row gap-3">
+            {/* Primary large image */}
+            <GalleryTile
+              src={images[0]}
+              alt={destination?.name || "Destination"}
               onClick={() => handleOpen(0)}
-            >
-              <img
-                src={images[0]}
-                alt={destination?.name || "Destination"}
-                className="w-full h-full object-cover rounded-[24px]"
-              />
-            </motion.div>
+              className="lg:w-[57%] h-[280px] md:h-[450px] rounded-[22px]"
+            />
 
-            {/* Right Images */}
-            <div className="lg:w-[43%] h-[280px] md:h-[450px] grid grid-cols-2 grid-rows-2 gap-4 overflow-hidden">
+            {/* Thumbnail grid */}
+            <div className="lg:w-[43%] h-[280px] md:h-[450px] grid grid-cols-2 grid-rows-2 gap-3">
               {images.slice(1, 5).map((img, index) => (
-                <motion.div
+                <GalleryTile
                   key={index}
-                  whileHover={{ scale: 1.03 }}
-                  transition={{ duration: 0.3 }}
-                  className="relative w-full h-full overflow-hidden cursor-pointer"
+                  src={img}
+                  alt={`${destination?.name} photo ${index + 2}`}
                   onClick={() => handleOpen(index + 1)}
+                  className="rounded-[18px]"
                 >
-                  <img
-                    src={img}
-                    alt={`Gallery ${index + 2}`}
-                    className="w-full h-full object-cover rounded-[20px]"
-                  />
-
-                  {/* Last Image Button */}
+                  {/* "See all" overlay on last tile */}
                   {index === 3 && images.length > 5 && (
-                    <button
+                    <div
+                      className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center rounded-[18px] gap-1"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleOpen(0);
                       }}
-                      className="absolute bottom-3 right-3 bg-black/70 hover:bg-black text-white text-xs px-4 py-2 rounded-xl backdrop-blur-md transition"
                     >
-                      See all photos
-                    </button>
+                      <span className="text-white font-bold text-lg">
+                        +{images.length - 5}
+                      </span>
+                      <span className="text-white/80 text-xs font-medium">
+                        See all photos
+                      </span>
+                    </div>
                   )}
-                </motion.div>
+                </GalleryTile>
               ))}
             </div>
           </div>
-        )}
-
-        {images.length === 0 && (
-          <div className="w-full h-[450px] rounded-3xl bg-gray-200 flex items-center justify-center">
-            <span className="text-gray-500">No images available</span>
+        ) : (
+          /* No images fallback */
+          <div className="w-full h-[350px] rounded-3xl bg-gray-100 border border-gray-200 flex flex-col items-center justify-center gap-3 text-gray-400">
+            <ImageOff size={40} strokeWidth={1.5} />
+            <p className="text-sm font-medium">No images available</p>
           </div>
         )}
       </div>
 
-      {/* Modal Slider */}
+      {/* ══════════════════════════════════════
+          LIGHTBOX MODAL
+      ══════════════════════════════════════ */}
       <AnimatePresence>
         {open && images.length > 0 && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center"
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center"
+            onClick={() => setOpen(false)}
           >
+            {/* Counter */}
+            <div className="absolute top-5 left-1/2 -translate-x-1/2 text-white/60 text-sm font-medium select-none">
+              {currentImage + 1} / {images.length}
+            </div>
+
             {/* Close */}
             <button
-              onClick={() => setOpen(false)}
-              className="absolute top-6 right-6 text-white"
+              onClick={(e) => { e.stopPropagation(); setOpen(false); }}
+              className="absolute top-5 right-5 text-white/70 hover:text-white transition p-2 rounded-full hover:bg-white/10"
             >
-              <X size={35} />
+              <X size={28} />
             </button>
 
             {/* Prev */}
-            <button onClick={prevSlide} className="absolute left-5 text-white">
-              <ChevronLeft size={45} />
+            <button
+              onClick={(e) => { e.stopPropagation(); prevSlide(); }}
+              className="absolute left-4 text-white/70 hover:text-white transition p-2 rounded-full hover:bg-white/10"
+            >
+              <ChevronLeft size={40} />
             </button>
 
             {/* Image */}
             <motion.img
-              key={images[currentImage]}
-              initial={{ opacity: 0, scale: 0.9 }}
+              key={currentImage}
+              initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
               src={images[currentImage]}
-              alt=""
-              className="w-[90%] md:w-[70%] h-[70vh] object-cover rounded-3xl"
+              alt={`${destination?.name} — photo ${currentImage + 1}`}
+              className="max-w-[88vw] max-h-[80vh] object-contain rounded-2xl shadow-2xl select-none"
+              onClick={(e) => e.stopPropagation()}
             />
 
             {/* Next */}
-            <button onClick={nextSlide} className="absolute right-5 text-white">
-              <ChevronRight size={45} />
+            <button
+              onClick={(e) => { e.stopPropagation(); nextSlide(); }}
+              className="absolute right-4 text-white/70 hover:text-white transition p-2 rounded-full hover:bg-white/10"
+            >
+              <ChevronRight size={40} />
             </button>
+
+            {/* Dot indicators */}
+            {images.length <= 12 && (
+              <div className="absolute bottom-6 flex items-center gap-1.5">
+                {images.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={(e) => { e.stopPropagation(); setCurrentImage(i); }}
+                    className={`rounded-full transition-all duration-200 ${
+                      i === currentImage
+                        ? "w-5 h-1.5 bg-white"
+                        : "w-1.5 h-1.5 bg-white/40 hover:bg-white/60"
+                    }`}
+                  />
+                ))}
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

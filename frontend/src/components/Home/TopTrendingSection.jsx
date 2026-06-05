@@ -45,7 +45,7 @@ const TopTrendingSection = () => {
   }
 
   return (
-    <section className="w-full bg-[#f5dac4] py-16 px-4 md:px-8">
+    <section className="w-full bg-orange-300/80 py-16 px-4 md:px-8">
       <div className="max-w-4xl mx-auto">
 
         {/* Header */}
