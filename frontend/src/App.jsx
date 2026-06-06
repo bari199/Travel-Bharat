@@ -20,6 +20,9 @@ import AuthSuccess from "./pages/AuthSuccess";
 
 import Destination from "./pages/Destination";
 
+import Profile from "./pages/Profile";
+
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -27,6 +30,8 @@ const router = createBrowserRouter([
       <>
         <Navbar />
         <Home />
+        
+       
       </>
     ),
   },
@@ -81,6 +86,16 @@ const router = createBrowserRouter([
       </>
     ),
   },
+
+  {
+    path: "/profile",
+    element: (
+      <>
+        <Navbar />
+        <Profile />
+      </>
+    ),
+  }
 ]);
 
 const App = () => {

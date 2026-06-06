@@ -7,19 +7,15 @@ import {
 
  export const navItems = [
   {
-    title: "Discover",
-    path: "/",
+    title: "Experiences",
+    path: "/experiences",
   },
   {
-    title: "Destination",
-    path: "/destination",
-  },
-  {
-    title: "Blog",
+    title: "TripPlan",
     path: "/blog",
   },
   {
-    title: "About",
+    title: "Events",
     path: "/about",
   },
   {

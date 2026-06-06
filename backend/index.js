@@ -12,6 +12,7 @@ import searchRoutes from "./routes/searchRoutes.js";
 import wishlistRoutes from "./routes/wishlistRoutes.js";
 import ratingRoutes from "./routes/ratingRoutes.js";
 import reactionRoutes from "./routes/reactionRoutes.js";
+import profileRoutes from "./routes/profileRoutes.js";
 
 
 const app = express()
@@ -37,6 +38,9 @@ app.use("/api/search", searchRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/ratings", ratingRoutes);
 app.use("/api/reactions", reactionRoutes);
+
+
+app.use("/api/profile", profileRoutes);
 
 // http://localhost:8000/user/register
 
