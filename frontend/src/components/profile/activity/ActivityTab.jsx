@@ -1,6 +1,7 @@
 // ── ActivityTab.jsx ────────────────────────────────────────────────────────
 import { Card, CardContent } from "@/components/ui/card";
 import { Activity } from "lucide-react";
+import ActivityItem from "@/components/profile/activity/ActivityItem";
 
 export const ActivityTab = ({ activity = [] }) => {
   if (!activity.length) {

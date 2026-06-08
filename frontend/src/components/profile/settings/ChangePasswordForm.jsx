@@ -1,23 +1,55 @@
-// ── ChangePasswordForm.jsx ───────────────────────────────────────────────────
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { KeyRound, ShieldCheck } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
-export const ChangePasswordForm = ({ email, onChangePassword, loading }) => {
-  const [formData, setFormData] = useState({
-    newPassword: "",
-    confirmPassword: "",
-  });
+import {
+  KeyRound,
+  ShieldCheck,
+} from "lucide-react";
+
+export const ChangePasswordForm = ({
+  onChangePassword,
+  loading,
+}) => {
+  const [formData, setFormData] =
+    useState({
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    });
 
   const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]:
+        e.target.value,
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (
+      !formData.currentPassword ||
+      !formData.newPassword ||
+      !formData.confirmPassword
+    ) {
+      return;
+    }
+
     onChangePassword(formData);
+
+    setFormData({
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    });
   };
 
   return (
@@ -28,30 +60,63 @@ export const ChangePasswordForm = ({ email, onChangePassword, loading }) => {
           Change Password
         </CardTitle>
       </CardHeader>
+
       <CardContent className="p-6">
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-5"
+        >
+          {/* Current Password */}
+
+          <div className="space-y-1.5">
+            <label className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+              Current Password
+            </label>
+
+            <Input
+              type="password"
+              name="currentPassword"
+              value={
+                formData.currentPassword
+              }
+              onChange={handleChange}
+              placeholder="Enter current password"
+              className="rounded-xl border-gray-200 focus:border-orange-400 focus:ring-orange-100"
+            />
+          </div>
+
+          {/* New Password */}
+
           <div className="space-y-1.5">
             <label className="text-xs font-semibold uppercase tracking-wider text-gray-500">
               New Password
             </label>
+
             <Input
               type="password"
               name="newPassword"
-              value={formData.newPassword}
+              value={
+                formData.newPassword
+              }
               onChange={handleChange}
               placeholder="Enter new password"
               className="rounded-xl border-gray-200 focus:border-orange-400 focus:ring-orange-100"
             />
           </div>
 
+          {/* Confirm Password */}
+
           <div className="space-y-1.5">
             <label className="text-xs font-semibold uppercase tracking-wider text-gray-500">
               Confirm Password
             </label>
+
             <Input
               type="password"
               name="confirmPassword"
-              value={formData.confirmPassword}
+              value={
+                formData.confirmPassword
+              }
               onChange={handleChange}
               placeholder="Confirm new password"
               className="rounded-xl border-gray-200 focus:border-orange-400 focus:ring-orange-100"
@@ -64,7 +129,10 @@ export const ChangePasswordForm = ({ email, onChangePassword, loading }) => {
             className="rounded-xl bg-orange-500 hover:bg-orange-600 px-6 shadow-sm shadow-orange-200 transition-all"
           >
             <ShieldCheck className="mr-2 h-4 w-4" />
-            {loading ? "Updating..." : "Update Password"}
+
+            {loading
+              ? "Updating..."
+              : "Update Password"}
           </Button>
         </form>
       </CardContent>

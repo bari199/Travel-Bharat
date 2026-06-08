@@ -4,7 +4,7 @@ export const getProfile =
   async () => {
     const { data } =
       await api.get(
-        "/api/profile"
+        "/profile"
       );
 
     return data.user;
@@ -14,7 +14,7 @@ export const getWishlist =
   async () => {
     const { data } =
       await api.get(
-        "/api/wishlist"
+        "/wishlist"
       );
 
     return data.wishlist;
@@ -24,7 +24,7 @@ export const getReviews =
   async () => {
     const { data } =
       await api.get(
-        "/api/profile/reviews"
+        "/profile/reviews"
       );
 
     return data.reviews;
@@ -34,7 +34,7 @@ export const getRatings =
   async () => {
     const { data } =
       await api.get(
-        "/api/profile/ratings"
+        "/profile/ratings"
       );
 
     return data.ratings;
@@ -42,22 +42,46 @@ export const getRatings =
 
 export const updateProfile =
   async (profileData) => {
+    const formData =
+      new FormData();
+
+    formData.append(
+      "username",
+      profileData.username
+    );
+
+    if (
+      profileData.avatar
+    ) {
+      formData.append(
+        "avatar",
+        profileData.avatar
+      );
+    }
+
     const { data } =
       await api.put(
-        "/api/profile",
-        profileData
+        "/profile",
+        formData,
+        {
+          headers: {
+            "Content-Type":
+              "multipart/form-data",
+          },
+        }
       );
 
     return data.user;
   };
 
-export const changePassword =
-  async (email, body) => {
-    const { data } =
-      await api.post(
-        `/user/change-password/${email}`,
-        body
-      );
+export const changePassword = async (
+  passwordData
+) => {
+  const { data } =
+    await api.put(
+      "/profile/change-password",
+      passwordData
+    );
 
-    return data;
-  };
+  return data;
+};

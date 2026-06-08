@@ -6,9 +6,12 @@ import {
   getUserReviews,
   getUserRatings,
   getUserStats,
+  updatePassword,
 } from "../controllers/profileController.js";
 
 import { isAuthenticated } from "../middleware/isAuthenticated.js";
+import upload from "../middleware/uploadMiddleware.js";
+
 
 const router = express.Router();
 
@@ -21,6 +24,7 @@ router.get(
 router.put(
   "/",
   isAuthenticated,
+  upload.single("avatar"),
   updateProfile
 );
 
@@ -34,6 +38,12 @@ router.get(
   "/ratings",
   isAuthenticated,
   getUserRatings
+);
+
+router.put(
+  "/change-password",
+  isAuthenticated,
+  updatePassword
 );
 
 router.get(

@@ -1,5 +1,6 @@
 // ── RatingsTab.jsx ───────────────────────────────────────────────────────────
 import { Card, CardContent } from "@/components/ui/card";
+import RatingCard from "@/components/profile/ratings/RatingCard";
 import { Star } from "lucide-react";
 
 export const RatingsTab = ({ ratings = [] }) => {

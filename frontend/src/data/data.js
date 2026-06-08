@@ -18,9 +18,73 @@ import {
     title: "Events",
     path: "/about",
   },
+];
+
+
+/* ── Mega-menu data ──────────────────────────────────────────────────── */
+export const REGIONS = [
+  { label: "North",         active: false },
+  { label: "North East",    active: false },
+  { label: "East",          active: false },
+  { label: "Central",       active: false },
+  { label: "West ",         active: false },
+  { label: "South",         active: false },
+  { label: "Polar",         active: false },
+  { label: "Regions",       active: true  },
+];
+
+export const DESTINATION_COLUMNS = [
   {
-    title: "Contact",
-    path: "/contact",
+    heading: "Popular Destinations",
+    items: [
+      "Rajasthan Tours", "Kerala Tours", "Goa Tours",
+      "Himachal Tours", "Kashmir Tours", "Uttarakhand Tours",
+      "Tamil Nadu Tours", "Karnataka Tours", "Andaman Tours",
+      "Sikkim Tours", "Meghalaya Tours",
+    ],
+  },
+  {
+    heading: "Hill Stations",
+    items: [
+      "Manali Tours", "Shimla Tours", "Ooty Tours",
+      "Darjeeling Tours", "Munnar Tours", "Coorg Tours",
+      "Mussoorie Tours", "Nainital Tours", "Lansdowne Tours",
+      "Chikmagalur Tours", "Kodaikanal Tours",
+    ],
+  },
+  {
+    heading: "Heritage & Culture",
+    items: [
+      "Varanasi Tours", "Agra Tours", "Jaipur Tours",
+      "Mysore Tours", "Hampi Tours", "Khajuraho Tours",
+      "Madurai Tours", "Mahabalipuram Tours", "Puri Tours",
+      "Bodh Gaya Tours", "Ajanta Ellora Tours",
+    ],
+  },
+];
+
+export const ACTIVITIES_COLUMNS = [
+  {
+    heading: "Adventure",
+    items: [
+      "Trekking", "River Rafting", "Rock Climbing",
+      "Paragliding", "Bungee Jumping", "Skiing",
+      "Scuba Diving", "Surfing",
+    ],
+  },
+  {
+    heading: "Wellness",
+    items: [
+      "Yoga Retreats", "Ayurveda Stays", "Meditation Tours",
+      "Spa Holidays", "Detox Retreats",
+    ],
+  },
+  {
+    heading: "Wildlife",
+    items: [
+      "Tiger Safari", "Bird Watching", "Jungle Camping",
+      "Wildlife Photography", "Whale Watching",
+    ],
   },
 ];
 

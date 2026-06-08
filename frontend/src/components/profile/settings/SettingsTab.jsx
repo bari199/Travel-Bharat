@@ -73,10 +73,17 @@ export const SettingsTab = ({
         </CardContent>
       </Card>
 
-      {/* <EditProfileForm user={user} onUpdate={onProfileUpdate} loading={loading} />
-      <ChangePasswordForm email={user?.email} onChangePassword={onPasswordChange} loading={loading} /> */}
-      <EditProfileForm />
-      <ChangePasswordForm />
+      <EditProfileForm
+        user={user}
+        onUpdate={onProfileUpdate}
+        loading={loading}
+      />
+      <ChangePasswordForm
+        onChangePassword={onPasswordChange}
+        loading={loading}
+      />
+      {/* <EditProfileForm />
+      <ChangePasswordForm /> */}
     </div>
   );
 };

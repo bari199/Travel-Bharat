@@ -1,5 +1,6 @@
 // ── WishlistTab.jsx ─────────────────────────────────────────────────────────
 import { Card, CardContent } from "@/components/ui/card";
+import WishlistCard from "@/components/profile/wishlist/WishlistCard";
 import { Heart } from "lucide-react";
 
 export const WishlistTab = ({ wishlist = [], onRemoveWishlist }) => {

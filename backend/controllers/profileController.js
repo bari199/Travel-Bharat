@@ -1,7 +1,10 @@
+import bcrypt from "bcryptjs";
+import cloudinary from "../config/cloudinary.js";
 import { User } from "../models/userModel.js";
 import { Wishlist } from "../models/wishlistModel.js";
 import { Comment } from "../models/commentModel.js";
 import { Rating } from "../models/ratingModel.js";
+
 
 /* =========================================
    GET PROFILE
@@ -29,23 +32,108 @@ export const getProfile = async (req, res) => {
 ========================================= */
 export const updateProfile = async (req, res) => {
   try {
-    const { username, avatar } = req.body;
+    let avatarUrl;
+
+    if(req.file){
+      const result = await cloudinary.uploader.upload(
+        req.file.path,{
+          folder: "travel_bharat/avatars",
+        }
+      );
+      avatarUrl = result.secure_url;
+    }
 
     const user = await User.findByIdAndUpdate(
       req.userId,
       {
-        username,
-        avatar,
+        username:request.body.username,
+        ...(avatarUrl && { avatar: avatarUrl }),
       },
-      {
-        new: true,
-      }
-    ).select("-password");
+      {new: true}
+    );
 
     return res.status(200).json({
       success: true,
       message: "Profile updated successfully",
       user,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
+export const updatePassword = async (
+  req,
+  res
+) => {
+  try {
+    const {
+      currentPassword,
+      newPassword,
+      confirmPassword,
+    } = req.body;
+
+    if (
+      !currentPassword ||
+      !newPassword ||
+      !confirmPassword
+    ) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "All fields are required",
+      });
+    }
+
+    if (
+      newPassword !==
+      confirmPassword
+    ) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Passwords do not match",
+      });
+    }
+
+    const user =
+      await User.findById(
+        req.userId
+      );
+
+    const isMatch =
+      await bcrypt.compare(
+        currentPassword,
+        user.password
+      );
+
+    if (!isMatch) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Current password is incorrect",
+      });
+    }
+
+    const hashedPassword =
+      await bcrypt.hash(
+        newPassword,
+        10
+      );
+
+    user.password =
+      hashedPassword;
+
+    await user.save();
+
+    return res.status(200).json({
+      success: true,
+      message:
+        "Password updated successfully",
     });
   } catch (error) {
     return res.status(500).json({

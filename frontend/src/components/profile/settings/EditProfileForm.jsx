@@ -1,11 +1,13 @@
 // ── EditProfileForm.jsx ──────────────────────────────────────────────────────
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { UserCircle, ImageIcon, Save } from "lucide-react";
 
 export const EditProfileForm = ({ user, onUpdate, loading }) => {
+  const [preview, setPreview] = useState(user?.avatar || "");
+
   const [formData, setFormData] = useState({
     username: user?.username || "",
     avatar: user?.avatar || "",
@@ -19,6 +21,15 @@ export const EditProfileForm = ({ user, onUpdate, loading }) => {
     e.preventDefault();
     onUpdate(formData);
   };
+
+  useEffect(() => {
+  setFormData({
+    username: user?.username || "",
+    avatar: null,
+  });
+
+  setPreview(user?.avatar || "");
+}, [user]);
 
   return (
     <Card className="rounded-2xl border border-gray-100 shadow-sm">
@@ -45,13 +56,19 @@ export const EditProfileForm = ({ user, onUpdate, loading }) => {
 
           <div className="space-y-1.5">
             <label className="text-xs font-semibold uppercase tracking-wider text-gray-500 flex items-center gap-1">
-              <ImageIcon className="h-3 w-3" /> Avatar URL
+              <ImageIcon className="h-3 w-3" /> Profile Photo
             </label>
             <Input
               name="avatar"
-              value={formData.avatar}
-              onChange={handleChange}
-              placeholder="https://..."
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                setFormData((prev) => ({ ...prev, avatar: file }));
+                setPreview(URL.createObjectURL(file));
+              }}
+              placeholder="upload profile photo"
               className="rounded-xl border-gray-200 focus:border-orange-400 focus:ring-orange-100"
             />
           </div>
