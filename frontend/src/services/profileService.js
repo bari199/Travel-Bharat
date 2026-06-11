@@ -74,6 +74,25 @@ export const updateProfile =
     return data.user;
   };
 
+import axios from "axios";
+
+export const logout = async () => {
+  const accessToken = localStorage.getItem("accessToken");
+
+  const res = await axios.post(
+    "http://localhost:8000/user/logout",
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+
+  return res.data;
+};
+
+
 export const changePassword = async (
   passwordData
 ) => {

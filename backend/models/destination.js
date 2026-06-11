@@ -143,11 +143,6 @@ const destinationSchema = new mongoose.Schema(
       default: [],
     },
 
-    experienceCardImage: {
-      type: [String],
-      default: [],
-    },
-
     /*
     |--------------------------------------------------------------------------
     | Highlights

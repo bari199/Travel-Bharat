@@ -1,5 +1,6 @@
 import express from "express";
 import upload from "../middleware/uploadMiddleware.js";
+import adminAuth from "../middleware/authMiddleware.js";
 
 import {
   addDestination,
@@ -14,21 +15,26 @@ const router = express.Router();
 /* ADD */
 router.post(
   "/",
+  adminAuth,
   upload.fields([
     {
       name: "images",
-      maxCount: 10,
+      maxCount: 30,
     },
     {
       name: "placeImages",
-      maxCount: 10,
+      maxCount: 30,
     },
     {
-      name: "experienceCardImage",
-      maxCount: 10,
+      name: "bestExperienceImages",
+      maxCount: 30,
+    },
+    {
+      name: "nearbyAttractionImages",
+      maxCount: 30,
     },
   ]),
-  addDestination
+  addDestination,
 );
 
 /* GET ALL */
@@ -40,24 +46,29 @@ router.get("/:id", getSingleDestination);
 /* UPDATE */
 router.put(
   "/:id",
+  adminAuth,
   upload.fields([
     {
       name: "images",
-      maxCount: 10,
+      maxCount: 30,
     },
     {
       name: "placeImages",
-      maxCount: 10,
+      maxCount: 30,
     },
     {
-      name: "experienceCardImage",
-      maxCount: 10,
+      name: "bestExperienceImages",
+      maxCount: 30,
+    },
+    {
+      name: "nearbyAttractionImages",
+      maxCount: 30,
     },
   ]),
-  updateDestination
+  updateDestination,
 );
 
 /* DELETE */
-router.delete("/:id", deleteDestination);
+router.delete("/:id", adminAuth, deleteDestination);
 
 export default router;

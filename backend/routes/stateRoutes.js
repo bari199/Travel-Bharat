@@ -6,7 +6,7 @@ import {
 } from "../controllers/stateController.js";
 
 
-import { authMiddleware } from "../middleware/authMiddleware.js";
+import  authMiddleware  from "../middleware/authMiddleware.js";
 
 import upload from "../middleware/uploadMiddleware.js";
 

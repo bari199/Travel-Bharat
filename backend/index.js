@@ -13,6 +13,7 @@ import wishlistRoutes from "./routes/wishlistRoutes.js";
 import ratingRoutes from "./routes/ratingRoutes.js";
 import reactionRoutes from "./routes/reactionRoutes.js";
 import profileRoutes from "./routes/profileRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
 
 
 const app = express()
@@ -21,9 +22,12 @@ const PORT = process.env.PORT || 8000
 
 app.use(express.json())
 app.use(cors({
-    origin:'http://localhost:5173',
-    credentials:true
-}))
+  origin: [
+    "http://localhost:5173",
+    "http://localhost:5174"
+  ],
+  credentials: true
+}));
 
 
 app.use(express.urlencoded({extended:true}))
@@ -38,9 +42,9 @@ app.use("/api/search", searchRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/ratings", ratingRoutes);
 app.use("/api/reactions", reactionRoutes);
-
-
 app.use("/api/profile", profileRoutes);
+
+app.use("/api/admin", adminRoutes);
 
 // http://localhost:8000/user/register
 
