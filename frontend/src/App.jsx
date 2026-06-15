@@ -22,6 +22,8 @@ import Destination from "./pages/Destination";
 
 import Profile from "./pages/Profile";
 
+import DestinationListing from "./pages/DestinationListing";
+
 
 const router = createBrowserRouter([
   {
@@ -30,8 +32,17 @@ const router = createBrowserRouter([
       <>
         <Navbar />
         <Home />
-        
        
+      </>
+    ),
+  },
+
+  {
+   path: "/destinations/:stateSlug",
+    element:(
+      <>
+      <Navbar />
+      <DestinationListing/>
       </>
     ),
   },

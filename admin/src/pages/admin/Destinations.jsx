@@ -4,7 +4,10 @@ import { Button } from "@/components/ui/button";
 
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import { getDestinations, deleteDestination } from "../../services/destinationApi";
+import {
+  getDestinations,
+  deleteDestination,
+} from "../../services/destinationApi";
 
 import DestinationTable from "../../components/destination/DestinationTable";
 
@@ -37,11 +40,12 @@ const Destinations = () => {
     try {
       await deleteDestination(id);
 
-      toast.success("Destination Deleted");
+      toast.success("Destination deleted successfully. ");
 
       fetchDestinations();
     } catch (error) {
-      toast.error(error?.response?.data?.message);
+      toast.error(error?.response?.data?.message) ||
+        "Failed to delete destinations.";
     }
   };
 

@@ -28,44 +28,50 @@ import { Input } from "@/components/ui/input";
 import { navItems } from "../../data/data";
 import LoginDialog from "../../pages/LoginDialog";
 import SignupDialog from "../../pages/SignupDialog";
-import { ACTIVITIES_COLUMNS, DESTINATION_COLUMNS, REGIONS } from "../../data/data";
+import {
+  DESTINATION_REGIONS,
+  ACTIVITIES_COLUMNS,
+  REGIONS,
+} from "../../data/navdata";
 
-/* ── Sub-components ─────────────────────────────────────────────────── */
-
-/** Left sidebar of region pills — plain white, no background tint (matches PDF) */
-const RegionSidebar = ({ active, onHover }) => (
-  <div className="w-36 flex-shrink-0 border-r border-gray-100 py-4">
-    {REGIONS.map((r) => (
+const RegionSidebar = ({ activeRegion, setActiveRegion }) => (
+  <div className="w-48 bg-white border-r border-gray-200">
+    {REGIONS.map((region) => (
       <button
-        key={r.label}
-        onMouseEnter={() => onHover(r.label)}
+        key={region.label}
+        onClick={() => setActiveRegion(region.label)}
         className={`
-          w-full text-left px-4 py-2 text-sm transition-all duration-150
+          w-full text-left px-5 py-4 text-sm transition-all border-b border-gray-100
           ${
-            active === r.label || (r.active && !active)
-              ? "text-orange-500 font-semibold"
-              : "text-gray-700 hover:text-orange-500 font-normal"
+            activeRegion === region.label
+              ? "bg-orange-50 text-orange-500 font-semibold border-r-2 border-r-orange-500"
+              : "text-gray-700 hover:bg-orange-50 hover:text-orange-500"
           }
         `}
       >
-        {r.label}
+        {region.label}
       </button>
     ))}
   </div>
 );
 
-/** Column of destination/activity links */
 const MegaColumn = ({ heading, items }) => (
-  <div className="flex-1">
-    <p className="mb-3 text-[11px] font-bold uppercase tracking-widest text-orange-500">
+  <div className="flex-1 min-w-[180px]">
+    <p className="mb-4 text-[12px] font-bold uppercase tracking-widest text-orange-500">
       {heading}
     </p>
-    <ul className="space-y-2">
+
+    <ul className="space-y-3">
       {items.map((item) => (
         <li key={item}>
           <Link
             to="#"
-            className="text-sm text-gray-600 hover:text-orange-500 transition-colors duration-150"
+            className="
+              text-sm
+              text-gray-600
+              hover:text-orange-500
+              transition-colors
+            "
           >
             {item}
           </Link>
@@ -75,28 +81,54 @@ const MegaColumn = ({ heading, items }) => (
   </div>
 );
 
-/** Full destinations mega-panel — exactly matches PDF layout */
 const DestinationsMega = () => {
-  const [hovered, setHovered] = useState("Regions");
+  const [activeRegion, setActiveRegion] = useState(REGIONS[0].label);
+
+  // Always derive fresh from state — never stale
+  const destinations = DESTINATION_REGIONS[activeRegion] || [];
 
   return (
     <div
-      className="flex bg-white rounded-b-xl shadow-xl border border-gray-100 overflow-hidden"
-      style={{ width: 620 }}
+      className="flex bg-white rounded-xl border shadow-xl overflow-hidden"
+      style={{ width: "650px" }}
     >
-      {/* Plain white region sidebar */}
-      <RegionSidebar active={hovered} onHover={setHovered} />
-
-      {/* Exactly 3 content columns with dividers, matching PDF */}
-      <div className="flex flex-1 p-5 gap-0">
-        {DESTINATION_COLUMNS.slice(0, 3).map((col, i) => (
-          <React.Fragment key={col.heading}>
-            {i > 0 && (
-              <div className="w-px bg-gray-100 mx-4 self-stretch flex-shrink-0" />
-            )}
-            <MegaColumn heading={col.heading} items={col.items} />
-          </React.Fragment>
+      {/* Sidebar */}
+      <div className="w-48 bg-white border-r border-gray-200 flex-shrink-0">
+        {REGIONS.map((region) => (
+          <button
+            key={region.label}
+            onClick={() => setActiveRegion(region.label)}
+            className={`
+              w-full text-left px-5 py-4 text-sm transition-all border-b border-gray-100
+              ${
+                activeRegion === region.label
+                  ? "bg-orange-50 text-orange-500 font-semibold border-r-2 border-r-orange-500"
+                  : "text-gray-700 hover:bg-orange-50 hover:text-orange-500"
+              }
+            `}
+          >
+            {region.label}
+          </button>
         ))}
+      </div>
+
+      {/* Content — key prop forces full remount on region change, no stale append */}
+      <div key={activeRegion} className="flex-1 p-6 overflow-hidden">
+        <div className="flex justify-center items-center mb-6 border-b border-gray-100 pb-3">
+          <h3 className="text-orange-500 font-bold text-lg">{activeRegion}</h3>
+        </div>
+
+        <div className="grid grid-cols-4 gap-x-8 gap-y-3">
+          {destinations.map((item) => (
+            <Link
+              key={item.slug}
+              to={`/destinations/${item.slug}`}
+              className="text-sm text-gray-600 hover:text-orange-500 truncate"
+            >
+              {item.name}
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -148,10 +180,6 @@ const Navbar = () => {
     }
   };
 
-  console.log("DESTINATION_COLUMNS", DESTINATION_COLUMNS);
-console.log("ACTIVITIES_COLUMNS", ACTIVITIES_COLUMNS);
-console.log("REGIONS", REGIONS);
-
   return (
     <nav className="sticky top-0 z-50 border-b border-orange-200 bg-orange-300/80 backdrop-blur-md shadow-sm">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
@@ -163,30 +191,8 @@ console.log("REGIONS", REGIONS);
           </h1>
         </Link>
 
-        {/* ── Search ── */}
-        <div className="hidden md:flex items-center relative w-[260px]">
-          <Search className="absolute left-3 h-4 w-4 text-gray-400" />
-          <Input
-            type="search"
-            placeholder="Search destination..."
-            className="pl-10 rounded-full bg-white/80 border-orange-200 focus:border-orange-400 focus:ring-orange-100"
-          />
-        </div>
-
-        {/*
-          ── NavigationMenu ──
-
-          KEY FIXES:
-          1. [&>div]:!overflow-visible  → stops the internal viewport wrapper
-             from clipping the dropdown panels.
-          2. NavigationMenuContent uses !left-0 !top-full → dropdown aligns to
-             the LEFT edge of the trigger (matches PDF), no centering offset.
-          3. Panel widths reduced to 620/460 → fits inside viewport, no scrollbar.
-          4. RegionSidebar is plain white (no orange bg) → matches PDF exactly.
-          5. Only 3 columns shown via .slice(0,3) → matches PDF exactly.
-        */}
         <NavigationMenu
-          className="hidden lg:flex [&>div]:!overflow-visible"
+          className="hidden lg:flex [&>div]:overflow-visible"
           delayDuration={100}
         >
           <NavigationMenuList className="flex gap-1">
@@ -194,7 +200,7 @@ console.log("REGIONS", REGIONS);
             <NavigationMenuItem>
               <NavigationMenuTrigger
                 className="
-                  flex items-center gap-1.5 px-4 py-2 rounded-md text-[15px] font-medium
+                  flex items-center gap-1.5 px-2 py-2 rounded-md text-[15px] font-medium
                   text-gray-700/90 bg-transparent
                   hover:bg-orange-300/60 hover:text-orange-700
                   data-[state=open]:bg-orange-300/60 data-[state=open]:text-orange-700
@@ -248,6 +254,16 @@ console.log("REGIONS", REGIONS);
             ))}
           </NavigationMenuList>
         </NavigationMenu>
+
+        {/* ── Search ── */}
+        <div className="hidden md:flex items-center relative w-[260px]">
+          <Search className="absolute left-3 h-4 w-4 text-gray-400" />
+          <Input
+            type="search"
+            placeholder="Search destination..."
+            className="pl-10 rounded-full bg-white/80 border-orange-200 focus:border-orange-400 focus:ring-orange-100"
+          />
+        </div>
 
         {/* ── Right section ── */}
         <div className="flex items-center gap-3">

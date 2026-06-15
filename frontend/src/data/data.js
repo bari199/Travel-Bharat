@@ -1,11 +1,6 @@
-import {
-  Ticket,
-  Lightbulb,
-  Gem,
-  BadgeCheck,
-} from "lucide-react";
+import { Ticket, Lightbulb, Gem, BadgeCheck } from "lucide-react";
 
- export const navItems = [
+export const navItems = [
   {
     title: "Experiences",
     path: "/experiences",
@@ -21,72 +16,6 @@ import {
 ];
 
 
-/* ── Mega-menu data ──────────────────────────────────────────────────── */
-export const REGIONS = [
-  { label: "North",         active: false },
-  { label: "North East",    active: false },
-  { label: "East",          active: false },
-  { label: "Central",       active: false },
-  { label: "West ",         active: false },
-  { label: "South",         active: false },
-  { label: "Polar",         active: false },
-  { label: "Regions",       active: true  },
-];
-
-export const DESTINATION_COLUMNS = [
-  {
-    heading: "Popular Destinations",
-    items: [
-      "Rajasthan Tours", "Kerala Tours", "Goa Tours",
-      "Himachal Tours", "Kashmir Tours", "Uttarakhand Tours",
-      "Tamil Nadu Tours", "Karnataka Tours", "Andaman Tours",
-      "Sikkim Tours", "Meghalaya Tours",
-    ],
-  },
-  {
-    heading: "Hill Stations",
-    items: [
-      "Manali Tours", "Shimla Tours", "Ooty Tours",
-      "Darjeeling Tours", "Munnar Tours", "Coorg Tours",
-      "Mussoorie Tours", "Nainital Tours", "Lansdowne Tours",
-      "Chikmagalur Tours", "Kodaikanal Tours",
-    ],
-  },
-  {
-    heading: "Heritage & Culture",
-    items: [
-      "Varanasi Tours", "Agra Tours", "Jaipur Tours",
-      "Mysore Tours", "Hampi Tours", "Khajuraho Tours",
-      "Madurai Tours", "Mahabalipuram Tours", "Puri Tours",
-      "Bodh Gaya Tours", "Ajanta Ellora Tours",
-    ],
-  },
-];
-
-export const ACTIVITIES_COLUMNS = [
-  {
-    heading: "Adventure",
-    items: [
-      "Trekking", "River Rafting", "Rock Climbing",
-      "Paragliding", "Bungee Jumping", "Skiing",
-      "Scuba Diving", "Surfing",
-    ],
-  },
-  {
-    heading: "Wellness",
-    items: [
-      "Yoga Retreats", "Ayurveda Stays", "Meditation Tours",
-      "Spa Holidays", "Detox Retreats",
-    ],
-  },
-  {
-    heading: "Wildlife",
-    items: [
-      "Tiger Safari", "Bird Watching", "Jungle Camping",
-      "Wildlife Photography", "Whale Watching",
-    ],
-  },
-];
 
 export const carouselImages = [
   {
@@ -97,8 +26,7 @@ export const carouselImages = [
   },
   {
     id: 2,
-    image:
-      "https://images.unsplash.com/photo-1501785888041-af3ef285b470",
+    image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470",
     title: "Adventure in Mountains",
   },
   {
@@ -119,11 +47,9 @@ export const carouselImages = [
       "https://images.pexels.com/photos/33149969/pexels-photo-33149969.jpeg",
     title: "Victoria Memorial",
   },
-
 ];
 
 //https://images.pexels.com/photos/33149969/pexels-photo-33149969.jpeg
-
 
 export const features = [
   {
@@ -147,8 +73,7 @@ export const features = [
   {
     icon: BadgeCheck,
     title: "Award-winning support",
-    description:
-      "New price? New plan? No problem. We're here to help, 24/7.",
+    description: "New price? New plan? No problem. We're here to help, 24/7.",
   },
 ];
 
@@ -202,7 +127,6 @@ export const destinations = [
       "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?q=80&w=400",
   },
 ];
-
 
 export const tours = [
   {
@@ -287,7 +211,6 @@ export const tours = [
   },
 ];
 
-
 export const trendingDestinations = [
   {
     id: 1,
@@ -346,14 +269,12 @@ export const trendingDestinations = [
   },
 ];
 
-
 export const reviews = [
   {
     id: 1,
     name: "Aarav Sharma",
     role: "Travel Enthusiast",
-    image:
-      "https://randomuser.me/api/portraits/men/32.jpg",
+    image: "https://randomuser.me/api/portraits/men/32.jpg",
     rating: 5,
     review:
       "Travel Bharat made our Kashmir trip unforgettable. Everything from hotels to transport was perfectly arranged.",
@@ -362,8 +283,7 @@ export const reviews = [
     id: 2,
     name: "Priya Mehta",
     role: "Solo Traveler",
-    image:
-      "https://randomuser.me/api/portraits/women/44.jpg",
+    image: "https://randomuser.me/api/portraits/women/44.jpg",
     rating: 5,
     review:
       "I had an amazing experience exploring Kerala with Travel Bharat. The service was smooth and very professional.",
@@ -372,8 +292,7 @@ export const reviews = [
     id: 3,
     name: "Rohit Verma",
     role: "Adventure Explorer",
-    image:
-      "https://randomuser.me/api/portraits/men/76.jpg",
+    image: "https://randomuser.me/api/portraits/men/76.jpg",
     rating: 5,
     review:
       "Best travel booking experience ever. Ladakh bike tour was well managed and super exciting.",
@@ -382,8 +301,7 @@ export const reviews = [
     id: 4,
     name: "Sneha Kapoor",
     role: "Family Traveler",
-    image:
-      "https://randomuser.me/api/portraits/women/65.jpg",
+    image: "https://randomuser.me/api/portraits/women/65.jpg",
     rating: 5,
     review:
       "Our Rajasthan family vacation was beautiful. Great support team and excellent tour planning.",
@@ -392,8 +310,7 @@ export const reviews = [
     id: 5,
     name: "Vikram Singh",
     role: "Photographer",
-    image:
-      "https://randomuser.me/api/portraits/men/11.jpg",
+    image: "https://randomuser.me/api/portraits/men/11.jpg",
     rating: 5,
     review:
       "Travel Bharat helped me discover incredible hidden places in Himachal Pradesh. Highly recommended!",
@@ -404,8 +321,7 @@ export const articles = [
   {
     id: 1,
     category: "Mountains",
-    title:
-      "Exploring The Beauty Of Kashmir Valleys & Snow Mountains",
+    title: "Exploring The Beauty Of Kashmir Valleys & Snow Mountains",
     date: "April 18, 2026",
     author: "Travel Bharat",
     image:
@@ -414,8 +330,7 @@ export const articles = [
   {
     id: 2,
     category: "Adventure",
-    title:
-      "Top Hidden Trekking Destinations In Himachal Pradesh",
+    title: "Top Hidden Trekking Destinations In Himachal Pradesh",
     date: "April 20, 2026",
     author: "Travel Bharat",
     image:
@@ -424,8 +339,7 @@ export const articles = [
   {
     id: 3,
     category: "Beaches",
-    title:
-      "Discover Goa Beaches & Tropical Paradise Experiences",
+    title: "Discover Goa Beaches & Tropical Paradise Experiences",
     date: "April 25, 2026",
     author: "Travel Bharat",
     image:
@@ -437,20 +351,8 @@ export const states = [
   {
     id: 1,
     name: "Andhra Pradesh",
-    cities: [
-      "Visakhapatnam",
-      "Vijayawada",
-      "Tirupati",
-      "Guntur",
-      "Nellore",
-    ],
-    category: [
-      "Religious",
-      "Nature",
-      "Heritage",
-      "Beaches",
-      "Hill Station",
-    ],
+    cities: ["Visakhapatnam", "Vijayawada", "Tirupati", "Guntur", "Nellore"],
+    category: ["Religious", "Nature", "Heritage", "Beaches", "Hill Station"],
     destinations: [
       "Tirupati",
       "Araku Valley",
@@ -468,19 +370,8 @@ export const states = [
   {
     id: 2,
     name: "Arunachal Pradesh",
-    cities: [
-      "Itanagar",
-      "Tawang",
-      "Ziro",
-      "Bomdila",
-      "Pasighat",
-    ],
-    category: [
-      "Nature",
-      "Adventure",
-      "Religious",
-      "Hill Station",
-    ],
+    cities: ["Itanagar", "Tawang", "Ziro", "Bomdila", "Pasighat"],
+    category: ["Nature", "Adventure", "Religious", "Hill Station"],
     destinations: [
       "Tawang Monastery",
       "Ziro Valley",
@@ -498,19 +389,8 @@ export const states = [
   {
     id: 3,
     name: "Assam",
-    cities: [
-      "Guwahati",
-      "Dibrugarh",
-      "Jorhat",
-      "Tezpur",
-      "Silchar",
-    ],
-    category: [
-      "Wildlife",
-      "Nature",
-      "Religious",
-      "Hill Station",
-    ],
+    cities: ["Guwahati", "Dibrugarh", "Jorhat", "Tezpur", "Silchar"],
+    category: ["Wildlife", "Nature", "Religious", "Hill Station"],
     destinations: [
       "Kaziranga National Park",
       "Majuli",
@@ -528,18 +408,8 @@ export const states = [
   {
     id: 4,
     name: "Bihar",
-    cities: [
-      "Patna",
-      "Gaya",
-      "Nalanda",
-      "Muzaffarpur",
-      "Bhagalpur",
-    ],
-    category: [
-      "Religious",
-      "Heritage",
-      "Nature",
-    ],
+    cities: ["Patna", "Gaya", "Nalanda", "Muzaffarpur", "Bhagalpur"],
+    category: ["Religious", "Heritage", "Nature"],
     destinations: [
       "Bodh Gaya",
       "Nalanda University",
@@ -557,19 +427,8 @@ export const states = [
   {
     id: 5,
     name: "Chhattisgarh",
-    cities: [
-      "Raipur",
-      "Bilaspur",
-      "Durg",
-      "Jagdalpur",
-      "Korba",
-    ],
-    category: [
-      "Nature",
-      "Wildlife",
-      "Adventure",
-      "Hill Station",
-    ],
+    cities: ["Raipur", "Bilaspur", "Durg", "Jagdalpur", "Korba"],
+    category: ["Nature", "Wildlife", "Adventure", "Hill Station"],
     destinations: [
       "Chitrakote Falls",
       "Kanger Valley National Park",
@@ -587,19 +446,8 @@ export const states = [
   {
     id: 6,
     name: "Goa",
-    cities: [
-      "Panaji",
-      "Margao",
-      "Mapusa",
-      "Ponda",
-      "Vasco da Gama",
-    ],
-    category: [
-      "Beaches",
-      "Adventure",
-      "Heritage",
-      "Nature",
-    ],
+    cities: ["Panaji", "Margao", "Mapusa", "Ponda", "Vasco da Gama"],
+    category: ["Beaches", "Adventure", "Heritage", "Nature"],
     destinations: [
       "Baga Beach",
       "Calangute Beach",
@@ -617,19 +465,8 @@ export const states = [
   {
     id: 7,
     name: "Gujarat",
-    cities: [
-      "Ahmedabad",
-      "Surat",
-      "Vadodara",
-      "Rajkot",
-      "Bhavnagar",
-    ],
-    category: [
-      "Heritage",
-      "Wildlife",
-      "Religious",
-      "Beaches",
-    ],
+    cities: ["Ahmedabad", "Surat", "Vadodara", "Rajkot", "Bhavnagar"],
+    category: ["Heritage", "Wildlife", "Religious", "Beaches"],
     destinations: [
       "Statue of Unity",
       "Gir National Park",
@@ -647,18 +484,8 @@ export const states = [
   {
     id: 8,
     name: "Haryana",
-    cities: [
-      "Gurgaon",
-      "Faridabad",
-      "Panipat",
-      "Ambala",
-      "Hisar",
-    ],
-    category: [
-      "Heritage",
-      "Religious",
-      "Nature",
-    ],
+    cities: ["Gurgaon", "Faridabad", "Panipat", "Ambala", "Hisar"],
+    category: ["Heritage", "Religious", "Nature"],
     destinations: [
       "Kurukshetra",
       "Pinjore Gardens",
@@ -676,19 +503,8 @@ export const states = [
   {
     id: 9,
     name: "Himachal Pradesh",
-    cities: [
-      "Shimla",
-      "Manali",
-      "Dharamshala",
-      "Kullu",
-      "Solan",
-    ],
-    category: [
-      "Nature",
-      "Adventure",
-      "Religious",
-      "Hill Station",
-    ],
+    cities: ["Shimla", "Manali", "Dharamshala", "Kullu", "Solan"],
+    category: ["Nature", "Adventure", "Religious", "Hill Station"],
     destinations: [
       "Manali",
       "Shimla",
@@ -706,19 +522,8 @@ export const states = [
   {
     id: 10,
     name: "Jharkhand",
-    cities: [
-      "Ranchi",
-      "Jamshedpur",
-      "Dhanbad",
-      "Deoghar",
-      "Bokaro",
-    ],
-    category: [
-      "Nature",
-      "Wildlife",
-      "Religious",
-      "Hill Station",
-    ],
+    cities: ["Ranchi", "Jamshedpur", "Dhanbad", "Deoghar", "Bokaro"],
+    category: ["Nature", "Wildlife", "Religious", "Hill Station"],
     destinations: [
       "Deoghar",
       "Betla National Park",
@@ -736,19 +541,8 @@ export const states = [
   {
     id: 11,
     name: "Karnataka",
-    cities: [
-      "Bengaluru",
-      "Mysuru",
-      "Mangalore",
-      "Hubli",
-      "Belgaum",
-    ],
-    category: [
-      "Heritage",
-      "Nature",
-      "Beaches",
-      "Hill Station",
-    ],
+    cities: ["Bengaluru", "Mysuru", "Mangalore", "Hubli", "Belgaum"],
+    category: ["Heritage", "Nature", "Beaches", "Hill Station"],
     destinations: [
       "Hampi",
       "Coorg",
@@ -766,19 +560,8 @@ export const states = [
   {
     id: 12,
     name: "Kerala",
-    cities: [
-      "Kochi",
-      "Munnar",
-      "Alappuzha",
-      "Kozhikode",
-      "Thrissur",
-    ],
-    category: [
-      "Nature",
-      "Beaches",
-      "Wildlife",
-      "Hill Station",
-    ],
+    cities: ["Kochi", "Munnar", "Alappuzha", "Kozhikode", "Thrissur"],
+    category: ["Nature", "Beaches", "Wildlife", "Hill Station"],
     destinations: [
       "Munnar",
       "Alleppey",
@@ -796,19 +579,8 @@ export const states = [
   {
     id: 13,
     name: "Madhya Pradesh",
-    cities: [
-      "Bhopal",
-      "Indore",
-      "Gwalior",
-      "Ujjain",
-      "Jabalpur",
-    ],
-    category: [
-      "Heritage",
-      "Wildlife",
-      "Religious",
-      "Nature",
-    ],
+    cities: ["Bhopal", "Indore", "Gwalior", "Ujjain", "Jabalpur"],
+    category: ["Heritage", "Wildlife", "Religious", "Nature"],
     destinations: [
       "Khajuraho",
       "Bandhavgarh National Park",
@@ -826,19 +598,8 @@ export const states = [
   {
     id: 14,
     name: "Maharashtra",
-    cities: [
-      "Mumbai",
-      "Pune",
-      "Nagpur",
-      "Nashik",
-      "Aurangabad",
-    ],
-    category: [
-      "Beaches",
-      "Heritage",
-      "Adventure",
-      "Hill Station",
-    ],
+    cities: ["Mumbai", "Pune", "Nagpur", "Nashik", "Aurangabad"],
+    category: ["Beaches", "Heritage", "Adventure", "Hill Station"],
     destinations: [
       "Mumbai",
       "Lonavala",
@@ -856,17 +617,8 @@ export const states = [
   {
     id: 15,
     name: "Manipur",
-    cities: [
-      "Imphal",
-      "Bishnupur",
-      "Ukhrul",
-      "Thoubal",
-    ],
-    category: [
-      "Nature",
-      "Adventure",
-      "Hill Station",
-    ],
+    cities: ["Imphal", "Bishnupur", "Ukhrul", "Thoubal"],
+    category: ["Nature", "Adventure", "Hill Station"],
     destinations: [
       "Loktak Lake",
       "Ukhrul",
@@ -884,17 +636,8 @@ export const states = [
   {
     id: 16,
     name: "Meghalaya",
-    cities: [
-      "Shillong",
-      "Cherrapunji",
-      "Dawki",
-      "Tura",
-    ],
-    category: [
-      "Nature",
-      "Adventure",
-      "Hill Station",
-    ],
+    cities: ["Shillong", "Cherrapunji", "Dawki", "Tura"],
+    category: ["Nature", "Adventure", "Hill Station"],
     destinations: [
       "Shillong",
       "Cherrapunji",
@@ -912,17 +655,8 @@ export const states = [
   {
     id: 17,
     name: "Mizoram",
-    cities: [
-      "Aizawl",
-      "Lunglei",
-      "Champhai",
-      "Serchhip",
-    ],
-    category: [
-      "Nature",
-      "Adventure",
-      "Hill Station",
-    ],
+    cities: ["Aizawl", "Lunglei", "Champhai", "Serchhip"],
+    category: ["Nature", "Adventure", "Hill Station"],
     destinations: [
       "Aizawl",
       "Champhai",
@@ -940,18 +674,8 @@ export const states = [
   {
     id: 18,
     name: "Nagaland",
-    cities: [
-      "Kohima",
-      "Dimapur",
-      "Mokokchung",
-      "Tuensang",
-    ],
-    category: [
-      "Adventure",
-      "Nature",
-      "Heritage",
-      "Hill Station",
-    ],
+    cities: ["Kohima", "Dimapur", "Mokokchung", "Tuensang"],
+    category: ["Adventure", "Nature", "Heritage", "Hill Station"],
     destinations: [
       "Kohima",
       "Dzukou Valley",
@@ -969,19 +693,8 @@ export const states = [
   {
     id: 19,
     name: "Odisha",
-    cities: [
-      "Bhubaneswar",
-      "Puri",
-      "Cuttack",
-      "Rourkela",
-      "Sambalpur",
-    ],
-    category: [
-      "Beaches",
-      "Religious",
-      "Wildlife",
-      "Nature",
-    ],
+    cities: ["Bhubaneswar", "Puri", "Cuttack", "Rourkela", "Sambalpur"],
+    category: ["Beaches", "Religious", "Wildlife", "Nature"],
     destinations: [
       "Puri",
       "Konark Sun Temple",
@@ -999,18 +712,8 @@ export const states = [
   {
     id: 20,
     name: "Punjab",
-    cities: [
-      "Amritsar",
-      "Ludhiana",
-      "Jalandhar",
-      "Patiala",
-      "Bathinda",
-    ],
-    category: [
-      "Religious",
-      "Heritage",
-      "Nature",
-    ],
+    cities: ["Amritsar", "Ludhiana", "Jalandhar", "Patiala", "Bathinda"],
+    category: ["Religious", "Heritage", "Nature"],
     destinations: [
       "Golden Temple",
       "Wagah Border",
@@ -1028,19 +731,8 @@ export const states = [
   {
     id: 21,
     name: "Rajasthan",
-    cities: [
-      "Jaipur",
-      "Udaipur",
-      "Jodhpur",
-      "Jaisalmer",
-      "Ajmer",
-    ],
-    category: [
-      "Heritage",
-      "Adventure",
-      "Nature",
-      "Hill Station",
-    ],
+    cities: ["Jaipur", "Udaipur", "Jodhpur", "Jaisalmer", "Ajmer"],
+    category: ["Heritage", "Adventure", "Nature", "Hill Station"],
     destinations: [
       "Jaipur",
       "Udaipur",
@@ -1058,18 +750,8 @@ export const states = [
   {
     id: 22,
     name: "Sikkim",
-    cities: [
-      "Gangtok",
-      "Namchi",
-      "Pelling",
-      "Mangan",
-    ],
-    category: [
-      "Nature",
-      "Adventure",
-      "Religious",
-      "Hill Station",
-    ],
+    cities: ["Gangtok", "Namchi", "Pelling", "Mangan"],
+    category: ["Nature", "Adventure", "Religious", "Hill Station"],
     destinations: [
       "Gangtok",
       "Tsomgo Lake",
@@ -1087,19 +769,8 @@ export const states = [
   {
     id: 23,
     name: "Tamil Nadu",
-    cities: [
-      "Chennai",
-      "Madurai",
-      "Coimbatore",
-      "Ooty",
-      "Salem",
-    ],
-    category: [
-      "Religious",
-      "Heritage",
-      "Beaches",
-      "Hill Station",
-    ],
+    cities: ["Chennai", "Madurai", "Coimbatore", "Ooty", "Salem"],
+    category: ["Religious", "Heritage", "Beaches", "Hill Station"],
     destinations: [
       "Chennai",
       "Madurai",
@@ -1117,17 +788,8 @@ export const states = [
   {
     id: 24,
     name: "Telangana",
-    cities: [
-      "Hyderabad",
-      "Warangal",
-      "Karimnagar",
-      "Nizamabad",
-    ],
-    category: [
-      "Heritage",
-      "Religious",
-      "Nature",
-    ],
+    cities: ["Hyderabad", "Warangal", "Karimnagar", "Nizamabad"],
+    category: ["Heritage", "Religious", "Nature"],
     destinations: [
       "Hyderabad",
       "Charminar",
@@ -1145,17 +807,8 @@ export const states = [
   {
     id: 25,
     name: "Tripura",
-    cities: [
-      "Agartala",
-      "Udaipur",
-      "Dharmanagar",
-      "Kailasahar",
-    ],
-    category: [
-      "Nature",
-      "Heritage",
-      "Hill Station",
-    ],
+    cities: ["Agartala", "Udaipur", "Dharmanagar", "Kailasahar"],
+    category: ["Nature", "Heritage", "Hill Station"],
     destinations: [
       "Ujjayanta Palace",
       "Neermahal",
@@ -1173,18 +826,8 @@ export const states = [
   {
     id: 26,
     name: "Uttar Pradesh",
-    cities: [
-      "Lucknow",
-      "Agra",
-      "Varanasi",
-      "Ayodhya",
-      "Prayagraj",
-    ],
-    category: [
-      "Heritage",
-      "Religious",
-      "Nature",
-    ],
+    cities: ["Lucknow", "Agra", "Varanasi", "Ayodhya", "Prayagraj"],
+    category: ["Heritage", "Religious", "Nature"],
     destinations: [
       "Taj Mahal",
       "Varanasi",
@@ -1202,19 +845,8 @@ export const states = [
   {
     id: 27,
     name: "Uttarakhand",
-    cities: [
-      "Dehradun",
-      "Rishikesh",
-      "Haridwar",
-      "Nainital",
-      "Mussoorie",
-    ],
-    category: [
-      "Adventure",
-      "Religious",
-      "Nature",
-      "Hill Station",
-    ],
+    cities: ["Dehradun", "Rishikesh", "Haridwar", "Nainital", "Mussoorie"],
+    category: ["Adventure", "Religious", "Nature", "Hill Station"],
     destinations: [
       "Rishikesh",
       "Nainital",
@@ -1232,19 +864,8 @@ export const states = [
   {
     id: 28,
     name: "West Bengal",
-    cities: [
-      "Kolkata",
-      "Darjeeling",
-      "Siliguri",
-      "Digha",
-      "Howrah",
-    ],
-    category: [
-      "Heritage",
-      "Nature",
-      "Beaches",
-      "Hill Station",
-    ],
+    cities: ["Kolkata", "Darjeeling", "Siliguri", "Digha", "Howrah"],
+    category: ["Heritage", "Nature", "Beaches", "Hill Station"],
     destinations: [
       "Victoria Memorial",
       "Howrah Bridge",
@@ -1259,7 +880,6 @@ export const states = [
     ],
   },
 ];
-
 
 export const activities = [
   {

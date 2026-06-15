@@ -121,6 +121,32 @@ export const getDestinations = async (req, res) => {
   }
 };
 
+export const getDestinationsByState = async (req, res) => {
+  try {
+    const { stateSlug } = req.params;
+    const stateName = stateSlug
+      .split("-")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+
+    const destinations = await Destination.find({
+      state: {
+        $regex: new RegExp(`^${stateName}$`, "i"),
+      },
+    });
+    return res.status(200).json({
+      success: true,
+      count: destinations.length,
+      destinations,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 /*
 |--------------------------------------------------------------------------
 | GET SINGLE DESTINATION
@@ -213,10 +239,7 @@ export const getSingleDestination = async (req, res) => {
 | UPDATE DESTINATION
 |--------------------------------------------------------------------------
 */
-export const updateDestination = async (
-  req,
-  res
-) => {
+export const updateDestination = async (req, res) => {
   try {
     /* ==========================
        Parse JSON Fields
@@ -225,41 +248,31 @@ export const updateDestination = async (
     let highlights = [];
 
     if (req.body.highlights) {
-      highlights = JSON.parse(
-        req.body.highlights
-      );
+      highlights = JSON.parse(req.body.highlights);
     }
 
     let bestExperiences = [];
 
     if (req.body.bestExperiences) {
-      bestExperiences = JSON.parse(
-        req.body.bestExperiences
-      );
+      bestExperiences = JSON.parse(req.body.bestExperiences);
     }
 
     let nearbyAttractions = [];
 
     if (req.body.nearbyAttractions) {
-      nearbyAttractions = JSON.parse(
-        req.body.nearbyAttractions
-      );
+      nearbyAttractions = JSON.parse(req.body.nearbyAttractions);
     }
 
     /* ==========================
        Existing Destination
     ========================== */
 
-    const existingDestination =
-      await Destination.findById(
-        req.params.id
-      );
+    const existingDestination = await Destination.findById(req.params.id);
 
     if (!existingDestination) {
       return res.status(404).json({
         success: false,
-        message:
-          "Destination Not Found",
+        message: "Destination Not Found",
       });
     }
 
@@ -269,9 +282,7 @@ export const updateDestination = async (
 
     const images =
       req.files?.images?.length > 0
-        ? req.files.images.map(
-            (file) => file.path
-          )
+        ? req.files.images.map((file) => file.path)
         : existingDestination.images;
 
     /* ==========================
@@ -280,53 +291,34 @@ export const updateDestination = async (
 
     const placeImages =
       req.files?.placeImages?.length > 0
-        ? req.files.placeImages.map(
-            (file) => file.path
-          )
+        ? req.files.placeImages.map((file) => file.path)
         : existingDestination.placeImages;
 
     /* ==========================
        Best Experience Images
     ========================== */
 
-    const bestExperienceFiles =
-      req.files?.bestExperienceImages ||
-      [];
+    const bestExperienceFiles = req.files?.bestExperienceImages || [];
 
-    bestExperiences.forEach(
-      (experience, index) => {
-        experience.image =
-          bestExperienceFiles[index]
-            ?.path ||
-          existingDestination
-            .bestExperiences?.[
-            index
-          ]?.image ||
-          "";
-      }
-    );
+    bestExperiences.forEach((experience, index) => {
+      experience.image =
+        bestExperienceFiles[index]?.path ||
+        existingDestination.bestExperiences?.[index]?.image ||
+        "";
+    });
 
     /* ==========================
        Nearby Attraction Images
     ========================== */
 
-    const nearbyAttractionFiles =
-      req.files
-        ?.nearbyAttractionImages ||
-      [];
+    const nearbyAttractionFiles = req.files?.nearbyAttractionImages || [];
 
-    nearbyAttractions.forEach(
-      (attraction, index) => {
-        attraction.image =
-          nearbyAttractionFiles[index]
-            ?.path ||
-          existingDestination
-            .nearbyAttractions?.[
-            index
-          ]?.image ||
-          "";
-      }
-    );
+    nearbyAttractions.forEach((attraction, index) => {
+      attraction.image =
+        nearbyAttractionFiles[index]?.path ||
+        existingDestination.nearbyAttractions?.[index]?.image ||
+        "";
+    });
 
     /* ==========================
        Update Data
@@ -349,20 +341,18 @@ export const updateDestination = async (
        Update
     ========================== */
 
-    const updated =
-      await Destination.findByIdAndUpdate(
-        req.params.id,
-        updateData,
-        {
-          new: true,
-          runValidators: true,
-        }
-      );
+    const updated = await Destination.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
 
     return res.status(200).json({
       success: true,
-      message:
-        "Destination Updated Successfully",
+      message: "Destination Updated Successfully",
       destination: updated,
     });
   } catch (error) {

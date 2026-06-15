@@ -6,6 +6,7 @@ import {
   addDestination,
   getDestinations,
   getSingleDestination,
+  getDestinationsByState,
   updateDestination,
   deleteDestination,
 } from "../controllers/destinationController.js";
@@ -66,6 +67,11 @@ router.put(
     },
   ]),
   updateDestination,
+);
+
+router.get(
+  "/state/:stateSlug",
+  getDestinationsByState
 );
 
 /* DELETE */
