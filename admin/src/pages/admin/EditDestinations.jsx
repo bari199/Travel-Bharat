@@ -39,8 +39,15 @@ const EditDestination = () => {
     bestExperiences: [
       {
         title: "",
+        subtitle: "",
         description: "",
-        image: "",
+        location: "",
+        distance: "",
+        bestTime: "",
+        duration: "",
+        offer: "",
+        highlights: [],
+        image: null,
         buttonLink: "",
       },
     ],
@@ -49,7 +56,10 @@ const EditDestination = () => {
       {
         title: "",
         description: "",
-        image: "",
+        distance: "",
+        bestTime: "",
+        highlights: [],
+        image: null,
         mapLink: "",
       },
     ],

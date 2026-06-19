@@ -1,161 +1,155 @@
 import React from "react";
 import {
   Check,
+  SunDim,
+  CloudHail,
+  Snowflake,
+  CalendarClock,
   MapPin,
-  Mountain,
-  Camera,
-  Trees,
-  Clock3,
-  BadgeIndianRupee,
-  CalendarDays,
-  Star,
-  Compass,
-  Sparkles,
 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+const SeasonBlock = ({ icon: Icon, iconBg, iconColor, label, months, essentials }) => (
+  <div className="flex gap-4">
+    <div
+      className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 ${iconBg}`}
+    >
+      <Icon size={19} className={iconColor} />
+    </div>
+
+    <div className="flex-1 min-w-0">
+      <div className="flex items-center justify-between gap-2 flex-wrap">
+        <span className="text-sm font-semibold text-slate-800">{label}</span>
+        <div className="flex items-center gap-1 text-xs text-slate-400">
+          <CalendarClock size={13} />
+          <span>{months}</span>
+        </div>
+      </div>
+
+      <ul className="mt-2.5 space-y-1">
+        {essentials?.map((item, i) => (
+          <li key={i} className="flex items-start gap-2 text-xs text-slate-500 leading-5">
+            <span className="mt-1.5 w-1 h-1 rounded-full bg-slate-300 shrink-0" />
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+);
 
 const DestinationDescription = ({ destination }) => {
-  return (
-    <section className="w-full py-8 bg-white">
-      <div className="max-w-5xl mx-auto px-5 lg:px-2">
-        {/* MAIN GRID */}
-        <div className="grid grid-cols-1 lg:grid-cols-[68%_32%] gap-8">
-          {/* LEFT SIDE */}
-          <div>
-            {/* TOP HEADER */}
-            <div className="mb-7">
-              <span className="bg-orange-100 text-orange-500 text-xs font-medium px-3 py-1 rounded-full">
-                Popular Destination
-              </span>
+  const { seasonGuide } = destination ?? {};
 
-              <h2 className="text-[34px] font-bold text-slate-900 mt-4 leading-tight">
+  return (
+    <section className="w-full py-10 bg-slate-50">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        {/* ── MAIN GRID ──────────────────────────────────────── */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-10 items-start">
+
+          {/* ── LEFT ─────────────────────────────────────────── */}
+          <div>
+
+            {/* Eyebrow + heading */}
+            <div className="mb-8">
+              <Badge
+                variant="secondary"
+                className="bg-orange-50 text-orange-500 border border-orange-100 text-[11px] font-semibold tracking-wide uppercase rounded-full px-3 py-1"
+              >
+                Quick Details · Destination
+              </Badge>
+
+              <h2 className="mt-4 text-3xl sm:text-[34px] font-bold text-slate-900 leading-tight tracking-tight">
                 Overview Destination
               </h2>
 
-              <p className="text-gray-500 text-sm mt-3 leading-7">
-                {destination.description}
-              </p>
             </div>
 
-            {/* DESCRIPTION */}
-            <div className="space-y-5 text-[15px] leading-8 text-gray-600">
-              <p>
-                {destination.description}
-              </p>
-
-              <p>
-                {destination.description}
-              </p>
-
-              <p>
-                {destination.description}
-              </p>
-
-              <p>
-                {destination.description}
-              </p>
+            {/* Description paragraphs */}
+            <div className="space-y-5 text-[15px] leading-[1.85] text-slate-600">
+              <p>{destination?.description}</p>
             </div>
 
-            {/* DESTINATION HIGHLIGHTS */}
-            <div className="mt-14">
-              <h3 className="text-2xl font-bold text-slate-900 mb-6">
+            {/* Highlights */}
+            <div className="mt-12">
+              <h3 className="text-xl font-bold text-slate-900 mb-5 flex items-center gap-2">
+                <span className="inline-block w-1 h-5 rounded-full bg-orange-400 mr-1" />
                 Destination Highlights
               </h3>
 
-              <div className="space-y-4">
-                {destination.highlights?.map((item, index) => (
-                  <div key={index} className="flex items-start gap-3">
-                    <Check
-                      size={18}
-                      className="text-green-600 mt-1 flex-shrink-0"
-                    />
-
-                    <p className="text-sm text-gray-700 leading-7">{item}</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {destination?.highlights?.map((item, index) => (
+                  <div
+                    key={index}
+                    className="flex items-start gap-3 bg-white border border-slate-100 rounded-xl px-4 py-3 shadow-sm hover:shadow-md hover:border-orange-100 transition-all duration-200"
+                  >
+                    <span className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-green-50 border border-green-100 flex items-center justify-center">
+                      <Check size={11} className="text-green-600" strokeWidth={2.8} />
+                    </span>
+                    <p className="text-[13px] text-slate-700 leading-6">{item}</p>
                   </div>
                 ))}
               </div>
             </div>
           </div>
 
-          {/* RIGHT SIDE */}
-          <div>
-            <div className="sticky top-24 border border-gray-200 rounded-3xl p-6 bg-white shadow-sm">
-              <h3 className="text-xl font-bold text-slate-900 mb-6">
-                Travel Information
-              </h3>
+          {/* ── RIGHT ─────────────────────────────────────────── */}
+          <div className="lg:sticky lg:top-20">
+            <Card className="rounded-3xl border border-slate-200 shadow-sm bg-white overflow-hidden">
+              <CardHeader className="px-6 pt-6 pb-4">
+                <CardTitle className="text-base font-bold text-slate-900 tracking-tight">
+                  Travel Things To Carry
+                </CardTitle>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  Packing guide by season
+                </p>
+              </CardHeader>
 
-              <div className="space-y-5">
-                {/* LOCATION */}
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center">
-                    <MapPin size={18} className="text-orange-500" />
-                  </div>
+              <CardContent className="px-6 pb-6 space-y-5">
+                {/* Summer */}
+                <SeasonBlock
+                  icon={SunDim}
+                  iconBg="bg-orange-50"
+                  iconColor="text-orange-400"
+                  label="Summer"
+                  months={seasonGuide?.summer?.months ?? "Mar – Jun"}
+                  essentials={seasonGuide?.summer?.essentials}
+                />
 
-                  <div>
-                    <h4 className="text-sm font-semibold text-slate-900">
-                      Location
-                    </h4>
+                <Separator className="bg-slate-100" />
 
-                    <p className="text-sm text-gray-500 mt-1">
-                      {destination.location}
-                    </p>
-                  </div>
-                </div>
+                {/* Monsoon */}
+                <SeasonBlock
+                  icon={CloudHail}
+                  iconBg="bg-sky-50"
+                  iconColor="text-sky-400"
+                  label="Monsoon"
+                  months={seasonGuide?.monsoon?.months ?? "Jun – Sep"}
+                  essentials={seasonGuide?.monsoon?.essentials}
+                />
 
-                {/* BEST TIME */}
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
-                    <CalendarDays size={18} className="text-blue-500" />
-                  </div>
+                <Separator className="bg-slate-100" />
 
-                  <div>
-                    <h4 className="text-sm font-semibold text-slate-900">
-                      Best Time
-                    </h4>
-
-                    <p className="text-sm text-gray-500 mt-1">
-                      {destination.bestTime}
-                    </p>
-                  </div>
-                </div>
-
-                {/* BUDGET */}
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center">
-                    <BadgeIndianRupee size={18} className="text-green-600" />
-                  </div>
-
-                  <div>
-                    <h4 className="text-sm font-semibold text-slate-900">
-                      Average Budget
-                    </h4>
-
-                    <p className="text-sm text-gray-500 mt-1">
-                      {destination.budget}
-                    </p>
-                  </div>
-                </div>
-
-                {/* DURATION */}
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center">
-                    <Clock3 size={18} className="text-purple-500" />
-                  </div>
-
-                  <div>
-                    <h4 className="text-sm font-semibold text-slate-900">
-                      Ideal Duration
-                    </h4>
-
-                    <p className="text-sm text-gray-500 mt-1">{destination?.category}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+                {/* Winter */}
+                <SeasonBlock
+                  icon={Snowflake}
+                  iconBg="bg-teal-50"
+                  iconColor="text-teal-500"
+                  label="Winter"
+                  months={seasonGuide?.winter?.months ?? "Nov – Feb"}
+                  essentials={seasonGuide?.winter?.essentials}
+                />
+              </CardContent>
+            </Card>
           </div>
+
         </div>
 
-        {/* BOTTOM BORDER */}
-        <div className="border-b border-gray-200 mt-12"></div>
+        {/* Bottom divider */}
+        <Separator className="mt-14 bg-slate-200" />
       </div>
     </section>
   );

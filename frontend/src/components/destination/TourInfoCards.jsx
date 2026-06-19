@@ -73,6 +73,22 @@ const TourInfoCards = ({ destination }) => {
               </p>
             </div>
           </div>
+
+          <div className="flex items-center gap-2 border border-gray-200 rounded-lg px-2.5 py-2 bg-white min-w-[170px]">
+            <div className="w-8 h-8 rounded-md border bg-red-100 border-gray-200 flex items-center justify-center">
+              <MapPin size={15} className="text-red-700" />
+            </div>
+
+            <div>
+              <h3 className="text-[11px] font-semibold text-slate-900 leading-none">
+                Area
+              </h3>
+
+              <p className="text-[10px] text-gray-500 mt-1">
+                {destination?.location}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>

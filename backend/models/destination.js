@@ -22,6 +22,21 @@ const nearbyAttractionSchema = new mongoose.Schema(
       default: "",
     },
 
+    distance: {
+      type: String,
+      default: "",
+    },
+
+    bestTime: {
+      type: String,
+      default: "",
+    },
+
+    highlights: {
+      type: [String],
+      default: [],
+    },
+
     mapLink: {
       type: String,
       default: "",
@@ -42,6 +57,11 @@ const bestExperienceSchema = new mongoose.Schema(
       default: "",
     },
 
+    subtitle: {
+      type: String,
+      default: "",
+    },
+
     description: {
       type: String,
       default: "",
@@ -52,12 +72,42 @@ const bestExperienceSchema = new mongoose.Schema(
       default: "",
     },
 
+    location: {
+      type: String,
+      default: "",
+    },
+
+    distance: {
+      type: String,
+      default: "",
+    },
+
+    bestTime: {
+      type: String,
+      default: "",
+    },
+
+    duration: {
+      type: String,
+      default: "",
+    },
+
+    offer: {
+      type: String,
+      default: "",
+    },
+
+    highlights: {
+      type: [String],
+      default: [],
+    },
+
     buttonLink: {
       type: String,
       default: "",
     },
   },
-  { _id: false },
+  { _id: false }
 );
 
 /*
@@ -125,6 +175,41 @@ const destinationSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
+    },
+
+    seasonGuide: {
+      summer: {
+        months: {
+          type: String,
+          default: "",
+        },
+        essentials: {
+          type: [String],
+          default: [],
+        },
+      },
+
+      monsoon: {
+        months: {
+          type: String,
+          default: "",
+        },
+        essentials: {
+          type: [String],
+          default: [],
+        },
+      },
+
+      winter: {
+        months: {
+          type: String,
+          default: "",
+        },
+        essentials: {
+          type: [String],
+          default: [],
+        },
+      },
     },
 
     /*

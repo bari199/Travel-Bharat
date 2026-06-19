@@ -66,11 +66,11 @@ const ImagesSection = ({ formData, setFormData }) => {
           <div>
             <h2 className="flex items-center gap-2 text-xl font-semibold">
               <ImageIcon className="h-5 w-5" />
-              Destination Images
+             Hero Destination Images
             </h2>
 
             <p className="text-sm text-muted-foreground">
-              Upload hero and cover images for the destination.
+              Upload hero and cover images for the Hero destination.
             </p>
           </div>
 
@@ -135,11 +135,11 @@ const ImagesSection = ({ formData, setFormData }) => {
           <div>
             <h2 className="flex items-center gap-2 text-xl font-semibold">
               <ImageIcon className="h-5 w-5" />
-              Place Gallery
+              Top Places Gallery
             </h2>
 
             <p className="text-sm text-muted-foreground">
-              Upload gallery images of the location.
+              Upload Top places images of the location.
             </p>
           </div>
 

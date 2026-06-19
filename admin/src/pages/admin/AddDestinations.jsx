@@ -10,45 +10,70 @@ const AddDestination = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
-  const [formData, setFormData] =
-useState({
-  name: "",
-  title: "",
-  state: "",
-  city: "",
-  category: "",
-  location: "",
-  shortDescription: "",
-  description: "",
-  bestTimeToVisit: "",
-  entryFee: "",
+  const [formData, setFormData] = useState({
+    name: "",
+    title: "",
+    state: "",
+    city: "",
+    category: "",
+    location: "",
+    shortDescription: "",
+    description: "",
+    bestTimeToVisit: "",
+    entryFee: "",
 
-  featured: false,
+    featured: false,
 
-  images: [],
+    images: [],
 
-  placeImages: [],
+    placeImages: [],
 
-  highlights: [""],
+    highlights: [""],
+    seasonGuide: {
+      summer: {
+        months: "",
+        essentials: [],
+      },
 
-  bestExperiences: [
-    {
-      title: "",
-      description: "",
-      image: null,
-      buttonLink: "",
+      monsoon: {
+        months: "",
+        essentials: [],
+      },
+
+      winter: {
+        months: "",
+        essentials: [],
+      },
     },
-  ],
 
-  nearbyAttractions: [
-    {
-      title: "",
-      description: "",
-      image: null,
-      mapLink: "",
-    },
-  ],
-});
+    bestExperiences: [
+      {
+        title: "",
+        subtitle: "",
+        description: "",
+        location: "",
+        distance: "",
+        bestTime: "",
+        duration: "",
+        offer: "",
+        highlights: [],
+        image: null,
+        buttonLink: "",
+      },
+    ],
+
+    nearbyAttractions: [
+      {
+        title: "",
+        description: "",
+        distance: "",
+        bestTime: "",
+        highlights: [],
+        image: null,
+        mapLink: "",
+      },
+    ],
+  });
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -69,9 +94,7 @@ useState({
   return (
     <AdminLayout>
       <div className="max-w-5xl">
-        <h1 className="text-3xl font-bold mb-6">
-          Add Destination
-        </h1>
+        <h1 className="text-3xl font-bold mb-6">Add Destination</h1>
 
         <DestinationForm
           formData={formData}

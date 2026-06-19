@@ -133,22 +133,40 @@ const buildFormData = (data) => {
     )
   );
 
+  formData.append(
+  "seasonGuide",
+  JSON.stringify(data.seasonGuide || {})
+);
   /* ------------------------
      Best Experiences
   ------------------------ */
 
   const cleanedExperiences =
     data.bestExperiences?.map(
-      ({
-        title,
-        description,
-        buttonLink,
-      }) => ({
-        title,
-        description,
-        buttonLink,
-      })
-    ) || [];
+          ({
+      title,
+      subtitle,
+      description,
+      location,
+      distance,
+      bestTime,
+      duration,
+      offer,
+      highlights,
+      buttonLink,
+    }) => ({
+      title,
+      subtitle,
+      description,
+      location,
+      distance,
+      bestTime,
+      duration,
+      offer,
+      highlights,
+      buttonLink,
+    })
+  ) || [];
 
   formData.append(
     "bestExperiences",
@@ -161,19 +179,26 @@ const buildFormData = (data) => {
      Nearby Attractions
   ------------------------ */
 
-  const cleanedAttractions =
-    data.nearbyAttractions?.map(
-      ({
-        title,
-        description,
-        mapLink,
-      }) => ({
-        title,
-        description,
-        mapLink,
-      })
-    ) || [];
 
+
+  const cleanedAttractions =
+  data.nearbyAttractions?.map(
+    ({
+      title,
+      description,
+      distance,
+      bestTime,
+      highlights,
+      mapLink,
+    }) => ({
+      title,
+      description,
+      distance,
+      bestTime,
+      highlights,
+      mapLink,
+    })
+  ) || [];
   formData.append(
     "nearbyAttractions",
     JSON.stringify(
