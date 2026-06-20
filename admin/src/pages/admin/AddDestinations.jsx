@@ -17,6 +17,7 @@ const AddDestination = () => {
     city: "",
     category: "",
     location: "",
+    area:"",
     shortDescription: "",
     description: "",
     bestTimeToVisit: "",

@@ -1,6 +1,7 @@
 import express from "express";
 import upload from "../middleware/uploadMiddleware.js";
 import adminAuth from "../middleware/authMiddleware.js";
+import { isAuthenticated } from "../middleware/isAuthenticated.js";
 
 import {
   addDestination,
@@ -69,10 +70,7 @@ router.put(
   updateDestination,
 );
 
-router.get(
-  "/state/:stateSlug",
-  getDestinationsByState
-);
+router.get("/state/:stateSlug", isAuthenticated, getDestinationsByState);
 
 /* DELETE */
 router.delete("/:id", adminAuth, deleteDestination);

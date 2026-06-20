@@ -152,6 +152,11 @@ const destinationSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    area:{
+      type: String,
+      required: true,
+      trim: true,
+    },
 
     shortDescription: {
       type: String,

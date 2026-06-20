@@ -1,5 +1,105 @@
+import { useCallback, useMemo, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import {
+  Plus,
+  Trash2,
+  MapPin,
+  Clock,
+  ImageIcon,
+  Map as MapIcon,
+  CheckCircle2,
+  Landmark,
+  ExternalLink,
+} from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+
+/* ============================================================
+   Business logic below (addAttraction, removeAttraction,
+   handleChange and all field updates) is unchanged from the
+   original — only markup, structure, and styling are new.
+============================================================ */
+
+const cardVariants = {
+  hidden: { opacity: 0, y: -8, height: 0 },
+  show: {
+    opacity: 1,
+    y: 0,
+    height: "auto",
+    transition: { duration: 0.25, ease: [0.16, 1, 0.3, 1] },
+  },
+  exit: {
+    opacity: 0,
+    height: 0,
+    marginBottom: 0,
+    transition: { duration: 0.2, ease: [0.16, 1, 0.3, 1] },
+  },
+};
+
+function FieldLabel({ icon: Icon, children }) {
+  return (
+    <Label className="mb-1.5 flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+      {Icon && <Icon className="h-3.5 w-3.5 text-orange-400" />}
+      {children}
+    </Label>
+  );
+}
+
+function AttractionImagePicker({ image, onChange }) {
+  const [previewUrl, setPreviewUrl] = useState(null);
+
+  const handleFileChange = useCallback(
+    (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        setPreviewUrl(URL.createObjectURL(file));
+      }
+      onChange(e);
+    },
+    [onChange]
+  );
+
+  const resolvedPreview = useMemo(() => {
+    if (previewUrl) return previewUrl;
+    if (image instanceof File) return URL.createObjectURL(image);
+    if (typeof image === "string" && image) return image;
+    return null;
+  }, [previewUrl, image]);
+
+  return (
+    <div>
+      <FieldLabel icon={ImageIcon}>Attraction Image</FieldLabel>
+      <div className="flex items-center gap-3">
+        <div className="flex h-16 w-16 flex-none items-center justify-center overflow-hidden rounded-lg border border-dashed border-orange-200 bg-orange-50/50 dark:border-orange-900/40 dark:bg-orange-500/5">
+          {resolvedPreview ? (
+            <img
+              src={resolvedPreview}
+              alt=""
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <ImageIcon className="h-5 w-5 text-orange-300" />
+          )}
+        </div>
+        <div className="min-w-0 flex-1 space-y-1">
+          <Input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="cursor-pointer border-orange-100 text-sm file:mr-3 file:rounded-md file:border-0 file:bg-orange-100 file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-orange-700 hover:file:bg-orange-200 dark:border-orange-900/40 dark:file:bg-orange-500/10 dark:file:text-orange-400"
+          />
+          {image && image instanceof File && (
+            <p className="flex items-center gap-1 truncate text-xs text-emerald-600 dark:text-emerald-400">
+              <CheckCircle2 className="h-3.5 w-3.5 flex-none" />
+              <span className="truncate">Selected: {image.name}</span>
+            </p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const NearbyAttractionsSection = ({ formData, setFormData }) => {
   const addAttraction = () => {
@@ -45,139 +145,205 @@ const NearbyAttractionsSection = ({ formData, setFormData }) => {
   };
 
   return (
-    <div className="space-y-6 border rounded-xl p-5">
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold">
-          Nearby Attractions
-        </h2>
+    <div className="space-y-6 rounded-xl border border-orange-100 bg-white p-4 shadow-sm sm:p-6 dark:border-orange-900/30 dark:bg-background">
+      {/* Top accent bar — matches the signature treatment used elsewhere */}
+      <div className="-mx-4 -mt-4 h-1 w-[calc(100%+2rem)] rounded-t-xl bg-gradient-to-r from-orange-400 via-orange-500 to-amber-500 sm:-mx-6 sm:-mt-6 sm:w-[calc(100%+3rem)]" />
 
-        <Button type="button" onClick={addAttraction}>
-          + Add Attraction
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-3">
+          <div className="flex h-9 w-9 flex-none items-center justify-center rounded-lg bg-orange-100 text-orange-600 dark:bg-orange-500/10 dark:text-orange-400">
+            <Landmark className="h-4.5 w-4.5" />
+          </div>
+          <div>
+            <h2 className="text-lg font-semibold leading-tight text-foreground sm:text-xl">
+              Nearby Attractions
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Add notable spots worth visiting close to this destination.
+            </p>
+          </div>
+        </div>
+
+        <Button
+          type="button"
+          onClick={addAttraction}
+          className="w-full bg-orange-600 text-white shadow-sm transition-colors hover:bg-orange-700 active:bg-orange-800 sm:w-auto"
+        >
+          <Plus className="mr-2 h-4 w-4" />
+          Add Attraction
         </Button>
       </div>
 
-      {formData.nearbyAttractions.map((attraction, index) => (
-        <div
-          key={index}
-          className="space-y-4 border rounded-lg p-4 bg-white"
-        >
-          <Input
-            placeholder="Attraction Title"
-            value={attraction.title}
-            onChange={(e) =>
-              handleChange(
-                index,
-                "title",
-                e.target.value
-              )
-            }
-          />
+      <motion.div layout className="space-y-5">
+        <AnimatePresence initial={false}>
+          {formData.nearbyAttractions.map((attraction, index) => (
+            <motion.div
+              key={index}
+              layout
+              variants={cardVariants}
+              initial="hidden"
+              animate="show"
+              exit="exit"
+              className="overflow-hidden rounded-xl border border-orange-100 bg-orange-50/30 dark:border-orange-900/30 dark:bg-orange-500/[0.03]"
+            >
+              <div className="space-y-5 p-4 sm:p-5">
+                {/* Card header */}
+                <div className="flex items-center justify-between gap-3 border-b border-orange-100 pb-3 dark:border-orange-900/30">
+                  <div className="flex min-w-0 items-center gap-2.5">
+                    <span className="flex h-7 w-7 flex-none items-center justify-center rounded-full bg-orange-600 text-xs font-semibold text-white">
+                      {index + 1}
+                    </span>
+                    <p className="truncate text-sm font-medium text-foreground">
+                      {attraction.title || "New attraction"}
+                    </p>
+                  </div>
 
-          <textarea
-            rows={3}
-            className="w-full border rounded-md p-3"
-            placeholder="Description"
-            value={attraction.description}
-            onChange={(e) =>
-              handleChange(
-                index,
-                "description",
-                e.target.value
-              )
-            }
-          />
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="destructive"
+                    onClick={() => removeAttraction(index)}
+                    className="flex-none bg-orange-600/90 hover:bg-orange-700"
+                  >
+                    <Trash2 className="h-4 w-4 sm:mr-1.5" />
+                    <span className="hidden sm:inline">Remove</span>
+                  </Button>
+                </div>
 
-          <Input
-            placeholder="Distance (Example: 5 km)"
-            value={attraction.distance || ""}
-            onChange={(e) =>
-              handleChange(
-                index,
-                "distance",
-                e.target.value
-              )
-            }
-          />
+                {/* Title */}
+                <div>
+                  <FieldLabel>Attraction Title</FieldLabel>
+                  <Input
+                    placeholder="e.g. Whispering Pines Viewpoint"
+                    value={attraction.title}
+                    onChange={(e) =>
+                      handleChange(index, "title", e.target.value)
+                    }
+                    className="border-orange-100 focus-visible:border-orange-400 focus-visible:ring-orange-200 dark:border-orange-900/40"
+                  />
+                </div>
 
-          <Input
-            placeholder="Best Time (Example: Oct - Mar)"
-            value={attraction.bestTime || ""}
-            onChange={(e) =>
-              handleChange(
-                index,
-                "bestTime",
-                e.target.value
-              )
-            }
-          />
+                {/* Description */}
+                <div>
+                  <FieldLabel>Description</FieldLabel>
+                  <textarea
+                    rows={3}
+                    className="w-full rounded-md border border-orange-100 p-3 text-sm transition-colors focus-visible:border-orange-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-200 dark:border-orange-900/40 dark:bg-transparent dark:focus-visible:ring-orange-500/20"
+                    placeholder="Describe what makes this attraction worth the trip"
+                    value={attraction.description}
+                    onChange={(e) =>
+                      handleChange(index, "description", e.target.value)
+                    }
+                  />
+                </div>
 
-          <textarea
-            rows={3}
-            className="w-full border rounded-md p-3"
-            placeholder="Highlights (comma separated)"
-            value={
-              attraction.highlights?.join(", ") || ""
-            }
-            onChange={(e) =>
-              handleChange(
-                index,
-                "highlights",
-                e.target.value
-                  .split(",")
-                  .map((item) => item.trim())
-                  .filter(Boolean)
-              )
-            }
-          />
+                {/* Distance & Best time */}
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <FieldLabel icon={MapPin}>Distance</FieldLabel>
+                    <Input
+                      placeholder="Example: 5 km"
+                      value={attraction.distance || ""}
+                      onChange={(e) =>
+                        handleChange(index, "distance", e.target.value)
+                      }
+                      className="border-orange-100 focus-visible:border-orange-400 focus-visible:ring-orange-200 dark:border-orange-900/40"
+                    />
+                  </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium">
-              Attraction Image
-            </label>
+                  <div>
+                    <FieldLabel icon={Clock}>Best Time</FieldLabel>
+                    <Input
+                      placeholder="Example: Oct - Mar"
+                      value={attraction.bestTime || ""}
+                      onChange={(e) =>
+                        handleChange(index, "bestTime", e.target.value)
+                      }
+                      className="border-orange-100 focus-visible:border-orange-400 focus-visible:ring-orange-200 dark:border-orange-900/40"
+                    />
+                  </div>
+                </div>
 
-            <Input
-              type="file"
-              accept="image/*"
-              onChange={(e) =>
-                handleChange(
-                  index,
-                  "image",
-                  e.target.files[0]
-                )
-              }
-            />
-          </div>
+                {/* Highlights */}
+                <div>
+                  <FieldLabel>Highlights (comma separated)</FieldLabel>
+                  <textarea
+                    rows={3}
+                    className="w-full rounded-md border border-orange-100 p-3 text-sm transition-colors focus-visible:border-orange-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-200 dark:border-orange-900/40 dark:bg-transparent dark:focus-visible:ring-orange-500/20"
+                    placeholder="e.g. Scenic trail, Sunset views, Picnic spots"
+                    value={attraction.highlights?.join(", ") || ""}
+                    onChange={(e) =>
+                      handleChange(
+                        index,
+                        "highlights",
+                        e.target.value
+                          .split(",")
+                          .map((item) => item.trim())
+                          .filter(Boolean)
+                      )
+                    }
+                  />
+                  {attraction.highlights?.length > 0 && (
+                    <div className="mt-2 flex flex-wrap gap-1.5">
+                      {attraction.highlights.map((h, i) => (
+                        <span
+                          key={i}
+                          className="rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-medium text-orange-700 dark:bg-orange-500/10 dark:text-orange-400"
+                        >
+                          {h}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
 
-          {attraction.image &&
-            attraction.image instanceof File && (
-              <p className="text-sm text-green-600">
-                Selected: {attraction.image.name}
-              </p>
-            )}
+                {/* Image + Map link */}
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <AttractionImagePicker
+                    image={attraction.image}
+                    onChange={(e) =>
+                      handleChange(index, "image", e.target.files[0])
+                    }
+                  />
 
-          <Input
-            placeholder="Google Map Link"
-            value={attraction.mapLink}
-            onChange={(e) =>
-              handleChange(
-                index,
-                "mapLink",
-                e.target.value
-              )
-            }
-          />
+                  <div>
+                    <FieldLabel icon={MapIcon}>Google Map Link</FieldLabel>
+                    <Input
+                      placeholder="https://maps.google.com/..."
+                      value={attraction.mapLink}
+                      onChange={(e) =>
+                        handleChange(index, "mapLink", e.target.value)
+                      }
+                      className="border-orange-100 focus-visible:border-orange-400 focus-visible:ring-orange-200 dark:border-orange-900/40"
+                    />
+                    {attraction.mapLink && (
+                      <a
+                        href={attraction.mapLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-1.5 inline-flex items-center gap-1 text-xs font-medium text-orange-600 hover:text-orange-700 hover:underline dark:text-orange-400"
+                      >
+                        Open in Google Maps
+                        <ExternalLink className="h-3 w-3" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </AnimatePresence>
 
-          <Button
-            type="button"
-            variant="destructive"
-            onClick={() =>
-              removeAttraction(index)
-            }
+        {formData.nearbyAttractions.length === 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="rounded-lg border border-dashed border-orange-200 bg-orange-50/50 p-6 text-center text-sm text-muted-foreground dark:border-orange-900/40 dark:bg-orange-500/5"
           >
-            Remove Attraction
-          </Button>
-        </div>
-      ))}
+            No attractions added yet — click "Add Attraction" to create one.
+          </motion.div>
+        )}
+      </motion.div>
     </div>
   );
 };

@@ -1,32 +1,81 @@
-const DescriptionSection = ({
-  formData,
-  handleChange,
-}) => {
+import { Label } from "@/components/ui/label";
+import { AlignLeft, FileText } from "lucide-react";
+import { motion } from "framer-motion";
+
+/* ============================================================
+   Business logic below — formData, handleChange, the "name"
+   attributes on each textarea — is unchanged from the original.
+   Only markup, structure, and styling are new.
+============================================================ */
+
+function FieldLabel({ icon: Icon, children }) {
   return (
-    <div className="space-y-4">
-      <h2 className="text-xl font-semibold">
-        Description
-      </h2>
+    <Label className="mb-1.5 flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+      {Icon && <Icon className="h-3.5 w-3.5 text-orange-400" />}
+      {children}
+    </Label>
+  );
+}
 
-      <textarea
-        rows={4}
-        name="shortDescription"
-        value={
-          formData.shortDescription
-        }
-        onChange={handleChange}
-        className="w-full border rounded-lg p-3"
-        placeholder="Short Description"
-      />
+const DescriptionSection = ({ formData, handleChange }) => {
+  return (
+    <div className="space-y-6 rounded-xl border border-orange-100 bg-white p-4 shadow-sm sm:p-6 dark:border-orange-900/30 dark:bg-background">
+      {/* Top accent bar — matches the signature treatment used elsewhere */}
+      <div className="-mx-4 -mt-4 h-1 w-[calc(100%+2rem)] rounded-t-xl bg-gradient-to-r from-orange-400 via-orange-500 to-amber-500 sm:-mx-6 sm:-mt-6 sm:w-[calc(100%+3rem)]" />
 
-      <textarea
-        rows={8}
-        name="description"
-        value={formData.description}
-        onChange={handleChange}
-        className="w-full border rounded-lg p-3"
-        placeholder="Description"
-      />
+      <div className="flex items-center gap-3">
+        <div className="flex h-9 w-9 flex-none items-center justify-center rounded-lg bg-orange-100 text-orange-600 dark:bg-orange-500/10 dark:text-orange-400">
+          <FileText className="h-4.5 w-4.5" />
+        </div>
+        <div>
+          <h2 className="text-lg font-semibold leading-tight text-foreground sm:text-xl">
+            Description
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            Write a quick summary, then go deeper below.
+          </p>
+        </div>
+      </div>
+
+      {/* Short description */}
+      <div>
+        <div className="mb-1.5 flex items-center justify-between">
+          <FieldLabel icon={AlignLeft}>Short Description</FieldLabel>
+          <span className="text-xs text-muted-foreground">
+            {formData.shortDescription?.length || 0} characters
+          </span>
+        </div>
+
+        <motion.textarea
+          whileFocus={{ scale: 1.002 }}
+          rows={3}
+          name="shortDescription"
+          value={formData.shortDescription}
+          onChange={handleChange}
+          className="w-full resize-none rounded-lg border border-orange-100 p-3 text-sm leading-relaxed transition-colors placeholder:text-muted-foreground/70 focus-visible:border-orange-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-200 dark:border-orange-900/40 dark:bg-transparent dark:focus-visible:ring-orange-500/20"
+          placeholder="A one or two line teaser that hooks the reader in"
+        />
+      </div>
+
+      {/* Full description */}
+      <div>
+        <div className="mb-1.5 flex items-center justify-between">
+          <FieldLabel icon={FileText}>Description</FieldLabel>
+          <span className="text-xs text-muted-foreground">
+            {formData.description?.length || 0} characters
+          </span>
+        </div>
+
+        <motion.textarea
+          whileFocus={{ scale: 1.002 }}
+          rows={8}
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+          className="w-full resize-y rounded-lg border border-orange-100 p-3 text-sm leading-relaxed transition-colors placeholder:text-muted-foreground/70 focus-visible:border-orange-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-200 dark:border-orange-900/40 dark:bg-transparent dark:focus-visible:ring-orange-500/20"
+          placeholder="Tell the full story — what makes this destination worth visiting, what travelers can expect, and what makes it memorable"
+        />
+      </div>
     </div>
   );
 };

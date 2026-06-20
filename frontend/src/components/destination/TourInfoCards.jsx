@@ -1,5 +1,5 @@
 import React from "react";
-import { CalendarDays, Ticket, LayoutGrid, MapPin } from "lucide-react";
+import { CalendarDays, Ticket, LayoutGrid, MapPin, AreaChart } from "lucide-react";
 
 const TourInfoCards = ({ destination }) => {
   return (
@@ -76,7 +76,7 @@ const TourInfoCards = ({ destination }) => {
 
           <div className="flex items-center gap-2 border border-gray-200 rounded-lg px-2.5 py-2 bg-white min-w-[170px]">
             <div className="w-8 h-8 rounded-md border bg-red-100 border-gray-200 flex items-center justify-center">
-              <MapPin size={15} className="text-red-700" />
+              <AreaChart size={15} className="text-red-700" />
             </div>
 
             <div>
@@ -85,7 +85,7 @@ const TourInfoCards = ({ destination }) => {
               </h3>
 
               <p className="text-[10px] text-gray-500 mt-1">
-                {destination?.location}
+                {destination?.area}
               </p>
             </div>
           </div>

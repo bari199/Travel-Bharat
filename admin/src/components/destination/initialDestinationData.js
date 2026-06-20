@@ -5,7 +5,7 @@ export const initialDestinationData = {
   city: "",
   category: "",
   location: "",
-
+  area: "",
   shortDescription: "",
   description: "",
 

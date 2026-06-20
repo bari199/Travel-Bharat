@@ -82,6 +82,7 @@ const EditDestination = () => {
         city: res.destination?.city || "",
         category: res.destination?.category || "",
         location: res.destination?.location || "",
+        area: res.destination?.area || "",
         shortDescription: res.destination?.shortDescription || "",
         description: res.destination?.description || "",
         bestTimeToVisit: res.destination?.bestTimeToVisit || "",

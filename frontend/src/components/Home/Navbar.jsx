@@ -171,9 +171,12 @@ const Navbar = () => {
         { headers: { Authorization: `Bearer ${accessToken}` } },
       );
       if (res.data.success) {
-        setUser(null);
-        localStorage.clear();
-        toast.success(res.data.message);
+      setUser(null);
+      localStorage.clear();
+
+      toast.success("Logged out successfully");
+
+      navigate("/");
       }
     } catch {
       toast.error("Logout failed");
