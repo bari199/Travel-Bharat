@@ -16,7 +16,7 @@ import {
 /* ── Category options matching Travel Bharat regions ── */
 const CATEGORIES = [
   "Beach", "Mountain", "Heritage", "Forest",
-  "Desert", "Wildlife", "Spiritual", "Hill Station",
+  "Desert", "Wildlife", "Religious", "Hill Station",
   "Waterfall", "Lake", "Adventure", "Cultural",
 ];
 

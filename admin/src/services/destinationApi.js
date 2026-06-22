@@ -40,7 +40,7 @@ const buildFormData = (data) => {
   formData.append("city", data.city || "");
   formData.append("category", data.category || "");
   formData.append("location", data.location || "");
-  formData.append("area",data.location || "");
+  formData.append("area",data.area || "");
 
   formData.append(
     "shortDescription",

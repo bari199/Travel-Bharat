@@ -60,7 +60,7 @@ export const addDestination = async (req, res) => {
       city: req.body.city,
       category: req.body.category,
       location: req.body.location,
-      area:req.body.location,
+      area: req.body.area,
       shortDescription: req.body.shortDescription,
       description: req.body.description,
       bestTimeToVisit: req.body.bestTimeToVisit,
@@ -244,17 +244,36 @@ export const updateDestination = async (req, res) => {
       : [];
 
     const bestExperiences = req.body.bestExperiences
-  ? JSON.parse(req.body.bestExperiences)
-  : existingDestination.bestExperiences;
+      ? JSON.parse(req.body.bestExperiences)
+      : existingDestination.bestExperiences;
 
     const nearbyAttractions = req.body.nearbyAttractions
-  ? JSON.parse(req.body.nearbyAttractions)
-  : existingDestination.nearbyAttractions;
+      ? JSON.parse(req.body.nearbyAttractions)
+      : existingDestination.nearbyAttractions;
 
     let seasonGuide = existingDestination.seasonGuide;
 
     if (req.body.seasonGuide) {
-      seasonGuide = JSON.parse(req.body.seasonGuide);
+      const incomingSeasonGuide = JSON.parse(req.body.seasonGuide);
+
+      seasonGuide = {
+        ...existingDestination.seasonGuide,
+
+        summer: {
+          ...existingDestination.seasonGuide?.summer,
+          ...incomingSeasonGuide?.summer,
+        },
+
+        monsoon: {
+          ...existingDestination.seasonGuide?.monsoon,
+          ...incomingSeasonGuide?.monsoon,
+        },
+
+        winter: {
+          ...existingDestination.seasonGuide?.winter,
+          ...incomingSeasonGuide?.winter,
+        },
+      };
     }
 
     const images =
@@ -292,7 +311,7 @@ export const updateDestination = async (req, res) => {
       city: req.body.city,
       category: req.body.category,
       location: req.body.location,
-      area:req.body.area,
+      area: req.body.area,
       shortDescription: req.body.shortDescription,
       description: req.body.description,
       bestTimeToVisit: req.body.bestTimeToVisit,

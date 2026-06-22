@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import { states } from "../../data/data";
+import { states } from "../../data/states";
 
 import SearchBoxSkeleton from "../Skeletons/SearchBoxSkeleton";
 
@@ -47,16 +47,22 @@ const SearchBox = () => {
   /* ---------------- CITIES ---------------- */
 
   const cityNames = useMemo(() => {
-    if (!searchData.state) {
-      return states.flatMap((item) => item.cities);
-    }
-
-    const selectedState = states.find(
-      (item) => item.name === searchData.state
+  if (!searchData.state) {
+    return states.flatMap((state) =>
+      state.cities.map((city) => city.name)
     );
+  }
 
-    return selectedState ? selectedState.cities : [];
-  }, [searchData.state]);
+  const selectedState = states.find(
+    (state) => state.name === searchData.state
+  );
+
+  return selectedState
+    ? selectedState.cities.map(
+        (city) => city.name
+      )
+    : [];
+}, [searchData.state]);
 
   /* ---------------- CATEGORY ---------------- */
 
@@ -71,21 +77,53 @@ const SearchBox = () => {
   /* ---------------- DESTINATIONS ---------------- */
 
   const destinationNames = useMemo(() => {
-    if (!searchData.state) {
-      return states.flatMap(
-        (item) => item.destinations
-      );
-    }
 
+  // State + City Selected
+  if (
+    searchData.state &&
+    searchData.city
+  ) {
     const selectedState = states.find(
-      (item) => item.name === searchData.state
+      (state) =>
+        state.name === searchData.state
+    );
+
+    const selectedCity =
+      selectedState?.cities.find(
+        (city) =>
+          city.name === searchData.city
+      );
+
+    return selectedCity
+      ? selectedCity.destinations
+      : [];
+  }
+
+  // Only State Selected
+  if (searchData.state) {
+    const selectedState = states.find(
+      (state) =>
+        state.name === searchData.state
     );
 
     return selectedState
-      ? selectedState.destinations
+      ? selectedState.cities.flatMap(
+          (city) => city.destinations
+        )
       : [];
-  }, [searchData.state]);
+  }
 
+  // All Destinations
+  return states.flatMap((state) =>
+    state.cities.flatMap(
+      (city) => city.destinations
+    )
+  );
+
+}, [
+  searchData.state,
+  searchData.city,
+]);
   /* ---------------- HANDLE CHANGE ---------------- */
 
   const handleChange = (e) => {
@@ -97,14 +135,41 @@ const SearchBox = () => {
 
   /* ---------------- SELECT OPTION ---------------- */
 
-  const handleSelect = (field, value) => {
+  const handleSelect = (
+  field,
+  value
+) => {
+
+  if (field === "state") {
     setSearchData((prev) => ({
       ...prev,
-      [field]: value,
+      state: value,
+      city: "",
+      search: "",
     }));
 
     setActiveDropdown("");
-  };
+    return;
+  }
+
+  if (field === "city") {
+    setSearchData((prev) => ({
+      ...prev,
+      city: value,
+      search: "",
+    }));
+
+    setActiveDropdown("");
+    return;
+  }
+
+  setSearchData((prev) => ({
+    ...prev,
+    [field]: value,
+  }));
+
+  setActiveDropdown("");
+};
 
   /* ---------------- SEARCH API ---------------- */
 

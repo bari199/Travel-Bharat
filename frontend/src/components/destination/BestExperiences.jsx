@@ -5,11 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import {
-  Dialog,
-  DialogContent,
-  DialogClose,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogClose } from "@/components/ui/dialog";
 import {
   ArrowRight,
   ChevronLeft,
@@ -46,7 +42,7 @@ const ExperienceCardSkeleton = () => (
 );
 
 /* ─────────────────────────────────────────────
-   Info Pill — tiny chip used on cards
+   Info Pill
 ───────────────────────────────────────────── */
 const InfoPill = ({ icon: Icon, label, colorClass }) => (
   <span
@@ -64,8 +60,8 @@ const ExperienceCard = ({ item, index, onClick }) => {
   const highlightCount = Array.isArray(item.highlights)
     ? item.highlights.length
     : typeof item.highlights === "number"
-    ? item.highlights
-    : 0;
+      ? item.highlights
+      : 0;
 
   return (
     <Card
@@ -88,7 +84,6 @@ const ExperienceCard = ({ item, index, onClick }) => {
         flex flex-col
       "
     >
-      {/* ── Image ── */}
       <div className="relative h-[160px] w-full overflow-hidden shrink-0">
         <img
           src={item.image}
@@ -97,8 +92,6 @@ const ExperienceCard = ({ item, index, onClick }) => {
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
-
-        {/* Offer badge */}
         {item.offer && (
           <Badge className="absolute top-3 left-3 bg-orange-500 hover:bg-orange-500 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full shadow-lg border-0">
             {item.offer}
@@ -106,45 +99,51 @@ const ExperienceCard = ({ item, index, onClick }) => {
         )}
       </div>
 
-      {/* ── Content ── */}
       <CardContent className="p-4 pb-5 flex flex-col flex-1">
-        {/* Subtitle */}
         {item.subtitle && (
           <p className="text-orange-500 text-[10px] font-semibold uppercase tracking-wider truncate">
             {item.subtitle}
           </p>
         )}
-
-        {/* Title */}
         <h3 className="text-[16px] font-bold text-gray-900 leading-snug line-clamp-2 mt-1 group-hover:text-orange-500 transition-colors duration-300">
           {item.title}
         </h3>
-
-        {/* Location row */}
         {(item.distance || item.location) && (
           <div className="flex items-center gap-1.5 mt-2.5 text-gray-500">
-            <Navigation size={11} strokeWidth={2.5} className="text-orange-500 shrink-0" />
-            <span className="text-[12px] truncate">{item.distance || item.location}</span>
+            <Navigation
+              size={11}
+              strokeWidth={2.5}
+              className="text-orange-500 shrink-0"
+            />
+            <span className="text-[12px] truncate">
+              {item.distance || item.location}
+            </span>
           </div>
         )}
-
-        {/* Best Time row */}
         {item.bestTime && (
           <div className="flex items-center gap-1.5 mt-1.5 text-gray-500">
-            <CalendarDays size={11} strokeWidth={2.5} className="text-sky-500 shrink-0" />
-            <span className="text-[12px] truncate">Best time: {item.bestTime}</span>
+            <CalendarDays
+              size={11}
+              strokeWidth={2.5}
+              className="text-sky-500 shrink-0"
+            />
+            <span className="text-[12px] truncate">
+              Best time: {item.bestTime}
+            </span>
           </div>
         )}
-
-        {/* Highlights row */}
         {highlightCount > 0 && (
           <div className="flex items-center gap-1.5 mt-1.5 text-gray-500">
-            <Star size={11} strokeWidth={2.5} className="text-amber-500 shrink-0" />
-            <span className="text-[12px] truncate">{highlightCount} Highlights</span>
+            <Star
+              size={11}
+              strokeWidth={2.5}
+              className="text-amber-500 shrink-0"
+            />
+            <span className="text-[12px] truncate">
+              {highlightCount} Highlights
+            </span>
           </div>
         )}
-
-        {/* CTA row */}
         <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-100">
           <button
             aria-label={`Explore ${item.title}`}
@@ -186,7 +185,7 @@ const ScrollDots = ({ total, active }) => (
 );
 
 /* ─────────────────────────────────────────────
-   Detail Dialog
+   Detail Dialog  ← REDESIGNED (forced full-width)
 ───────────────────────────────────────────── */
 const ExperienceDialog = ({ experience, onClose }) => {
   if (!experience) return null;
@@ -194,157 +193,216 @@ const ExperienceDialog = ({ experience, onClose }) => {
     ? experience.highlights
     : [];
 
+  const facts = [
+    {
+      key: "distance",
+      label: "Distance",
+      value: experience.distance,
+      icon: Navigation,
+      ring: "ring-orange-200",
+      iconBg: "bg-orange-500",
+    },
+    {
+      key: "bestTime",
+      label: "Best Time",
+      value: experience.bestTime,
+      icon: CalendarDays,
+      ring: "ring-sky-200",
+      iconBg: "bg-sky-500",
+    },
+    {
+      key: "duration",
+      label: "Duration",
+      value: experience.duration,
+      icon: Clock,
+      ring: "ring-indigo-200",
+      iconBg: "bg-indigo-500",
+    },
+    {
+      key: "location",
+      label: "Location",
+      value: !experience.distance ? experience.location : null,
+      icon: MapPin,
+      ring: "ring-amber-200",
+      iconBg: "bg-amber-500",
+    },
+  ].filter((f) => f.value);
+
   return (
     <Dialog open={!!experience} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl p-0 overflow-hidden rounded-3xl border-0 shadow-2xl">
-        <DialogClose className="absolute top-4 right-4 z-50 bg-white/90 backdrop-blur-sm rounded-full p-1.5 shadow-md hover:bg-white transition-colors">
-          <X className="w-4 h-4 text-gray-600" />
-        </DialogClose>
-
-        <ScrollArea className="max-h-[88vh]">
-          {/* ── Hero ── */}
-          <div className="relative h-[240px] md:h-[320px]">
+      <DialogContent
+        hideCloseButton
+        // ⚠️ Inline style wins over ANY default className (e.g. shadcn's
+        // built-in `max-w-lg`) regardless of class merge order. This is
+        // the part that guarantees the dialog actually renders full width.
+        style={{
+          width: "96vw",
+          maxWidth: "1440px",
+          height: "92vh",
+          maxHeight: "920px",
+        }}
+        className="
+          !w-[96vw]
+          !max-w-[1440px]
+          !h-[92vh]
+          !max-h-[920px]
+          p-0
+          gap-0
+          overflow-hidden
+          bg-white
+          rounded-[28px]
+          border-0
+          shadow-2xl
+        "
+      >
+        <div className="flex flex-col lg:flex-row h-full w-full overflow-hidden">
+          {/* ── Left: Visual / Identity Panel ── */}
+          <div className="relative w-full lg:w-[42%] shrink-0 h-[220px] lg:h-full overflow-hidden">
             <img
               src={experience.image}
               alt={experience.title}
-              className="w-full h-full object-cover"
+              className="absolute inset-0 w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/5 lg:bg-gradient-to-tr lg:from-black/90 lg:via-black/35 lg:to-transparent" />
 
-            {/* Offer badge */}
             {experience.offer && (
-              <Badge className="absolute top-4 left-4 bg-orange-500 hover:bg-orange-500 text-white text-xs font-semibold px-3 py-1 rounded-full border-0 shadow-lg">
+              <Badge className="absolute top-6 left-6 bg-orange-500 hover:bg-orange-500 text-white text-[11px] font-bold px-3 py-1 rounded-full shadow-lg border-0 z-10">
                 {experience.offer}
               </Badge>
             )}
 
-            {/* Hero text */}
-            <div className="absolute bottom-5 left-6 right-16 text-white">
-              <p className="text-white/70 text-xs uppercase tracking-widest mb-1">
-                {experience.subtitle}
-              </p>
-              <h2 className="text-2xl md:text-3xl font-extrabold leading-tight">
+            <DialogClose asChild>
+              <button
+                aria-label="Close"
+                className="absolute top-5 right-5 z-10 w-10 h-10 rounded-full bg-white/15 backdrop-blur-md border border-white/30 hover:bg-white/30 transition-colors flex items-center justify-center text-white"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </DialogClose>
+
+            <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-9 z-10">
+              {experience.subtitle && (
+                <p className="text-orange-300 text-[11px] font-bold uppercase tracking-[3px] mb-2">
+                  {experience.subtitle}
+                </p>
+              )}
+              <h2 className="text-2xl lg:text-[2.3rem] font-extrabold text-white leading-[1.08] tracking-tight drop-shadow-sm">
                 {experience.title}
               </h2>
+
+              {highlights.length > 0 && (
+                <div className="flex items-center gap-1.5 mt-4 text-amber-300">
+                  <Star size={14} fill="currentColor" />
+                  <span className="text-xs font-semibold text-white/90">
+                    {highlights.length} curated highlights
+                  </span>
+                </div>
+              )}
             </div>
           </div>
 
-          {/* ── Body ── */}
-          <div className="p-6 space-y-6 bg-white">
-
-            {/* ── Quick Info Row ── */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {/* Distance */}
-              {experience.distance && (
-                <div className="flex flex-col gap-1 bg-orange-50 rounded-2xl px-4 py-3 border border-orange-100">
-                  <div className="flex items-center gap-1.5 text-orange-500">
-                    <Navigation size={13} strokeWidth={2.5} />
-                    <span className="text-[10px] font-bold uppercase tracking-wider">
-                      Distance
-                    </span>
+          {/* ── Right: Content Panel ── */}
+          <div className="relative flex-1 min-w-0 h-full overflow-hidden">
+            <ScrollArea className="h-full w-full">
+              <div className="px-6 sm:px-10 lg:px-14 py-8 lg:py-10 space-y-10">
+                {/* Quick facts */}
+                {facts.length > 0 && (
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    {facts.map((f) => (
+                      <div
+                        key={f.key}
+                        className={`rounded-2xl bg-[#fdf8f3] ring-1 ${f.ring} px-3.5 py-3.5 flex flex-col gap-2`}
+                      >
+                        <span
+                          className={`w-7 h-7 rounded-full ${f.iconBg} flex items-center justify-center shadow-sm`}
+                        >
+                          <f.icon size={13} strokeWidth={2.5} className="text-white" />
+                        </span>
+                        <div>
+                          <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400">
+                            {f.label}
+                          </p>
+                          <p className="text-[13.5px] font-bold text-slate-800 leading-tight mt-0.5">
+                            {f.value}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <p className="text-sm font-semibold text-slate-800 leading-tight">
-                    {experience.distance}
-                  </p>
-                </div>
-              )}
+                )}
 
-              {/* Location (falls back if no distance) */}
-              {!experience.distance && experience.location && (
-                <div className="flex flex-col gap-1 bg-orange-50 rounded-2xl px-4 py-3 border border-orange-100">
-                  <div className="flex items-center gap-1.5 text-orange-500">
-                    <MapPin size={13} strokeWidth={2.5} />
-                    <span className="text-[10px] font-bold uppercase tracking-wider">
-                      Location 
-                    </span>
-                  </div>
-                  <p className="text-sm font-semibold text-slate-800 leading-tight">
-                    {experience.location}
-                  </p>
-                </div>
-              )}
-
-              {/* Best Time */}
-              {experience.bestTime && (
-                <div className="flex flex-col gap-1 bg-sky-50 rounded-2xl px-4 py-3 border border-sky-100">
-                  <div className="flex items-center gap-1.5 text-sky-500">
-                    <CalendarDays size={13} strokeWidth={2.5} />
-                    <span className="text-[10px] font-bold uppercase tracking-wider">
-                      Best Time
-                    </span>
-                  </div>
-                  <p className="text-sm font-semibold text-slate-800 leading-tight">
-                    {experience.bestTime}
-                  </p>
-                </div>
-              )}
-
-              {/* Duration / extra meta */}
-              {experience.duration && (
-                <div className="flex flex-col gap-1 bg-violet-50 rounded-2xl px-4 py-3 border border-violet-100">
-                  <div className="flex items-center gap-1.5 text-violet-500">
-                    <Clock size={13} strokeWidth={2.5} />
-                    <span className="text-[10px] font-bold uppercase tracking-wider">
-                      Duration
-                    </span>
-                  </div>
-                  <p className="text-sm font-semibold text-slate-800 leading-tight">
-                    {experience.duration}
-                  </p>
-                </div>
-              )}
-            </div>
-
-            <Separator className="bg-slate-100" />
-
-            {/* ── Description ── */}
-            {experience.description && (
-              <div>
-                <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-2">
-                  About
-                </h3>
-                <p className="text-gray-600 text-sm leading-7">
-                  {experience.description}
-                </p>
-              </div>
-            )}
-
-            {/* ── Highlights ── */}
-            {highlights.length > 0 && (
-              <div>
-                <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-3">
-                  Highlights
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                  {highlights.map((item, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-start gap-3 p-3 rounded-xl bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-100/60"
-                    >
-                      <span className="mt-0.5 w-5 h-5 rounded-full bg-orange-100 flex items-center justify-center shrink-0">
-                        <Star size={10} className="text-orange-500" fill="currentColor" />
-                      </span>
-                      <span className="text-[13px] text-slate-700 leading-5">{item}</span>
+                {/* About */}
+                {experience.description && (
+                  <div>
+                    <div className="flex items-center gap-3 mb-4">
+                      <span className="h-px w-8 bg-orange-300" />
+                      <h3 className="text-[11px] font-bold uppercase tracking-[3px] text-orange-500">
+                        About this experience
+                      </h3>
                     </div>
-                  ))}
+                    <p className="text-gray-600 text-[15px] leading-8 max-w-[760px]">
+                      {experience.description}
+                    </p>
+                  </div>
+                )}
+
+                {/* Highlights */}
+                {highlights.length > 0 && (
+                  <div>
+                    <div className="flex items-center gap-3 mb-4">
+                      <span className="h-px w-8 bg-orange-300" />
+                      <h3 className="text-[11px] font-bold uppercase tracking-[3px] text-orange-500">
+                        Highlights
+                      </h3>
+                    </div>
+
+                    <div className="grid sm:grid-cols-2 gap-3">
+                      {highlights.map((item, index) => (
+                        <div
+                          key={index}
+                          className="
+                            flex items-start gap-3
+                            px-4 py-3.5
+                            rounded-2xl
+                            bg-white
+                            ring-1 ring-orange-100
+                            shadow-sm
+                            hover:shadow-md hover:ring-orange-200
+                            transition-all duration-300
+                          "
+                        >
+                          <span className="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center shrink-0 mt-0.5 shadow-sm shadow-orange-200">
+                            <Star size={11} fill="currentColor" className="text-white" />
+                          </span>
+                          <span className="text-[13.5px] text-slate-700 leading-snug pt-0.5">
+                            {item}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* CTA footer */}
+                <div className="pt-2">
+                  <Separator className="mb-6 bg-orange-100" />
+                  <div className="flex items-center justify-between gap-4 flex-wrap">
+                    <p className="text-sm text-gray-500 max-w-xs">
+                      Ready to add this to your itinerary?
+                    </p>
+                    <Button className="rounded-full bg-orange-500 hover:bg-orange-600 active:scale-95 text-white px-7 h-12 text-sm font-semibold shadow-lg shadow-orange-200 transition-all duration-300 flex items-center gap-2">
+                      Plan This Experience <ArrowRight size={14} />
+                    </Button>
+                  </div>
                 </div>
               </div>
-            )}
-
-            {/* ── CTA ── */}
-            <div className="pt-2">
-              <Button className="w-full rounded-2xl bg-orange-500 hover:bg-orange-600 active:scale-[0.98] text-white h-12 text-sm font-bold shadow-lg shadow-orange-200 transition-all duration-300 flex items-center gap-2">
-                Book This Experience
-                <ArrowRight size={15} />
-              </Button>
-            </div>
+            </ScrollArea>
           </div>
-        </ScrollArea>
+        </div>
       </DialogContent>
     </Dialog>
   );
 };
-
 /* ─────────────────────────────────────────────
    Main Component
 ───────────────────────────────────────────── */
@@ -356,7 +414,7 @@ const BestExperiences = ({ destination }) => {
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [selectedExperience, setSelectedExperience] = useState(null);
 
-  // ── Business Logic (untouched) ──────────────
+  /* ── Business Logic (untouched) ── */
   const experiences = destination?.bestExperiences || [];
 
   const scroll = (direction) => {
@@ -368,7 +426,7 @@ const BestExperiences = ({ destination }) => {
       });
     }
   };
-  // ────────────────────────────────────────────
+  /* ────────────────────────────── */
 
   useEffect(() => {
     const t = setTimeout(() => setIsLoading(false), 900);
@@ -398,11 +456,9 @@ const BestExperiences = ({ destination }) => {
       <div className="pointer-events-none absolute bottom-0 -left-16 w-56 h-56 rounded-full bg-amber-100/30 blur-2xl" />
 
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-
         {/* ── Section Header ── */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5 mb-10">
           <div className="max-w-xl">
-            {/* Eyebrow */}
             <div className="flex items-center gap-2 mb-3">
               <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-orange-100">
                 <Compass className="w-3.5 h-3.5 text-orange-500" />
@@ -425,7 +481,6 @@ const BestExperiences = ({ destination }) => {
               adventure tours, and unforgettable travel moments across India.
             </p>
 
-            {/* Meta pills */}
             <div className="flex flex-wrap gap-2 mt-4">
               <span className="inline-flex items-center gap-1.5 bg-white border border-orange-100 text-orange-600 text-[11px] font-semibold px-3 py-1 rounded-full shadow-sm">
                 <Navigation size={10} /> Top Locations
@@ -489,12 +544,10 @@ const BestExperiences = ({ destination }) => {
           </div>
         </div>
 
-        {/* Scroll dots */}
         {!isLoading && experiences.length > 0 && (
           <ScrollDots total={experiences.length} active={activeDot} />
         )}
 
-        {/* Empty state */}
         {!isLoading && experiences.length === 0 && (
           <div className="flex flex-col items-center justify-center py-20 gap-3 text-gray-400">
             <Compass className="w-10 h-10 text-orange-200" />
@@ -505,7 +558,6 @@ const BestExperiences = ({ destination }) => {
         )}
       </div>
 
-      {/* Global styles */}
       <style>{`
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -516,7 +568,6 @@ const BestExperiences = ({ destination }) => {
         .animate-fade-in { animation: fade-in 0.45s ease both; }
       `}</style>
 
-      {/* ── Detail Dialog ── */}
       <ExperienceDialog
         experience={selectedExperience}
         onClose={() => setSelectedExperience(null)}

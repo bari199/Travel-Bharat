@@ -69,6 +69,17 @@ const DestinationTable = ({ destinations, onDelete, loading = false }) => {
   const [imgErrors, setImgErrors] = useState({});
   const [deletingId, setDeletingId] = useState(null);
 
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const ITEMS_PER_PAGE = 10;
+
+  const totalPages = Math.ceil((destinations?.length || 0) / ITEMS_PER_PAGE);
+
+  const paginatedDestinations = destinations?.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE,
+  );
+
   const handleDelete = (id) => {
     setDeletingId(id);
     onDelete(id);
@@ -138,7 +149,7 @@ const DestinationTable = ({ destinations, onDelete, loading = false }) => {
           {/* Data rows */}
           <AnimatePresence initial={false}>
             {!loading &&
-              destinations?.map((dest, i) => (
+              paginatedDestinations?.map((dest, i) => (
                 <motion.tr
                   key={dest._id}
                   initial={{ opacity: 0, y: 8 }}
@@ -300,6 +311,47 @@ const DestinationTable = ({ destinations, onDelete, loading = false }) => {
           </AnimatePresence>
         </TableBody>
       </Table>
+      {!loading && destinations?.length > ITEMS_PER_PAGE && (
+        <div className="flex items-center justify-between px-6 py-4 border-t border-slate-100">
+          <p className="text-sm text-slate-500">
+            Showing {(currentPage - 1) * ITEMS_PER_PAGE + 1} -
+            {Math.min(currentPage * ITEMS_PER_PAGE, destinations.length)} of{" "}
+            {destinations.length}
+          </p>
+
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((prev) => prev - 1)}
+            >
+              Previous
+            </Button>
+
+            {Array.from({ length: totalPages }, (_, index) => (
+              <Button
+                key={index}
+                size="sm"
+                variant={currentPage === index + 1 ? "default" : "outline"}
+                onClick={() => setCurrentPage(index + 1)}
+                className="w-9"
+              >
+                {index + 1}
+              </Button>
+            ))}
+
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage((prev) => prev + 1)}
+            >
+              Next
+            </Button>
+          </div>
+        </div>
+      )}
     </motion.div>
   );
 };
