@@ -4,7 +4,7 @@ import { useNavigate, Link, useLocation } from "react-router-dom";
 import { BookA, LogOut, User, Search, Globe2Icon, MapPin } from "lucide-react";
 import { toast } from "sonner";
 import { getData } from "@/context/userContext";
-
+import logo from "../../assets/travel-bharat-logo.svg";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -171,12 +171,12 @@ const Navbar = () => {
         { headers: { Authorization: `Bearer ${accessToken}` } },
       );
       if (res.data.success) {
-      setUser(null);
-      localStorage.clear();
+        setUser(null);
+        localStorage.clear();
 
-      toast.success("Logged out successfully");
+        toast.success("Logged out successfully");
 
-      navigate("/");
+        navigate("/");
       }
     } catch {
       toast.error("Logout failed");
@@ -184,15 +184,29 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-orange-200 bg-orange-300/80 backdrop-blur-md shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+    <nav className="sticky top-0 z-50 border-b border-orange-200 bg-orange-300/90 backdrop-blur-md shadow-sm overflow-visible">
+      {/*
+        Fixed-height row (instead of letting py-3 + the logo's own height
+        determine it). The logo is taken out of normal flow (absolute) and
+        vertically centered, so making it bigger no longer stretches the
+        navbar — it just overflows the bar's top/bottom edges instead.
+      */}
+      <div className="relative max-w-7xl mx-auto px-4 h-16 lg:h-[72px] flex items-center justify-between gap-4">
         {/* ── Logo ── */}
-        <Link to="/" className="flex items-center gap-2 shrink-0">
-          <Globe2Icon className="h-7 w-7 text-orange-700/80" />
-          <h1 className="font-bold text-2xl">
-            <span className="text-orange-600">Travel</span>Bharat
-          </h1>
+        <Link
+          to="/"
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-10 flex items-center shrink-0 transition-all duration-300 hover:opacity-90"
+        >
+          <img
+            src={logo}
+            alt="Travel Bharat"
+            className="h-20 lg:h-24 w-auto object-contain"
+          />
         </Link>
+
+        {/* Spacer reserving horizontal room for the now-absolute logo,
+            so the nav items below don't slide underneath it */}
+        <div className="w-[130px] lg:w-[150px] shrink-0" aria-hidden="true" />
 
         <NavigationMenu
           className="hidden lg:flex [&>div]:overflow-visible"

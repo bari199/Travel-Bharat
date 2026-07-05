@@ -30,9 +30,9 @@ const EditDestination = () => {
     bestTimeToVisit: "",
     entryFee: "",
 
-    images: [""],
+    images: [],
 
-    placeImages: [""],
+    placeImages: [],
 
     highlights: [""],
 
@@ -88,9 +88,14 @@ const EditDestination = () => {
         bestTimeToVisit: res.destination?.bestTimeToVisit || "",
         entryFee: res.destination?.entryFee || "",
 
-        images: res.destination?.images || [""],
+        // Keep the full { url, public_id } objects instead of collapsing
+        // them to plain URL strings. The public_id is required so the
+        // backend can tell which existing images the user kept vs
+        // removed when the form is submitted — losing it here was part
+        // of why updates were wiping out previously saved images.
+        images: res.destination?.images || [],
 
-        placeImages: res.destination?.placeImages || [""],
+        placeImages: res.destination?.placeImages || [],
 
         highlights: res.destination?.highlights || [""],
 

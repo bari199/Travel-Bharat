@@ -54,10 +54,6 @@ const Destinations = () => {
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <h1 className="text-3xl text-orange-600 font-bold">Destinations</h1>
-
-          <Button className={`bg-orange-400 hover:bg-amber-400`} onClick={() => navigate("/destinations/add")}>
-            Add Destination
-          </Button>
         </div>
 
         {loading ? (

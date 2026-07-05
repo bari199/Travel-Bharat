@@ -52,15 +52,27 @@ function ImageUploadBlock({
 
   const getPreviewUrl = useCallback(
     (image) => {
-      if (typeof image === "string") return image;
+      if (!image) return "";
+
+      // Existing image from database
+      if (typeof image === "object" && !(image instanceof File) && image.url) {
+        return image.url;
+      }
+
+      // Legacy string URL
+      if (typeof image === "string") {
+        return image;
+      }
+
+      // Newly selected File
       if (!urlCache.has(image)) {
         urlCache.set(image, URL.createObjectURL(image));
       }
+
       return urlCache.get(image);
     },
-    [urlCache]
+    [urlCache],
   );
-
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: { "image/*": [] },
     multiple: true,
@@ -111,7 +123,9 @@ function ImageUploadBlock({
           </motion.div>
 
           <p className="text-sm font-medium text-foreground sm:text-base">
-            {isDragActive ? "Drop images to add them" : "Drag & drop images here"}
+            {isDragActive
+              ? "Drop images to add them"
+              : "Drag & drop images here"}
           </p>
           <p className="text-xs text-muted-foreground sm:text-sm">
             or click to browse files
@@ -149,7 +163,7 @@ function ImageUploadBlock({
                       key={
                         image instanceof File
                           ? `${image.name}-${image.lastModified}-${index}`
-                          : `${image}-${index}`
+                          : `${image.public_id || image.url || index}`
                       }
                       layout
                       variants={thumbVariants}
@@ -198,7 +212,7 @@ const ImagesSection = ({ formData, setFormData }) => {
         images: [...prev.images, ...acceptedFiles],
       }));
     },
-    [setFormData]
+    [setFormData],
   );
 
   const handlePlaceDrop = useCallback(
@@ -208,7 +222,7 @@ const ImagesSection = ({ formData, setFormData }) => {
         placeImages: [...prev.placeImages, ...acceptedFiles],
       }));
     },
-    [setFormData]
+    [setFormData],
   );
 
   const removeDestinationImage = useCallback(
@@ -218,7 +232,7 @@ const ImagesSection = ({ formData, setFormData }) => {
         images: prev.images.filter((_, i) => i !== index),
       }));
     },
-    [setFormData]
+    [setFormData],
   );
 
   const removePlaceImage = useCallback(
@@ -228,7 +242,7 @@ const ImagesSection = ({ formData, setFormData }) => {
         placeImages: prev.placeImages.filter((_, i) => i !== index),
       }));
     },
-    [setFormData]
+    [setFormData],
   );
 
   return (

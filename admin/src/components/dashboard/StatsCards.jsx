@@ -43,6 +43,8 @@ const StatsCards = ({ stats }) => {
           <h3 className="text-sm text-muted-foreground">
             {card.title}
           </h3>
+          
+          
 
           <p className="text-3xl font-bold">
             {card.value}

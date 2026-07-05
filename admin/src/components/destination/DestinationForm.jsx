@@ -1,39 +1,64 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 import BasicInfoSection from "../sections/BasicInfoSection";
 import TravelInfoSection from "../sections/TravelInfoSection";
 import ImagesSection from "../sections/ImagesSection";
 import HighlightsSection from "../sections/HighlightsSection";
-import BestExperiencesSection from "../sections/BestExperiencesSection";
+//import BestExperiencesSection from "../sections/BestExperiencesSection";
 import NearbyAttractionsSection from "../sections/NearbyAttractionsSection";
 import BestSessionsSection from "../sections/BestSessionsSections";
 import DescriptionSection from "../sections/DescriptionSection";
 
 import { Button } from "@/components/ui/button";
 import {
-  MapPinned, Plane, Images, Sparkles,
-  Star, Compass, CalendarDays, FileText,
-  ChevronLeft, ChevronRight, Check, Loader2,
+  MapPinned,
+  Plane,
+  Images,
+  Sparkles,
+  Star,
+  Compass,
+  CalendarDays,
+  FileText,
+  ChevronLeft,
+  ChevronRight,
+  Check,
+  Loader2,
+  X,
 } from "lucide-react";
 
 /* ── Step metadata ─────────────────────────────────────────── */
 const STEP_META = [
-  { title: "Basic Info",          subtitle: "Name, city & category",      icon: MapPinned    },
-  { title: "Travel Info",         subtitle: "How to reach & best time",   icon: Plane        },
-  { title: "Images",              subtitle: "Upload destination photos",   icon: Images       },
-  { title: "Highlights",          subtitle: "Key features & USPs",        icon: Sparkles     },
-  { title: "Best Experiences",    subtitle: "Activities & things to do",  icon: Star         },
-  { title: "Nearby Attractions",  subtitle: "Places around the area",     icon: Compass      },
-  { title: "Season Guide",        subtitle: "Month-wise travel tips",     icon: CalendarDays },
-  { title: "Description",         subtitle: "Long-form content & details",icon: FileText     },
+  { title: "Basic Info", subtitle: "Name, city & category", icon: MapPinned },
+  { title: "Travel Info", subtitle: "How to reach & best time", icon: Plane },
+  { title: "Images", subtitle: "Upload destination photos", icon: Images },
+  { title: "Highlights", subtitle: "Key features & USPs", icon: Sparkles },
+  {
+    title: "Nearby Attractions",
+    subtitle: "Places around the area",
+    icon: Compass,
+  },
+  {
+    title: "Season Guide",
+    subtitle: "Month-wise travel tips",
+    icon: CalendarDays,
+  },
+  {
+    title: "Description",
+    subtitle: "Long-form content & details",
+    icon: FileText,
+  },
 ];
 
 /* ── Step indicator dot ─────────────────────────────────────── */
 const StepDot = ({ index, current, total, onClick }) => {
   const state =
-    index + 1 < current ? "done" :
-    index + 1 === current ? "active" : "upcoming";
+    index + 1 < current
+      ? "done"
+      : index + 1 === current
+        ? "active"
+        : "upcoming";
 
   const Meta = STEP_META[index];
   const Icon = Meta.icon;
@@ -49,37 +74,49 @@ const StepDot = ({ index, current, total, onClick }) => {
       <div className="relative">
         {/* Connector line — left */}
         {index > 0 && (
-          <div className={`absolute right-full top-1/2 -translate-y-1/2 h-[2px] w-6
-            ${index + 1 <= current ? "bg-sky-400" : "bg-slate-200"} transition-colors duration-500`}
+          <div
+            className={`absolute right-full top-1/2 -translate-y-1/2 h-[2px] w-6
+            ${index + 1 <= current ? "bg-orange-400" : "bg-slate-200 dark:bg-stone-700"} transition-colors duration-500`}
           />
         )}
         {/* Connector line — right */}
         {index < total - 1 && (
-          <div className={`absolute left-full top-1/2 -translate-y-1/2 h-[2px] w-6
-            ${index + 2 <= current ? "bg-sky-400" : "bg-slate-200"} transition-colors duration-500`}
+          <div
+            className={`absolute left-full top-1/2 -translate-y-1/2 h-[2px] w-6
+            ${index + 2 <= current ? "bg-orange-400" : "bg-slate-200 dark:bg-stone-700"} transition-colors duration-500`}
           />
         )}
 
         <motion.div
           animate={
-            state === "active"   ? { scale: 1.12 } :
-            state === "done"     ? { scale: 1 }    : { scale: 0.92 }
+            state === "active"
+              ? { scale: 1.12 }
+              : state === "done"
+                ? { scale: 1 }
+                : { scale: 0.92 }
           }
           transition={{ type: "spring", stiffness: 260, damping: 22 }}
           className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors duration-300 border-2
-            ${state === "active"  ? "bg-sky-500 border-sky-500 text-white shadow-md shadow-sky-200" :
-              state === "done"    ? "bg-indigo-500 border-indigo-500 text-white" :
-                                    "bg-white border-slate-200 text-slate-400"}`}
+            ${
+              state === "active"
+                ? "bg-orange-500 border-orange-500 text-white shadow-md shadow-orange-200 dark:shadow-none"
+                : state === "done"
+                  ? "bg-amber-500 border-amber-500 text-white"
+                  : "bg-white dark:bg-stone-900 border-slate-200 dark:border-stone-700 text-slate-400 dark:text-stone-500"
+            }`}
         >
-          {state === "done"
-            ? <Check size={16} strokeWidth={2.5} />
-            : <Icon size={16} />}
+          {state === "done" ? (
+            <Check size={16} strokeWidth={2.5} />
+          ) : (
+            <Icon size={16} />
+          )}
         </motion.div>
       </div>
 
       {/* Label — only visible on md+ */}
-      <span className={`hidden md:block text-[11px] font-semibold text-center leading-tight transition-colors
-        ${state === "active" ? "text-sky-600" : state === "done" ? "text-indigo-500" : "text-slate-400"}`}
+      <span
+        className={`hidden md:block text-[11px] font-semibold text-center leading-tight transition-colors
+        ${state === "active" ? "text-orange-600 dark:text-orange-400" : state === "done" ? "text-amber-500 dark:text-amber-400" : "text-slate-400 dark:text-stone-500"}`}
       >
         {Meta.title}
       </span>
@@ -91,6 +128,7 @@ const StepDot = ({ index, current, total, onClick }) => {
 const DestinationForm = ({ formData, setFormData, handleSubmit, loading }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [direction, setDirection] = useState(1); // 1 = forward, -1 = back
+  const navigate = useNavigate();
 
   const total = STEP_META.length;
   const meta = STEP_META[currentStep - 1];
@@ -108,55 +146,63 @@ const DestinationForm = ({ formData, setFormData, handleSubmit, loading }) => {
     setCurrentStep(step);
   };
 
-  const nextStep = () => { if (currentStep < total) goTo(currentStep + 1); };
-  const prevStep = () => { if (currentStep > 1)     goTo(currentStep - 1); };
+  const nextStep = () => {
+    if (currentStep < total) goTo(currentStep + 1);
+  };
+  const prevStep = () => {
+    if (currentStep > 1) goTo(currentStep - 1);
+  };
+
+  /* Cancel the whole form — navigates back, doesn't touch formData/submit logic */
+  const handleCancel = () => navigate(-1);
 
   /* Step → component map */
   const stepComponents = [
-    <BasicInfoSection          formData={formData} handleChange={handleChange} />,
-    <TravelInfoSection         formData={formData} handleChange={handleChange} />,
-    <ImagesSection             formData={formData} setFormData={setFormData}   />,
-    <HighlightsSection         formData={formData} setFormData={setFormData}   />,
-    <BestExperiencesSection    formData={formData} setFormData={setFormData}   />,
-    <NearbyAttractionsSection  formData={formData} setFormData={setFormData}   />,
-    <BestSessionsSection       formData={formData} setFormData={setFormData}   />,
-    <DescriptionSection        formData={formData} handleChange={handleChange} />,
+    <BasicInfoSection formData={formData} handleChange={handleChange} />,
+    <TravelInfoSection formData={formData} handleChange={handleChange} />,
+    <ImagesSection formData={formData} setFormData={setFormData} />,
+    <HighlightsSection formData={formData} setFormData={setFormData} />,
+    <NearbyAttractionsSection formData={formData} setFormData={setFormData} />,
+    <BestSessionsSection formData={formData} setFormData={setFormData} />,
+    <DescriptionSection formData={formData} handleChange={handleChange} />,
   ];
 
   /* Slide animation variants */
   const variants = {
-    enter:  (d) => ({ opacity: 0, x: d * 40 }),
+    enter: (d) => ({ opacity: 0, x: d * 40 }),
     center: { opacity: 1, x: 0 },
-    exit:   (d) => ({ opacity: 0, x: d * -40 }),
+    exit: (d) => ({ opacity: 0, x: d * -40 }),
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 max-w-[860px] pb-6">
-
       {/* ── Stepper bar ──────────────────────────────────────── */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="bg-white border border-slate-100 rounded-2xl shadow-sm px-6 py-5"
+        className="bg-white dark:bg-stone-900 border border-slate-100 dark:border-stone-800 rounded-2xl shadow-sm px-4 sm:px-6 py-5"
       >
         {/* Top row: fraction + pct */}
-        <div className="flex items-center justify-between mb-5">
+        <div className="flex items-center justify-between mb-5 gap-3">
           <div>
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide">
+            <p className="text-xs font-semibold text-slate-400 dark:text-stone-500 uppercase tracking-wide">
               Creating destination
             </p>
-            <p className="text-sm font-bold text-slate-700 mt-0.5">
-              Step {currentStep} <span className="text-slate-400 font-normal">of {total}</span>
+            <p className="text-sm font-bold text-slate-700 dark:text-stone-200 mt-0.5">
+              Step {currentStep}{" "}
+              <span className="text-slate-400 dark:text-stone-500 font-normal">
+                of {total}
+              </span>
             </p>
           </div>
-          <span className="text-xs font-bold text-sky-600 bg-sky-50 border border-sky-100 px-3 py-1 rounded-full">
+          <span className="text-xs font-bold text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-500/10 border border-orange-100 dark:border-orange-500/20 px-3 py-1 rounded-full whitespace-nowrap">
             {Math.round((currentStep / total) * 100)}% complete
           </span>
         </div>
 
         {/* Step dots with connector lines */}
-        <div className="flex items-start justify-between px-2">
+        <div className="flex items-start justify-between px-2 overflow-x-auto">
           {STEP_META.map((_, i) => (
             <StepDot
               key={i}
@@ -169,9 +215,9 @@ const DestinationForm = ({ formData, setFormData, handleSubmit, loading }) => {
         </div>
 
         {/* Overall progress bar */}
-        <div className="mt-5 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+        <div className="mt-5 h-1.5 bg-slate-100 dark:bg-stone-800 rounded-full overflow-hidden">
           <motion.div
-            className="h-full rounded-full bg-gradient-to-r from-sky-400 to-indigo-500"
+            className="h-full rounded-full bg-gradient-to-r from-orange-400 to-amber-500"
             animate={{ width: `${(currentStep / total) * 100}%` }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
           />
@@ -179,16 +225,22 @@ const DestinationForm = ({ formData, setFormData, handleSubmit, loading }) => {
       </motion.div>
 
       {/* ── Step card ────────────────────────────────────────── */}
-      <div className="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden">
-
+      <div className="bg-white dark:bg-stone-900 border border-slate-100 dark:border-stone-800 rounded-2xl shadow-sm overflow-hidden">
         {/* Card header */}
-        <div className="flex items-center gap-3 px-6 py-4 border-b border-slate-100 bg-slate-50/60">
-          <span className="w-9 h-9 rounded-xl bg-sky-50 flex items-center justify-center shrink-0">
-            <StepIcon size={17} className="text-sky-500" />
+        <div className="flex items-center gap-3 px-4 sm:px-6 py-4 border-b border-slate-100 dark:border-stone-800 bg-slate-50/60 dark:bg-stone-800/60">
+          <span className="w-9 h-9 rounded-xl bg-orange-50 dark:bg-orange-500/10 flex items-center justify-center shrink-0">
+            <StepIcon
+              size={17}
+              className="text-orange-500 dark:text-orange-400"
+            />
           </span>
           <div>
-            <h2 className="text-sm font-bold text-slate-800">{meta.title}</h2>
-            <p className="text-xs text-slate-400 mt-0.5">{meta.subtitle}</p>
+            <h2 className="text-sm font-bold text-slate-800 dark:text-stone-100">
+              {meta.title}
+            </h2>
+            <p className="text-xs text-slate-400 dark:text-stone-500 mt-0.5">
+              {meta.subtitle}
+            </p>
           </div>
 
           {/* Mini step pills — mobile only */}
@@ -197,15 +249,20 @@ const DestinationForm = ({ formData, setFormData, handleSubmit, loading }) => {
               <span
                 key={i}
                 className={`h-1.5 rounded-full transition-all duration-300
-                  ${i + 1 === currentStep ? "w-5 bg-sky-500" :
-                    i + 1 < currentStep    ? "w-2 bg-indigo-400" : "w-2 bg-slate-200"}`}
+                  ${
+                    i + 1 === currentStep
+                      ? "w-5 bg-orange-500"
+                      : i + 1 < currentStep
+                        ? "w-2 bg-amber-400"
+                        : "w-2 bg-slate-200 dark:bg-stone-700"
+                  }`}
               />
             ))}
           </div>
         </div>
 
         {/* Animated step content */}
-        <div className="p-6 min-h-[300px]">
+        <div className="p-4 sm:p-6 min-h-[300px]">
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={currentStep}
@@ -227,79 +284,98 @@ const DestinationForm = ({ formData, setFormData, handleSubmit, loading }) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
-        className="flex items-center justify-between gap-4"
+        className="flex flex-col sm:flex-row items-center justify-between gap-4"
       >
-        {/* Previous */}
-        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={prevStep}
-            disabled={currentStep === 1}
-            className="h-10 px-5 text-sm font-semibold border-slate-200 text-slate-600
-              hover:bg-slate-50 hover:text-slate-800 rounded-xl gap-2 disabled:opacity-40"
-          >
-            <ChevronLeft size={16} />
-            Previous
-          </Button>
-        </motion.div>
+        {/* Cancel + Previous */}
+        <div className="flex items-center gap-2.5 w-full sm:w-auto order-2 sm:order-1">
+          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleCancel}
+              className="h-10 px-4 text-sm font-semibold border-slate-200 dark:border-stone-700 text-slate-500 dark:text-stone-400
+                hover:bg-slate-50 dark:hover:bg-stone-800 hover:text-slate-700 dark:hover:text-stone-200 rounded-xl gap-2"
+            >
+              <X size={16} />
+              Cancel
+            </Button>
+          </motion.div>
+
+          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={prevStep}
+              disabled={currentStep === 1}
+              className="h-10 px-5 text-sm font-semibold border-slate-200 dark:border-stone-700 text-slate-600 dark:text-stone-300
+                hover:bg-slate-50 dark:hover:bg-stone-800 hover:text-slate-800 dark:hover:text-stone-100 rounded-xl gap-2 disabled:opacity-40"
+            >
+              <ChevronLeft size={16} />
+              Previous
+            </Button>
+          </motion.div>
+        </div>
 
         {/* Step count — centre */}
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5 order-1 sm:order-2">
           {STEP_META.map((_, i) => (
             <button
               key={i}
               type="button"
               onClick={() => goTo(i + 1)}
               className={`rounded-full transition-all duration-300 focus:outline-none
-                ${i + 1 === currentStep
-                  ? "w-5 h-2 bg-sky-500"
-                  : i + 1 < currentStep
-                    ? "w-2 h-2 bg-indigo-400 hover:bg-indigo-500"
-                    : "w-2 h-2 bg-slate-200 hover:bg-slate-300"}`}
+                ${
+                  i + 1 === currentStep
+                    ? "w-5 h-2 bg-orange-500"
+                    : i + 1 < currentStep
+                      ? "w-2 h-2 bg-amber-400 hover:bg-amber-500"
+                      : "w-2 h-2 bg-slate-200 dark:bg-stone-700 hover:bg-slate-300 dark:hover:bg-stone-600"
+                }`}
               aria-label={`Go to step ${i + 1}`}
             />
           ))}
         </div>
 
         {/* Next / Submit */}
-        {currentStep < total ? (
-          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
-            <Button
-              type="button"
-              onClick={nextStep}
-              className="h-10 px-5 text-sm font-semibold bg-sky-500 hover:bg-sky-600
-                text-white rounded-xl gap-2 shadow-sm shadow-sky-200"
+        <div className="order-3 w-full sm:w-auto flex justify-end">
+          {currentStep < total ? (
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
+              <Button
+                type="button"
+                onClick={nextStep}
+                className="h-10 px-5 text-sm font-semibold bg-orange-500 hover:bg-orange-600
+                  text-white rounded-xl gap-2 shadow-sm shadow-orange-200 dark:shadow-none"
+              >
+                Save & Next
+                <ChevronRight size={16} />
+              </Button>
+            </motion.div>
+          ) : (
+            <motion.div
+              whileHover={{ scale: loading ? 1 : 1.02 }}
+              whileTap={{ scale: loading ? 1 : 0.97 }}
             >
-              Save & Next
-              <ChevronRight size={16} />
-            </Button>
-          </motion.div>
-        ) : (
-          <motion.div
-            whileHover={{ scale: loading ? 1 : 1.02 }}
-            whileTap={{ scale: loading ? 1 : 0.97 }}
-          >
-            <Button
-              type="submit"
-              disabled={loading}
-              className="h-10 px-6 text-sm font-semibold bg-indigo-600 hover:bg-indigo-700
-                text-white rounded-xl gap-2 shadow-sm shadow-indigo-200 disabled:opacity-70"
-            >
-              {loading ? (
-                <>
-                  <Loader2 size={15} className="animate-spin" />
-                  Creating…
-                </>
-              ) : (
-                <>
-                  <Check size={15} />
-                  Create Destination
-                </>
-              )}
-            </Button>
-          </motion.div>
-        )}
+              <Button
+                type="submit"
+                disabled={loading}
+                className="h-10 px-6 text-sm font-semibold bg-amber-600 hover:bg-amber-700
+                  text-white rounded-xl gap-2 shadow-sm shadow-amber-200 dark:shadow-none disabled:opacity-70"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 size={15} className="animate-spin" />
+                    Creating…
+                  </>
+                ) : (
+                  <>
+                    <Check size={15} />
+                    Create Destination
+                  </>
+                )}
+              </Button>
+            </motion.div>
+          )}
+        </div>
       </motion.div>
     </form>
   );

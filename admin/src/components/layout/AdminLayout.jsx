@@ -3,19 +3,11 @@ import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import { motion, AnimatePresence } from "framer-motion";
 
-/* ============================================================
-   Business logic below — the collapsed state and onToggle
-   wiring — is unchanged from the original. Only the page
-   background token has been swapped from a cool slate to a
-   warm stone tone to match the orange/amber brand used
-   throughout the rest of the app.
-============================================================ */
-
 const AdminLayout = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <div className="flex h-screen overflow-hidden bg-stone-50">
+    <div className="flex h-screen overflow-hidden bg-stone-50 dark:bg-stone-950 transition-colors">
       {/* Sidebar */}
       <Sidebar collapsed={collapsed} />
 

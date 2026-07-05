@@ -36,7 +36,7 @@ export const initialDestinationData = {
 
   highlights: [],
 
-  bestExperiences: [],
+  //bestExperiences: [],
 
   nearbyAttractions: [],
 };

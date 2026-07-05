@@ -7,7 +7,7 @@ import { toast } from "sonner";
 
 import AdminLayout from "../../components/layout/AdminLayout";
 
-import CommentTable from "../../components/comments/CommentsTable";
+import CommentTable from "../../components/socials/comments/CommentsTable";
 
 import {
   getComments,

@@ -264,7 +264,7 @@ const GalleryMosaic = ({ placeImages, destination }) => {
       {/* Left — big */}
       <div className="relative flex-1 overflow-hidden rounded-2xl group">
         <img
-          src={img1}
+          src={img1?.url || img1}
           alt={destination?.name}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
@@ -326,7 +326,7 @@ const AttractionCard = ({ place, index }) => (
     <div className="relative h-40 shrink-0 overflow-hidden bg-slate-100">
       {place?.image ? (
         <img
-          src={place.image}
+          src={place.image.url || place.image}
           alt={place.title}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />

@@ -12,6 +12,13 @@ import Reactions from "./pages/admin/Reactions";
 import Profile from "./pages/admin/Profile";
 import AddDestination from "./pages/admin/AddDestinations";
 import EditDestinations from "./pages/admin/EditDestinations";
+import Experiences from "./pages/admin/Experiences";
+import EditExperience from "./pages/admin/EditExperience";
+import AddExperience from "./pages/admin/AddExperience";
+import Activities from "./pages/admin/Activities";
+import AddActivity from "./pages/admin/AddActivity";
+import EditActivity from "./pages/admin/EditActivity";
+
 
 import ProtectedRoute from "./routes/ProtectedRoute";
 
@@ -37,6 +44,60 @@ function App() {
           </ProtectedRoute>
         }
       />
+
+      <Route
+        path="/experiences"
+        element={
+          <ProtectedRoute>
+            <Experiences />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/experiences/edit/:id"
+        element={
+          <ProtectedRoute>
+            <EditExperience />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/experiences/add"
+        element={
+          <ProtectedRoute>
+            <AddExperience />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/activities"
+        element={
+          <ProtectedRoute>
+            <Activities />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/activities/add"
+        element={
+          <ProtectedRoute>
+            <AddActivity />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/activities/edit/:id"
+        element={
+          <ProtectedRoute>
+            <EditActivity />
+          </ProtectedRoute>
+        }
+      />
+
 
       <Route
         path="/users"
@@ -108,7 +169,6 @@ function App() {
           </ProtectedRoute>
         }
       />
-
     </Routes>
   );
 }

@@ -1,6 +1,17 @@
 import {
-  LayoutDashboard, MapPinned, Users, MessageSquare,
-  Star, Heart, ThumbsUp, User, LogOut, Settings,
+  LayoutDashboard,
+  MapPinned,
+  Earth,
+  Tent,
+  Footprints,
+  Users,
+  MessageSquare,
+  Star,
+  Heart,
+  ThumbsUp,
+  User,
+  LogOut,
+  Settings,
   ChevronRight,
 } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -12,43 +23,47 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-/* ============================================================
-   Business logic below — NAV_SECTIONS, logout(), the
-   collapsed/expanded state machine, and all motion variants —
-   is unchanged from the original. Only the color tokens
-   (background, active states, accents) have been swapped to
-   match the orange/amber brand used across the rest of the app.
-============================================================ */
-
 const NAV_SECTIONS = [
   {
-    label: "Main",
+    label: "ADMIN",
     items: [
-      { name: "Dashboard",    path: "/",            icon: LayoutDashboard },
-      { name: "Destinations", path: "/destinations", icon: MapPinned,  badge: "48" },
-      { name: "Users",        path: "/users",        icon: Users },
+      { name: "Dashboard", path: "/", icon: LayoutDashboard },
+      {
+        name: "Destinations",
+        path: "/destinations",
+        icon: MapPinned,
+        badge: "48",
+      },
+      {
+        name: "Experiences",
+        path: "/experiences",
+        icon: Earth,
+        badge: "24",
+      },
+      { name: "Events", path: "/events", icon: Tent, badge: "12" },
+      {
+        name: "Activities",
+        path: "/activities",
+        icon: Footprints,
+        badge: "36",
+      },
+      { name: "Users", path: "/users", icon: Users },
     ],
   },
   {
-    label: "Engagement",
+    label: "SOCIAL",
     items: [
-      { name: "Comments",  path: "/comments",  icon: MessageSquare, badge: "12" },
-      { name: "Ratings",   path: "/ratings",   icon: Star },
-      { name: "Wishlist",  path: "/wishlist",  icon: Heart },
+      { name: "Comments", path: "/comments", icon: MessageSquare, badge: "12" },
+      { name: "Ratings", path: "/ratings", icon: Star },
+      { name: "Wishlist", path: "/wishlist", icon: Heart },
       { name: "Reactions", path: "/reactions", icon: ThumbsUp },
     ],
   },
   {
     label: "Account",
     items: [
-      { name: "Profile",  
-        path: "/profile",  
-        icon: User 
-      },
-      { name: "Settings",
-        path: "/settings",
-        icon: Settings 
-      },
+      { name: "Profile", path: "/profile", icon: User },
+      { name: "Settings", path: "/settings", icon: Settings },
     ],
   },
 ];
@@ -96,15 +111,19 @@ const Sidebar = ({ collapsed }) => {
                 transition={{ duration: 0.2 }}
                 className="overflow-hidden whitespace-nowrap"
               >
-                <p className="text-sm font-bold text-orange-50 leading-tight">Travel Bharat</p>
-                <p className="text-[10px] text-stone-400 leading-tight">Admin Console</p>
+                <p className="text-sm font-bold text-orange-50 leading-tight">
+                  Travel Bharat
+                </p>
+                <p className="text-[10px] text-stone-400 leading-tight">
+                  Admin Console
+                </p>
               </motion.div>
             )}
           </AnimatePresence>
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 overflow-y-auto overflow-x-hidden py-3 space-y-5">
+        <nav className="flex-2 overflow-y-auto overflow-x-hidden py-4 space-y-5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           {NAV_SECTIONS.map((section) => (
             <div key={section.label}>
               <AnimatePresence initial={false}>
@@ -122,7 +141,7 @@ const Sidebar = ({ collapsed }) => {
                 )}
               </AnimatePresence>
 
-              <div className="space-y-0.8 px-2">
+              <div className="space-y-0 px-2">
                 {section.items.map(({ name, path, icon: Icon, badge }) => (
                   <Tooltip key={name}>
                     <TooltipTrigger asChild>
@@ -130,10 +149,11 @@ const Sidebar = ({ collapsed }) => {
                         to={path}
                         end={path === "/"}
                         className={({ isActive }) =>
-                          `group flex items-center gap-8 px-3 py-2 rounded-[9px] text-[13.5px] font-medium transition-colors relative
-                          ${isActive
-                            ? "bg-orange-500/10 text-orange-400"
-                            : "text-stone-400 hover:bg-white/[0.06] hover:text-stone-200"
+                          `group flex items-center gap-8 px-3 py-2 rounded-[9px] text-[13.5px] font-medium transition-colors relative overflow-hidden
+                          ${
+                            isActive
+                              ? "bg-orange-500/10 text-orange-400"
+                              : "text-stone-400 hover:bg-white/[0.06] hover:text-stone-200"
                           }`
                         }
                       >
@@ -143,19 +163,27 @@ const Sidebar = ({ collapsed }) => {
                               <motion.span
                                 layoutId="active-pill"
                                 className="absolute inset-0 rounded-[9px] bg-orange-500/10"
-                                transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
+                                transition={{
+                                  type: "spring",
+                                  bounce: 0.2,
+                                  duration: 0.4,
+                                }}
                               />
                             )}
                             {/* Active bar */}
                             {isActive && (
                               <span className="absolute -left-2 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full bg-gradient-to-b from-orange-400 to-amber-500" />
                             )}
-                            <Icon size={17} className="shrink-0 relative z-10" aria-hidden="true" />
+                            <Icon
+                              size={17}
+                              className="shrink-0 relative z-10"
+                              aria-hidden="true"
+                            />
                             <motion.span
                               variants={labelVariants}
                               animate={state}
                               transition={{ duration: 0.2 }}
-                              className="overflow-hidden whitespace-nowrap flex-1 relative z-10"
+                              className="overflow-hidden whitespace-nowrap truncate flex-1 min-w-0 relative z-10"
                             >
                               {name}
                             </motion.span>
@@ -164,7 +192,7 @@ const Sidebar = ({ collapsed }) => {
                                 variants={labelVariants}
                                 animate={state}
                                 transition={{ duration: 0.2 }}
-                                className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-orange-500/15 text-orange-400 relative z-10"
+                                className="shrink-0 text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-orange-500/15 text-orange-400 relative z-10"
                               >
                                 {badge}
                               </motion.span>
@@ -176,7 +204,11 @@ const Sidebar = ({ collapsed }) => {
                     {collapsed && (
                       <TooltipContent side="right" className="text-xs">
                         {name}
-                        {badge && <span className="ml-1.5 text-orange-400">({badge})</span>}
+                        {badge && (
+                          <span className="ml-1.5 text-orange-400">
+                            ({badge})
+                          </span>
+                        )}
                       </TooltipContent>
                     )}
                   </Tooltip>
@@ -204,10 +236,17 @@ const Sidebar = ({ collapsed }) => {
                     A
                   </div>
                   <div className="min-w-0">
-                    <p className="text-xs font-semibold text-stone-200 truncate">Admin User</p>
-                    <p className="text-[10px] text-stone-500 truncate">Super Admin</p>
+                    <p className="text-xs font-semibold text-stone-200 truncate">
+                      Admin User
+                    </p>
+                    <p className="text-[10px] text-stone-500 truncate">
+                      Super Admin
+                    </p>
                   </div>
-                  <ChevronRight size={13} className="text-stone-600 shrink-0 ml-auto" />
+                  <ChevronRight
+                    size={13}
+                    className="text-stone-600 shrink-0 ml-auto"
+                  />
                 </div>
               </motion.div>
             )}
@@ -225,14 +264,16 @@ const Sidebar = ({ collapsed }) => {
                   variants={labelVariants}
                   animate={state}
                   transition={{ duration: 0.2 }}
-                  className="overflow-hidden whitespace-nowrap"
+                  className="overflow-hidden whitespace-nowrap truncate min-w-0"
                 >
                   Logout
                 </motion.span>
               </button>
             </TooltipTrigger>
             {collapsed && (
-              <TooltipContent side="right" className="text-xs">Logout</TooltipContent>
+              <TooltipContent side="right" className="text-xs">
+                Logout
+              </TooltipContent>
             )}
           </Tooltip>
         </div>

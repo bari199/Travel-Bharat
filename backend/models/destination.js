@@ -5,6 +5,22 @@ import mongoose from "mongoose";
 | Nearby Attraction Schema
 |--------------------------------------------------------------------------
 */
+const imageSchema = new mongoose.Schema(
+  {
+    url: {
+      type: String,
+      default: "",
+    },
+    public_id: {
+      type: String,
+      default: "",
+    },
+  },
+  { _id: false }
+);
+
+
+
 const nearbyAttractionSchema = new mongoose.Schema(
   {
     title: {
@@ -18,8 +34,8 @@ const nearbyAttractionSchema = new mongoose.Schema(
     },
 
     image: {
-      type: String,
-      default: "",
+      type: imageSchema,
+      default: {},
     },
 
     distance: {
@@ -42,71 +58,6 @@ const nearbyAttractionSchema = new mongoose.Schema(
       default: "",
     },
   },
-  { _id: false },
-);
-
-/*
-|--------------------------------------------------------------------------
-| Best Experience Schema
-|--------------------------------------------------------------------------
-*/
-const bestExperienceSchema = new mongoose.Schema(
-  {
-    title: {
-      type: String,
-      default: "",
-    },
-
-    subtitle: {
-      type: String,
-      default: "",
-    },
-
-    description: {
-      type: String,
-      default: "",
-    },
-
-    image: {
-      type: String,
-      default: "",
-    },
-
-    location: {
-      type: String,
-      default: "",
-    },
-
-    distance: {
-      type: String,
-      default: "",
-    },
-
-    bestTime: {
-      type: String,
-      default: "",
-    },
-
-    duration: {
-      type: String,
-      default: "",
-    },
-
-    offer: {
-      type: String,
-      default: "",
-    },
-
-    highlights: {
-      type: [String],
-      default: [],
-    },
-
-    buttonLink: {
-      type: String,
-      default: "",
-    },
-  },
   { _id: false }
 );
 
@@ -115,8 +66,15 @@ const bestExperienceSchema = new mongoose.Schema(
 | Destination Schema
 |--------------------------------------------------------------------------
 */
+
 const destinationSchema = new mongoose.Schema(
   {
+    /*
+    |--------------------------------------------------------------------------
+    | Basic Information
+    |--------------------------------------------------------------------------
+    */
+
     name: {
       type: String,
       required: true,
@@ -152,7 +110,8 @@ const destinationSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    area:{
+
+    area: {
       type: String,
       required: true,
       trim: true,
@@ -169,6 +128,11 @@ const destinationSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    /*
+    |--------------------------------------------------------------------------
+    | Travel Information
+    |--------------------------------------------------------------------------
+    */
 
     bestTimeToVisit: {
       type: String,
@@ -181,6 +145,12 @@ const destinationSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+
+    /*
+    |--------------------------------------------------------------------------
+    | Season Guide
+    |--------------------------------------------------------------------------
+    */
 
     seasonGuide: {
       summer: {
@@ -224,12 +194,12 @@ const destinationSchema = new mongoose.Schema(
     */
 
     images: {
-      type: [String],
+      type: [imageSchema],
       default: [],
     },
 
     placeImages: {
-      type: [String],
+      type: [imageSchema],
       default: [],
     },
 
@@ -257,37 +227,40 @@ const destinationSchema = new mongoose.Schema(
 
     /*
     |--------------------------------------------------------------------------
-    | Best Experiences
+    | Best Experiences (Referenced)
     |--------------------------------------------------------------------------
     */
 
-    bestExperiences: {
-      type: [bestExperienceSchema],
-      default: [],
-    },
+    bestExperiences: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Experience",
+      },
+    ],
 
-    likes: {
-      type: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "User",
-        },
-      ],
-      default: [],
-    },
-
-    dislikes: {
-      type: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "User",
-        },
-      ],
-      default: [],
-    },
     /*
     |--------------------------------------------------------------------------
-    | User Interactions
+    | User Reactions
+    |--------------------------------------------------------------------------
+    */
+
+    likes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+
+    dislikes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Statistics
     |--------------------------------------------------------------------------
     */
 
@@ -310,7 +283,10 @@ const destinationSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  },
+  }
 );
 
-export const Destination = mongoose.model("Destination", destinationSchema);
+export const Destination = mongoose.model(
+  "Destination",
+  destinationSchema
+);

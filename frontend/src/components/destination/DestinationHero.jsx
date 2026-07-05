@@ -429,7 +429,7 @@ const DestinationHero = ({ destination, setOpenLogin }) => {
           <div className="flex flex-col lg:flex-row gap-3">
             {/* Primary large image */}
             <GalleryTile
-              src={images[0]}
+              src={images[0]?.url || "https://placehold.co/600x400"}
               alt={destination?.name || "Destination"}
               onClick={() => handleOpen(0)}
               className="lg:w-[57%] h-[280px] md:h-[450px] rounded-[22px]"
@@ -440,7 +440,7 @@ const DestinationHero = ({ destination, setOpenLogin }) => {
               {images.slice(1, 5).map((img, index) => (
                 <GalleryTile
                   key={index}
-                  src={img}
+                  src={img?.url || "https://placehold.co/150x100"}
                   alt={`${destination?.name} photo ${index + 2}`}
                   onClick={() => handleOpen(index + 1)}
                   className="rounded-[18px]"
@@ -516,7 +516,7 @@ const DestinationHero = ({ destination, setOpenLogin }) => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.25, ease: "easeOut" }}
-              src={images[currentImage]}
+              src={images[currentImage]?.url || "https://placehold.co/600x400"}
               alt={`${destination?.name} — photo ${currentImage + 1}`}
               className="max-w-[88vw] max-h-[80vh] object-contain rounded-2xl shadow-2xl select-none"
               onClick={(e) => e.stopPropagation()}

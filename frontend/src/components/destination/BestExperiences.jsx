@@ -17,7 +17,11 @@ import {
   X,
   CalendarDays,
   Navigation,
+  Tag,
+  Gauge,
 } from "lucide-react";
+
+import { getExperiencesByDestination } from "@/services/Experienceapi.js";
 
 /* ─────────────────────────────────────────────
    Skeleton Card
@@ -85,16 +89,22 @@ const ExperienceCard = ({ item, index, onClick }) => {
       "
     >
       <div className="relative h-[160px] w-full overflow-hidden shrink-0">
-        <img
-          src={item.image}
-          alt={item.title}
-          loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-        />
+        {item.images?.[0] ? (
+          <img
+            src={item.images[0]}
+            alt={item.title}
+            loading="lazy"
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center bg-orange-50">
+            <Compass className="w-10 h-10 text-orange-200" />
+          </div>
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
-        {item.offer && (
+        {"Price: ₹ "+item.priceRange && (
           <Badge className="absolute top-3 left-3 bg-orange-500 hover:bg-orange-500 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full shadow-lg border-0">
-            {item.offer}
+            {"Price: ₹ "+item.priceRange}
           </Badge>
         )}
       </div>
@@ -108,6 +118,24 @@ const ExperienceCard = ({ item, index, onClick }) => {
         <h3 className="text-[16px] font-bold text-gray-900 leading-snug line-clamp-2 mt-1 group-hover:text-orange-500 transition-colors duration-300">
           {item.title}
         </h3>
+        {(item.category || item.difficultyLevel) && (
+          <div className="flex flex-wrap gap-1.5 mt-2">
+            {item.category && (
+              <InfoPill
+                icon={Tag}
+                label={item.category}
+                colorClass="bg-emerald-50 text-emerald-600"
+              />
+            )}
+            {item.difficultyLevel && (
+              <InfoPill
+                icon={Gauge}
+                label={item.difficultyLevel}
+                colorClass="bg-rose-50 text-rose-600"
+              />
+            )}
+          </div>
+        )}
         {(item.distance || item.location) && (
           <div className="flex items-center gap-1.5 mt-2.5 text-gray-500">
             <Navigation
@@ -219,6 +247,22 @@ const ExperienceDialog = ({ experience, onClose }) => {
       iconBg: "bg-indigo-500",
     },
     {
+      key: "difficulty",
+      label: "Difficulty",
+      value: experience.difficultyLevel,
+      icon: Gauge,
+      ring: "ring-rose-200",
+      iconBg: "bg-rose-500",
+    },
+    {
+      key: "category",
+      label: "Category",
+      value: experience.category,
+      icon: Tag,
+      ring: "ring-emerald-200",
+      iconBg: "bg-emerald-500",
+    },
+    {
       key: "location",
       label: "Location",
       value: !experience.distance ? experience.location : null,
@@ -258,16 +302,22 @@ const ExperienceDialog = ({ experience, onClose }) => {
         <div className="flex flex-col lg:flex-row h-full w-full overflow-hidden">
           {/* ── Left: Visual / Identity Panel ── */}
           <div className="relative w-full lg:w-[42%] shrink-0 h-[220px] lg:h-full overflow-hidden">
-            <img
-              src={experience.image}
-              alt={experience.title}
-              className="absolute inset-0 w-full h-full object-cover"
-            />
+            {experience.images?.[0] ? (
+              <img
+                src={experience.images[0]}
+                alt={experience.title}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center bg-orange-50">
+                <Compass className="w-16 h-16 text-orange-200" />
+              </div>
+            )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/5 lg:bg-gradient-to-tr lg:from-black/90 lg:via-black/35 lg:to-transparent" />
 
-            {experience.offer && (
+            {experience.priceRange && (
               <Badge className="absolute top-6 left-6 bg-orange-500 hover:bg-orange-500 text-white text-[11px] font-bold px-3 py-1 rounded-full shadow-lg border-0 z-10">
-                {experience.offer}
+                {experience.priceRange}
               </Badge>
             )}
 
@@ -413,9 +463,9 @@ const BestExperiences = ({ destination }) => {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [selectedExperience, setSelectedExperience] = useState(null);
+  const [experiences, setExperiences] = useState([]);
 
-  /* ── Business Logic (untouched) ── */
-  const experiences = destination?.bestExperiences || [];
+  const destinationId = destination?._id;
 
   const scroll = (direction) => {
     if (scrollRef.current) {
@@ -426,12 +476,45 @@ const BestExperiences = ({ destination }) => {
       });
     }
   };
-  /* ────────────────────────────── */
 
+  /* ── Fetch real experiences for this destination ── */
   useEffect(() => {
-    const t = setTimeout(() => setIsLoading(false), 900);
-    return () => clearTimeout(t);
-  }, []);
+    if (!destinationId) {
+      setExperiences([]);
+      setIsLoading(false);
+      return;
+    }
+
+    let cancelled = false;
+
+    const fetchExperiences = async () => {
+      try {
+        setIsLoading(true);
+
+        const res = await getExperiencesByDestination(destinationId);
+
+        if (!cancelled) {
+          setExperiences(res.experiences || []);
+        }
+      } catch (error) {
+        console.error("Failed to load best experiences", error);
+
+        if (!cancelled) {
+          setExperiences([]);
+        }
+      } finally {
+        if (!cancelled) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    fetchExperiences();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [destinationId]);
 
   useEffect(() => {
     const el = scrollRef.current;

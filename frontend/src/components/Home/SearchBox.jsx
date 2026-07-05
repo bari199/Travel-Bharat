@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect, useRef } from "react";
 import api from "@/lib/api";
 import { useNavigate } from "react-router-dom";
 
@@ -7,6 +7,7 @@ import {
   Flag,
   LayoutGrid,
   Search,
+  X,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -32,12 +33,31 @@ const SearchBox = () => {
 
   const [activeDropdown, setActiveDropdown] = useState("");
 
+  const wrapperRef = useRef(null);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
     }, 1200);
 
     return () => clearTimeout(timer);
+  }, []);
+
+  /* ---------------- CLOSE DROPDOWN ON OUTSIDE CLICK ---------------- */
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(e.target)
+      ) {
+        setActiveDropdown("");
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () =>
+      document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   /* ---------------- STATES ---------------- */
@@ -171,6 +191,24 @@ const SearchBox = () => {
   setActiveDropdown("");
 };
 
+  /* ---------------- CLEAR ALL ---------------- */
+
+  const handleClearAll = () => {
+    setSearchData({
+      state: "",
+      city: "",
+      category: "",
+      search: "",
+    });
+    setActiveDropdown("");
+  };
+
+  const hasActiveFilters =
+    searchData.state ||
+    searchData.city ||
+    searchData.category ||
+    searchData.search;
+
   /* ---------------- SEARCH API ---------------- */
 
   const handleSearch = async () => {
@@ -202,210 +240,185 @@ const SearchBox = () => {
     return <SearchBoxSkeleton />;
   }
 
-  return (
-    <div className="w-full flex flex-col items-center px-4 relative">
+  /* ---------------- REUSABLE FIELD ---------------- */
 
-      <div className="w-full max-w-5xl bg-white border rounded-2xl shadow-sm px-3 py-2 flex flex-col lg:flex-row items-center gap-2">
+  const renderField = ({
+    fieldKey,
+    icon,
+    label,
+    name,
+    placeholder,
+    value,
+    options,
+    onSelectField,
+    showBorder = true,
+  }) => (
+    <div
+      className={`relative flex items-center gap-2 sm:gap-3 w-full py-2.5 sm:py-1 lg:py-0 ${
+        showBorder
+          ? "border-b lg:border-b-0 lg:border-r border-gray-100 lg:pr-4"
+          : ""
+      }`}
+    >
+      <div className="bg-orange-50 p-2 rounded-full shrink-0 transition-colors group-focus-within:bg-orange-100">
+        {icon}
+      </div>
+
+      <div className="w-full min-w-0">
+        <p className="text-[11px] sm:text-xs font-semibold text-gray-700">
+          {label}
+        </p>
+
+        <Input
+          type="text"
+          name={name}
+          placeholder={placeholder}
+          value={value}
+          onChange={handleChange}
+          onFocus={() => setActiveDropdown(fieldKey)}
+          autoComplete="off"
+          className="h-5 text-xs sm:text-sm border-0 shadow-none px-0 focus-visible:ring-0 truncate"
+        />
+
+        {activeDropdown === fieldKey && options.length > 0 && (
+          <div className="absolute left-0 right-0 top-[calc(100%+0.75rem)] sm:top-16 z-50 w-full bg-white border border-gray-100 rounded-xl shadow-xl max-h-56 overflow-y-auto animate-in fade-in slide-in-from-top-1 duration-150">
+            {options.map((item, index) => (
+              <div
+                key={index}
+                onClick={() => onSelectField(item)}
+                className="px-4 py-2.5 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 cursor-pointer transition-colors"
+              >
+                {item}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="w-full flex flex-col items-center px-3 sm:px-4 relative">
+
+      <div
+        ref={wrapperRef}
+        className="w-full max-w-5xl bg-white border border-gray-100 rounded-2xl shadow-lg shadow-orange-900/5 px-4 py-4 lg:px-5 lg:py-3 flex flex-col lg:flex-row lg:items-center gap-1 lg:gap-2 transition-shadow hover:shadow-xl"
+      >
 
         {/* STATE */}
-
-        <div className="relative flex items-center gap-2 w-full lg:border-r lg:pr-4">
-          <div className="bg-gray-100 p-2 rounded-full shrink-0">
-            <MapPin className="h-4 w-4 text-gray-500" />
-          </div>
-
-          <div className="w-full">
-            <p className="text-xs font-semibold text-gray-700">
-              State
-            </p>
-
-            <Input
-              type="text"
-              name="state"
-              placeholder="Search state"
-              value={searchData.state}
-              onChange={handleChange}
-              onFocus={() => setActiveDropdown("state")}
-              className="h-5 text-xs border-0 shadow-none px-0 focus-visible:ring-0"
-            />
-
-            {activeDropdown === "state" && (
-              <div className="absolute left-0 top-16 z-50 w-full bg-white border rounded-xl shadow-lg max-h-52 overflow-y-auto">
-                {stateNames.map((item, index) => (
-                  <div
-                    key={index}
-                    onClick={() =>
-                      handleSelect("state", item)
-                    }
-                    className="px-4 py-2 text-sm hover:bg-orange-100 cursor-pointer"
-                  >
-                    {item}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+        <div className="group">
+          {renderField({
+            fieldKey: "state",
+            icon: <MapPin className="h-4 w-4 text-orange-500" />,
+            label: "State",
+            name: "state",
+            placeholder: "Search state",
+            value: searchData.state,
+            options: stateNames,
+            onSelectField: (item) => handleSelect("state", item),
+          })}
         </div>
 
         {/* CITY */}
-
-        <div className="relative flex items-center gap-2 w-full lg:border-r lg:pr-4">
-          <div className="bg-gray-100 p-2 rounded-full shrink-0">
-            <Flag className="h-4 w-4 text-gray-500" />
-          </div>
-
-          <div className="w-full">
-            <p className="text-xs font-semibold text-gray-700">
-              City
-            </p>
-
-            <Input
-              type="text"
-              name="city"
-              placeholder="Search city"
-              value={searchData.city}
-              onChange={handleChange}
-              onFocus={() => setActiveDropdown("city")}
-              className="h-5 text-xs border-0 shadow-none px-0 focus-visible:ring-0"
-            />
-
-            {activeDropdown === "city" && (
-              <div className="absolute left-0 top-16 z-50 w-full bg-white border rounded-xl shadow-lg max-h-52 overflow-y-auto">
-                {cityNames.map((item, index) => (
-                  <div
-                    key={index}
-                    onClick={() =>
-                      handleSelect("city", item)
-                    }
-                    className="px-4 py-2 text-sm hover:bg-orange-100 cursor-pointer"
-                  >
-                    {item}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+        <div className="group">
+          {renderField({
+            fieldKey: "city",
+            icon: <Flag className="h-4 w-4 text-orange-500" />,
+            label: "City",
+            name: "city",
+            placeholder: "Search city",
+            value: searchData.city,
+            options: cityNames,
+            onSelectField: (item) => handleSelect("city", item),
+          })}
         </div>
 
         {/* CATEGORY */}
-
-        <div className="relative flex items-center gap-2 w-full lg:border-r lg:pr-4">
-          <div className="bg-gray-100 p-2 rounded-full shrink-0">
-            <LayoutGrid className="h-4 w-4 text-gray-500" />
-          </div>
-
-          <div className="w-full">
-            <p className="text-xs font-semibold text-gray-700">
-              Category
-            </p>
-
-            <Input
-              type="text"
-              name="category"
-              placeholder="Category"
-              value={searchData.category}
-              onChange={handleChange}
-              onFocus={() =>
-                setActiveDropdown("category")
-              }
-              className="h-5 text-xs border-0 shadow-none px-0 focus-visible:ring-0"
-            />
-
-            {activeDropdown === "category" && (
-              <div className="absolute left-0 top-16 z-50 w-full bg-white border rounded-xl shadow-lg max-h-52 overflow-y-auto">
-                {categoryNames.map((item, index) => (
-                  <div
-                    key={index}
-                    onClick={() =>
-                      handleSelect("category", item)
-                    }
-                    className="px-4 py-2 text-sm hover:bg-orange-100 cursor-pointer"
-                  >
-                    {item}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+        <div className="group">
+          {renderField({
+            fieldKey: "category",
+            icon: <LayoutGrid className="h-4 w-4 text-orange-500" />,
+            label: "Category",
+            name: "category",
+            placeholder: "Category",
+            value: searchData.category,
+            options: categoryNames,
+            onSelectField: (item) => handleSelect("category", item),
+          })}
         </div>
 
         {/* DESTINATION */}
-
-        <div className="relative flex items-center gap-2 w-full">
-          <div className="bg-gray-100 p-2 rounded-full shrink-0">
-            <Search className="h-4 w-4 text-gray-500" />
-          </div>
-
-          <div className="w-full">
-            <p className="text-xs font-semibold text-gray-700">
-              Destination
-            </p>
-
-            <Input
-              type="text"
-              name="search"
-              placeholder="Search destination"
-              value={searchData.search}
-              onChange={handleChange}
-              onFocus={() =>
-                setActiveDropdown("destination")
-              }
-              className="h-5 text-xs border-0 shadow-none px-0 focus-visible:ring-0"
-            />
-
-            {activeDropdown === "destination" && (
-              <div className="absolute left-0 top-16 z-50 w-full bg-white border rounded-xl shadow-lg max-h-52 overflow-y-auto">
-                {destinationNames.map((item, index) => (
-                  <div
-                    key={index}
-                    onClick={() =>
-                      handleSelect("search", item)
-                    }
-                    className="px-4 py-2 text-sm hover:bg-orange-100 cursor-pointer"
-                  >
-                    {item}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+        <div className="group">
+          {renderField({
+            fieldKey: "destination",
+            icon: <Search className="h-4 w-4 text-orange-500" />,
+            label: "Destination",
+            name: "search",
+            placeholder: "Search destination",
+            value: searchData.search,
+            options: destinationNames,
+            onSelectField: (item) => handleSelect("search", item),
+            showBorder: false,
+          })}
         </div>
 
-        {/* BUTTON */}
+        {/* ACTIONS */}
+        <div className="flex items-center gap-2 w-full lg:w-auto pt-1 lg:pt-0 lg:pl-2">
+          {hasActiveFilters && (
+            <button
+              type="button"
+              onClick={handleClearAll}
+              className="hidden sm:flex items-center justify-center h-10 w-10 rounded-xl text-gray-400 hover:text-gray-600 hover:bg-gray-50 transition-colors shrink-0"
+              aria-label="Clear all filters"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          )}
 
-        <Button
-          onClick={handleSearch}
-          className="h-10 px-5 rounded-xl bg-orange-500 hover:bg-orange-600 text-sm font-medium w-full lg:w-auto"
-        >
-          <Search className="h-4 w-4 mr-2" />
-          Search
-        </Button>
+          <Button
+            onClick={handleSearch}
+            className="h-11 lg:h-10 px-5 rounded-xl bg-orange-500 hover:bg-orange-600 active:scale-[0.98] text-sm font-medium w-full lg:w-auto transition-all duration-200 shadow-md shadow-orange-500/20"
+          >
+            <Search className="h-4 w-4 mr-2" />
+            Search
+          </Button>
+        </div>
       </div>
 
       {/* RESULTS */}
 
-      <div className="mt-10 w-full max-w-5xl">
-        {destinations.map((item) => (
-          <div
-            key={item._id}
-            onClick={() =>
-              navigate(`/destination/${item._id}`)
-            }
-            className="border rounded-xl p-4 mb-4 cursor-pointer hover:shadow-md transition"
-          >
-            <h1 className="font-semibold text-lg">
-              {item.name}
-            </h1>
+      <div className="mt-8 sm:mt-10 w-full max-w-5xl">
+        {destinations.length > 0 && (
+          <p className="text-sm text-gray-500 mb-4">
+            {destinations.length} destination
+            {destinations.length > 1 ? "s" : ""} found
+          </p>
+        )}
 
-            <p className="text-sm text-gray-500 mt-1">
-              {item.city}
-            </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {destinations.map((item) => (
+            <div
+              key={item._id}
+              onClick={() =>
+                navigate(`/destination/${item._id}`)
+              }
+              className="border border-gray-100 rounded-xl p-4 cursor-pointer bg-white hover:shadow-lg hover:-translate-y-0.5 hover:border-orange-200 transition-all duration-200"
+            >
+              <h1 className="font-semibold text-base sm:text-lg text-gray-900 truncate">
+                {item.name}
+              </h1>
 
-            <p className="text-sm text-gray-500">
-              {item.state}
-            </p>
-          </div>
-        ))}
+              <p className="text-sm text-gray-500 mt-1 flex items-center gap-1">
+                <MapPin className="h-3.5 w-3.5 shrink-0" />
+                <span className="truncate">{item.city}</span>
+              </p>
+
+              <p className="text-sm text-gray-400 truncate">
+                {item.state}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
