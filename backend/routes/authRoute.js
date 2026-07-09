@@ -1,61 +1,37 @@
-import express from "express";
-import upload from "../middleware/uploadMiddleware.js";
-import adminAuth from "../middleware/authMiddleware.js";
-
-import {
-  addExperience,
-  getExperiences,
-  getSingleExperience,
-  getExperiencesByDestination,
-  updateExperience,
-  deleteExperience,
-  deleteAllExperiences,
-} from "../controllers/experienceController.js";
+import express from "express"
+import passport from "passport"
+import jwt from "jsonwebtoken"
+import { isAuthenticated } from "../middleware/isAuthenticated.js";
+import { adminLogin } from "../controllers/authController.js";
 
 const router = express.Router();
 
-/* ADD */
-router.post(
-  "/",
-  adminAuth,
-  upload.fields([
-    {
-      name: "images",
-      maxCount: 20,
-    },
-  ]),
-  addExperience
-);
+//Step-1: Redirect to Google login
+router.get("/google", passport.authenticate("google", {scope:["profile", "email"]}))
 
-/* GET ALL */
-router.get("/", getExperiences);
+router.get("/google/callback", 
 
-/* GET BY DESTINATION */
-router.get(
-  "/destination/:destinationId",
-  getExperiencesByDestination
-);
+    passport.authenticate("google", {session:false}),
+    (req, res)=>{
+        try {
+            const token = jwt.sign({id:req.user._id, email:req.user.email}, process.env.SECRET_KEY, {expiresIn:"7d"})
+            res.redirect(`${process.env.CLIENT_URL}/auth-success?token=${token}`)
+        } catch (error) {
+            console.error("Google login error:", error)
+            res.redirect(`${process.env.CLIENT_URL}/login?error=google_failed`)
+        }
+    }
+)
 
-/* DELETE ALL */
-router.delete("/", adminAuth, deleteAllExperiences);
+router.get("/me", isAuthenticated, (req, res)=>{
+    res.json({success:true, user:req.user})
+})
 
-/* GET SINGLE */
-router.get("/:id", getSingleExperience);
 
-/* UPDATE */
-router.put(
-  "/:id",
-  adminAuth,
-  upload.fields([
-    {
-      name: "images",
-      maxCount: 20,
-    },
-  ]),
-  updateExperience
-);
 
-/* DELETE */
-router.delete("/:id", adminAuth, deleteExperience);
+
+
+
+router.post("/login",adminLogin);
 
 export default router;

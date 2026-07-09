@@ -1,0 +1,291 @@
+[
+  {
+    "destination": {
+      "$oid": "6a4a3b84732595d33bf3afd7"
+    },
+    "title": "Horse Riding at Chail Cricket Ground",
+    "slug": "horse-riding-chail-cricket-ground",
+    "shortDescription": "Enjoy a scenic horse ride through pine forests surrounding the world's highest cricket ground.",
+    "description": "Horse riding is one of the most popular activities in Chail. Ride along peaceful forest trails while enjoying breathtaking Himalayan views and visit the famous Chail Cricket Ground, the world's highest cricket ground.",
+    "images": [
+      "https://images.unsplash.com/photo-1517849845537-4d257902454a",
+      "https://images.unsplash.com/photo-1506744038136-46273834b3fb"
+    ],
+    "category": "Horse Riding",
+    "activityType": "Outdoor",
+    "duration": "1-2 Hours",
+    "difficulty": "Easy",
+    "location": "Chail Cricket Ground",
+    "meetingPoint": "Horse Riding Counter near Cricket Ground Entrance",
+    "openingHours": "08:00 AM - 05:30 PM",
+    "price": 500,
+    "minimumAge": 8,
+    "maximumAge": 65,
+    "fitnessLevel": "Beginner",
+    "bestTime": "March to June & September to November",
+    "thingsToCarry": [
+      "Comfortable Clothes",
+      "Sports Shoes",
+      "Sunglasses",
+      "Water Bottle",
+      "Camera"
+    ],
+    "equipmentProvided": [
+      "Horse",
+      "Safety Helmet",
+      "Guide"
+    ],
+    "safetyTips": [
+      "Always wear the helmet.",
+      "Follow the instructor's commands.",
+      "Do not feed or disturb the horse.",
+      "Avoid sudden movements."
+    ],
+    "highlights": [
+      "Ride through pine forests",
+      "Visit world's highest cricket ground",
+      "Family-friendly activity",
+      "Beautiful mountain views"
+    ]
+  },
+  {
+    "destination": {
+      "$oid": "6a4a3b84732595d33bf3afd7"
+    },
+    "title": "Nature Walk in Chail Wildlife Sanctuary",
+    "slug": "nature-walk-chail-wildlife-sanctuary",
+    "shortDescription": "Explore peaceful forest trails rich in Himalayan flora and fauna.",
+    "description": "Take a guided nature walk through Chail Wildlife Sanctuary where visitors can spot Himalayan birds, deer, langurs and beautiful pine forests while enjoying fresh mountain air.",
+    "images": [
+      "https://images.unsplash.com/photo-1441974231531-c6227db76b6e",
+      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee"
+    ],
+    "category": "Nature Walk",
+    "activityType": "Outdoor",
+    "duration": "2-3 Hours",
+    "difficulty": "Easy",
+    "location": "Chail Wildlife Sanctuary",
+    "meetingPoint": "Sanctuary Main Gate",
+    "openingHours": "07:00 AM - 05:00 PM",
+    "price": 250,
+    "minimumAge": 5,
+    "maximumAge": 70,
+    "fitnessLevel": "Beginner",
+    "bestTime": "October to April",
+    "thingsToCarry": [
+      "Walking Shoes",
+      "Water Bottle",
+      "Binoculars",
+      "Camera",
+      "Cap"
+    ],
+    "equipmentProvided": [
+      "Nature Guide"
+    ],
+    "safetyTips": [
+      "Stay on marked trails.",
+      "Do not feed wild animals.",
+      "Avoid loud noises.",
+      "Carry enough water."
+    ],
+    "highlights": [
+      "Bird watching",
+      "Wildlife spotting",
+      "Dense pine forests",
+      "Photography opportunities"
+    ]
+  },
+  {
+    "destination": {
+      "$oid": "6a4a3b84732595d33bf3afd7"
+    },
+    "title": "Photography Tour of Chail Palace",
+    "slug": "photography-tour-chail-palace",
+    "shortDescription": "Capture stunning heritage architecture and scenic Himalayan landscapes.",
+    "description": "Explore the historic Chail Palace and its beautiful gardens while capturing royal architecture, lush greenery and panoramic mountain views.",
+    "images": [
+      "https://images.unsplash.com/photo-1467269204594-9661b134dd2b",
+      "https://images.unsplash.com/photo-1500534623283-312aade485b7"
+    ],
+    "category": "Photography",
+    "activityType": "Outdoor",
+    "duration": "2 Hours",
+    "difficulty": "Easy",
+    "location": "Chail Palace",
+    "meetingPoint": "Palace Main Entrance",
+    "openingHours": "09:00 AM - 06:00 PM",
+    "price": 200,
+    "minimumAge": 5,
+    "maximumAge": 75,
+    "fitnessLevel": "Beginner",
+    "bestTime": "Throughout the Year",
+    "thingsToCarry": [
+      "Camera",
+      "Extra Batteries",
+      "Tripod",
+      "Hat",
+      "Water Bottle"
+    ],
+    "equipmentProvided": [
+      "Photography Guide"
+    ],
+    "safetyTips": [
+      "Respect heritage property.",
+      "Avoid restricted areas.",
+      "Watch your footing on stairs."
+    ],
+    "highlights": [
+      "Historic palace",
+      "Royal architecture",
+      "Mountain views",
+      "Beautiful gardens"
+    ]
+  },
+  {
+    "destination": {
+      "$oid": "6a4a3b84732595d33bf3afd7"
+    },
+    "title": "Camping in Chail Forest",
+    "slug": "camping-in-chail-forest",
+    "shortDescription": "Spend a peaceful night under the stars surrounded by Himalayan forests.",
+    "description": "Experience overnight camping amidst pine forests with bonfire, stargazing and breathtaking sunrise views over the Himalayas.",
+    "images": [
+      "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429",
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e"
+    ],
+    "category": "Camping",
+    "activityType": "Outdoor",
+    "duration": "1 Night / 2 Days",
+    "difficulty": "Easy",
+    "location": "Chail Forest Campsite",
+    "meetingPoint": "Camping Reception Area",
+    "openingHours": "Check-in: 02:00 PM",
+    "price": 2200,
+    "minimumAge": 10,
+    "maximumAge": 65,
+    "fitnessLevel": "Beginner",
+    "bestTime": "March to June & September to November",
+    "thingsToCarry": [
+      "Warm Jacket",
+      "Torch",
+      "Personal Medicines",
+      "Power Bank",
+      "Comfortable Shoes"
+    ],
+    "equipmentProvided": [
+      "Tent",
+      "Sleeping Bag",
+      "Bonfire",
+      "Dinner",
+      "Breakfast"
+    ],
+    "safetyTips": [
+      "Stay inside campsite boundaries.",
+      "Do not leave fire unattended.",
+      "Keep food secured.",
+      "Follow camp guide instructions."
+    ],
+    "highlights": [
+      "Bonfire evening",
+      "Stargazing",
+      "Forest camping",
+      "Sunrise views"
+    ]
+  },
+  {
+    "destination": {
+      "$oid": "6a4a3b84732595d33bf3afd7"
+    },
+    "title": "Bird Watching Experience",
+    "slug": "bird-watching-chail",
+    "shortDescription": "Observe Himalayan birds in the peaceful forests of Chail.",
+    "description": "Join an early morning bird watching session guided by local experts to discover numerous Himalayan bird species in their natural habitat.",
+    "images": [
+      "https://images.unsplash.com/photo-1444464666168-49d633b86797",
+      "https://images.unsplash.com/photo-1470115636492-6d2b56f9146d"
+    ],
+    "category": "Bird Watching",
+    "activityType": "Outdoor",
+    "duration": "3 Hours",
+    "difficulty": "Easy",
+    "location": "Chail Wildlife Sanctuary",
+    "meetingPoint": "Forest Entry Gate",
+    "openingHours": "06:00 AM - 09:00 AM",
+    "price": 450,
+    "minimumAge": 6,
+    "maximumAge": 75,
+    "fitnessLevel": "Beginner",
+    "bestTime": "October to April",
+    "thingsToCarry": [
+      "Binoculars",
+      "Camera",
+      "Cap",
+      "Water Bottle",
+      "Walking Shoes"
+    ],
+    "equipmentProvided": [
+      "Bird Guide",
+      "Bird Checklist"
+    ],
+    "safetyTips": [
+      "Maintain silence.",
+      "Do not disturb birds.",
+      "Stay with the guide.",
+      "Avoid littering."
+    ],
+    "highlights": [
+      "Rare Himalayan birds",
+      "Guided tour",
+      "Photography",
+      "Peaceful forest trails"
+    ]
+  },
+  {
+    "destination": {
+      "$oid": "6a4a3b84732595d33bf3afd7"
+    },
+    "title": "Hiking to Kali Tibba Temple",
+    "slug": "hiking-kali-tibba-temple",
+    "shortDescription": "A scenic hike to the famous Kali Tibba Temple offering panoramic Himalayan views.",
+    "description": "Enjoy a moderate hike through dense forests leading to Kali Tibba Temple, one of Chail's most scenic viewpoints with magnificent sunrise and sunset vistas.",
+    "images": [
+      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b",
+      "https://images.unsplash.com/photo-1464823063530-08f10ed1a2dd"
+    ],
+    "category": "Hiking",
+    "activityType": "Outdoor",
+    "duration": "3-4 Hours",
+    "difficulty": "Moderate",
+    "location": "Kali Tibba Temple",
+    "meetingPoint": "Temple Parking Area",
+    "openingHours": "06:00 AM - 06:00 PM",
+    "price": 300,
+    "minimumAge": 12,
+    "maximumAge": 60,
+    "fitnessLevel": "Intermediate",
+    "bestTime": "March to June & September to November",
+    "thingsToCarry": [
+      "Trekking Shoes",
+      "Water Bottle",
+      "Light Snacks",
+      "Jacket",
+      "Camera"
+    ],
+    "equipmentProvided": [
+      "Local Guide",
+      "First Aid Kit"
+    ],
+    "safetyTips": [
+      "Wear proper trekking shoes.",
+      "Stay hydrated.",
+      "Avoid hiking during heavy rain.",
+      "Remain with your group."
+    ],
+    "highlights": [
+      "Temple visit",
+      "Panoramic Himalayan views",
+      "Forest trails",
+      "Sunrise & sunset photography"
+    ]
+  }
+]
