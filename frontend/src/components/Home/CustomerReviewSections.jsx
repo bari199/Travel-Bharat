@@ -37,17 +37,17 @@ const CustomerReviewsSection = () => {
   const activeReview = reviews[activeIndex];
 
   return (
-    <section className="w-full bg-[#f8f8f8] py-20 px-4 md:px-10 rounded-[30px] overflow-hidden">
+    <section className="w-full bg-[#f8f8f8] dark:bg-slate-900 py-20 px-4 md:px-10 rounded-[30px] overflow-hidden transition-colors duration-300">
       <div className="max-w-5xl mx-auto text-center relative">
 
         {/* Heading */}
         <div className="mb-16">
-          <p className="text-orange-500 uppercase tracking-[4px] text-sm font-semibold">
+          <p className="text-orange-500 dark:text-orange-400 uppercase tracking-[4px] text-sm font-semibold">
             Testimonials
           </p>
 
           <div className="flex items-center justify-center gap-2 mt-5">
-            <h2 className="text-3xl md:text-3xl font-medium text-gray-900 mt-2">
+            <h2 className="text-3xl md:text-3xl font-medium text-gray-900 dark:text-white mt-2">
               Customer Reviews
             </h2>
           </div>
@@ -77,7 +77,7 @@ const CustomerReviewsSection = () => {
                 transition={{ duration: 0.4 }}
                 className={`absolute ${
                   positions[index % positions.length]
-                } w-14 h-14 rounded-full object-cover border-4 border-white shadow-xl`}
+                } w-14 h-14 rounded-full object-cover border-4 border-white dark:border-slate-800 shadow-xl`}
               />
             );
           })}
@@ -100,7 +100,7 @@ const CustomerReviewsSection = () => {
                   <img
                     src={activeReview.image}
                     alt={activeReview.name}
-                    className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-xl"
+                    className="w-24 h-24 rounded-full object-cover border-4 border-white dark:border-slate-800 shadow-xl"
                   />
 
                   <div className="absolute -top-2 -left-2 bg-orange-500 text-white p-2 rounded-full shadow-lg">
@@ -119,17 +119,17 @@ const CustomerReviewsSection = () => {
                 </div>
 
                 {/* Review */}
-                <p className="text-gray-600 text-lg leading-relaxed mt-6 max-w-xl">
+                <p className="text-gray-600 dark:text-slate-300 text-lg leading-relaxed mt-6 max-w-xl">
                   "{activeReview.review}"
                 </p>
 
                 {/* User Info */}
                 <div className="mt-6">
-                  <h4 className="font-bold text-xl text-gray-900">
+                  <h4 className="font-bold text-xl text-gray-900 dark:text-white">
                     {activeReview.name}
                   </h4>
 
-                  <p className="text-gray-500 text-sm mt-1">
+                  <p className="text-gray-500 dark:text-slate-400 text-sm mt-1">
                     {activeReview.role}
                   </p>
                 </div>
@@ -142,8 +142,8 @@ const CustomerReviewsSection = () => {
                       onClick={() => setActiveIndex(index)}
                       className={`h-2.5 rounded-full transition-all duration-300 ${
                         activeIndex === index
-                          ? "w-8 bg-gray-900"
-                          : "w-2.5 bg-gray-300"
+                          ? "w-8 bg-gray-900 dark:bg-white"
+                          : "w-2.5 bg-gray-300 dark:bg-slate-600"
                       }`}
                     />
                   ))}

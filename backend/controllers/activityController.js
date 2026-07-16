@@ -1,6 +1,6 @@
 import { Activity } from "../models/activityModel.js";
 import { Destination } from "../models/destination.js";
-
+import { Wishlist } from "../models/wishlistModel.js";
 /*
 |--------------------------------------------------------------------------
 | Helper — Safe JSON Parse
@@ -190,7 +190,9 @@ export const getActivitiesByDestination = async (req, res) => {
 
 export const getSingleActivity = async (req, res) => {
   try {
-    const activity = await Activity.findById(req.params.id).populate(
+    const activity = await Activity.findById(
+      req.params.id
+    ).populate(
       "destination",
       "name city state category"
     );
@@ -202,12 +204,43 @@ export const getSingleActivity = async (req, res) => {
       });
     }
 
+    const commentsCount =
+      await Comment.countDocuments({
+        activity: activity._id,
+      });
+
+    const ratings =
+      await Rating.find({
+        activity: activity._id,
+      });
+
+    const averageRating =
+      ratings.length > 0
+        ? ratings.reduce(
+            (sum, r) => sum + r.rating,
+            0
+          ) / ratings.length
+        : 0;
+
+    const wishlistCount =
+      await Wishlist.countDocuments({
+        activity: activity._id,
+      });
+
     return res.status(200).json({
       success: true,
       activity,
+      stats: {
+        commentsCount,
+        averageRating,
+        wishlistCount,
+      },
     });
   } catch (error) {
-    console.error("[getSingleActivity]", error);
+    console.error(
+      "[getSingleActivity]",
+      error
+    );
 
     return res.status(errorStatus(error)).json({
       success: false,
@@ -215,6 +248,38 @@ export const getSingleActivity = async (req, res) => {
     });
   }
 };
+
+
+export const getActivityBySlug = async (req, res) => {
+  try {
+    const activity = await Activity.findOne({
+      slug: req.params.slug,
+    }).populate(
+      "destination",
+      "name city state category"
+    );
+
+    if (!activity) {
+      return res.status(404).json({
+        success: false,
+        message: "Activity not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      activity,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -384,3 +449,7 @@ export const deleteActivity = async (req, res) => {
     });
   }
 };
+
+
+
+

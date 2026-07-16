@@ -98,18 +98,18 @@ const PillList = ({ items = [], selected, onSelect, search, setSearch, placehold
   <div>
     {items.length > 6 && (
       <div className="relative mb-3">
-        <Search className="w-3.5 h-3.5 text-gray-300 absolute left-3 top-1/2 -translate-y-1/2" />
+        <Search className="w-3.5 h-3.5 text-gray-300 dark:text-slate-600 absolute left-3 top-1/2 -translate-y-1/2" />
         <Input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder={placeholder}
-          className="h-8 pl-8 text-xs rounded-lg border-gray-200 focus-visible:ring-orange-500 focus-visible:ring-offset-0"
+          className="h-8 pl-8 text-xs rounded-lg border-gray-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 focus-visible:ring-orange-500 focus-visible:ring-offset-0"
         />
       </div>
     )}
     <div className="flex flex-col gap-1 max-h-48 overflow-y-auto pr-1">
       {items.length === 0 && (
-        <p className="text-xs text-gray-300 px-3 py-2">No matches</p>
+        <p className="text-xs text-gray-300 dark:text-slate-600 px-3 py-2">No matches</p>
       )}
       {items.map((item) => (
         <button
@@ -119,7 +119,7 @@ const PillList = ({ items = [], selected, onSelect, search, setSearch, placehold
           className={`w-full text-left px-3 py-2 rounded-xl text-sm transition-colors duration-150 ${
             selected === item
               ? "bg-orange-500 text-white font-medium shadow-sm shadow-orange-200"
-              : "text-gray-600 hover:bg-orange-50 hover:text-orange-700"
+              : "text-gray-600 dark:text-slate-300 hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-700 dark:hover:text-orange-400"
           }`}
         >
           {item}
@@ -133,7 +133,7 @@ const PillList = ({ items = [], selected, onSelect, search, setSearch, placehold
    blends into the white card the way the theme's default bg-input can. */
 const FilterToggle = ({ id, label, icon: Icon, checked, onCheckedChange }) => (
   <div className="flex items-center justify-between">
-    <label htmlFor={id} className="text-sm text-gray-600 cursor-pointer flex items-center gap-1.5">
+    <label htmlFor={id} className="text-sm text-gray-600 dark:text-slate-300 cursor-pointer flex items-center gap-1.5">
       {Icon && <Icon className="w-3.5 h-3.5 text-orange-400" />}
       {label}
     </label>
@@ -141,7 +141,7 @@ const FilterToggle = ({ id, label, icon: Icon, checked, onCheckedChange }) => (
       id={id}
       checked={checked}
       onCheckedChange={onCheckedChange}
-      className="data-[state=checked]:bg-orange-500 data-[state=unchecked]:bg-gray-300 border border-transparent [&>span]:bg-white [&>span]:shadow-md"
+      className="data-[state=checked]:bg-orange-500 data-[state=unchecked]:bg-gray-300 dark:data-[state=unchecked]:bg-slate-700 border border-transparent [&>span]:bg-white [&>span]:shadow-md"
     />
   </div>
 );
@@ -239,10 +239,10 @@ const DestinationFilters = ({
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-orange-100 p-5 sticky top-24">
+    <div className="bg-white dark:bg-slate-900 rounded-2xl border border-orange-100 dark:border-slate-700 p-5 sticky top-24">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+        <h2 className="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2">
           <SlidersHorizontal className="w-4 h-4 text-orange-500" />
           Filters
           {activeChips.length > 0 && (
@@ -254,7 +254,7 @@ const DestinationFilters = ({
         <button
           type="button"
           onClick={resetAll}
-          className="text-xs text-orange-500 hover:text-orange-600 bg-orange-50 hover:bg-orange-100 px-3 py-1 rounded-full font-medium transition-colors"
+          className="text-xs text-orange-500 dark:text-orange-400 hover:text-orange-600 dark:hover:text-orange-300 bg-orange-50 dark:bg-orange-500/10 hover:bg-orange-100 dark:hover:bg-orange-500/20 px-3 py-1 rounded-full font-medium transition-colors"
         >
           Reset all
         </button>
@@ -275,7 +275,7 @@ const DestinationFilters = ({
                 type="button"
                 key={chip.key}
                 onClick={chip.clear}
-                className="flex items-center gap-1 bg-orange-50 text-orange-700 text-[11px] font-medium pl-2.5 pr-1.5 py-1 rounded-full hover:bg-orange-100 transition-colors"
+                className="flex items-center gap-1 bg-orange-50 dark:bg-orange-500/10 text-orange-700 dark:text-orange-400 text-[11px] font-medium pl-2.5 pr-1.5 py-1 rounded-full hover:bg-orange-100 dark:hover:bg-orange-500/20 transition-colors"
               >
                 {chip.label}
                 <X className="w-3 h-3" />
@@ -286,16 +286,16 @@ const DestinationFilters = ({
       </AnimatePresence>
 
       {/* Quick toggles */}
-      <div className="mb-5 pb-5 border-b border-gray-100 space-y-3">
-        <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Special</p>
+      <div className="mb-5 pb-5 border-b border-gray-100 dark:border-slate-800 space-y-3">
+        <p className="text-[11px] font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wider mb-1">Special</p>
         <FilterToggle id="featured" label="Featured only" checked={featuredOnly} onCheckedChange={setFeaturedOnly} />
         <FilterToggle id="freeEntry" label="Free entry" icon={Ticket} checked={freeEntryOnly} onCheckedChange={setFreeEntryOnly} />
         <FilterToggle id="newest" label="Newly added" icon={Sparkles} checked={sortByNewest} onCheckedChange={setSortByNewest} />
       </div>
 
       {/* Category — fixed icon grid */}
-      <div className="mb-5 pb-5 border-b border-gray-100">
-        <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-3">Category</p>
+      <div className="mb-5 pb-5 border-b border-gray-100 dark:border-slate-800">
+        <p className="text-[11px] font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wider mb-3">Category</p>
         <div className="grid grid-cols-2 gap-2">
           {CATEGORIES.map(({ value, label, icon: Icon }) => {
             const active = selectedCategory === value;
@@ -307,7 +307,7 @@ const DestinationFilters = ({
                 className={`flex items-center gap-2 px-2.5 py-2 rounded-xl text-xs font-medium transition-colors duration-150 ${
                   active
                     ? "bg-orange-500 text-white shadow-sm shadow-orange-200"
-                    : "bg-gray-50 text-gray-600 hover:bg-orange-50 hover:text-orange-700"
+                    : "bg-gray-50 dark:bg-slate-800 text-gray-600 dark:text-slate-300 hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-700 dark:hover:text-orange-400"
                 }`}
               >
                 <Icon className={`w-3.5 h-3.5 shrink-0 ${active ? "text-white" : "text-orange-400"}`} />
@@ -319,10 +319,10 @@ const DestinationFilters = ({
       </div>
 
       {/* Minimum rating */}
-      <div className="mb-5 pb-5 border-b border-gray-100">
+      <div className="mb-5 pb-5 border-b border-gray-100 dark:border-slate-800">
         <div className="flex items-center justify-between mb-3">
-          <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Minimum rating</p>
-          <span className="flex items-center gap-1 text-xs font-medium text-orange-600">
+          <p className="text-[11px] font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wider">Minimum rating</p>
+          <span className="flex items-center gap-1 text-xs font-medium text-orange-600 dark:text-orange-400">
             <Star className="w-3.5 h-3.5 fill-orange-500 text-orange-500" />
             {minRating > 0 ? minRating.toFixed(1) : "Any"}
           </span>
@@ -333,7 +333,7 @@ const DestinationFilters = ({
           min={0}
           max={5}
           step={0.5}
-          className="mb-3 [&_[role=slider]]:bg-orange-500 [&_[role=slider]]:border-orange-500 [&>span:first-child]:bg-orange-100 [&>span:first-child_span]:bg-orange-500"
+          className="mb-3 [&_[role=slider]]:bg-orange-500 [&_[role=slider]]:border-orange-500 [&>span:first-child]:bg-orange-100 dark:[&>span:first-child]:bg-slate-700 [&>span:first-child_span]:bg-orange-500"
         />
         <div className="flex flex-wrap gap-1.5">
           {[3, 3.5, 4, 4.5].map((r) => (
@@ -344,7 +344,7 @@ const DestinationFilters = ({
               className={`px-2.5 py-1 rounded-full text-[11px] font-medium transition-colors duration-150 ${
                 minRating === r
                   ? "bg-orange-500 text-white"
-                  : "bg-gray-50 text-gray-600 hover:bg-orange-50 hover:text-orange-700"
+                  : "bg-gray-50 dark:bg-slate-800 text-gray-600 dark:text-slate-300 hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-700 dark:hover:text-orange-400"
               }`}
             >
               {r}★+
@@ -354,8 +354,8 @@ const DestinationFilters = ({
       </div>
 
       {/* Entry fee */}
-      <div className="mb-5 pb-5 border-b border-gray-100">
-        <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+      <div className="mb-5 pb-5 border-b border-gray-100 dark:border-slate-800">
+        <p className="text-[11px] font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wider mb-3 flex items-center gap-1.5">
           <IndianRupee className="w-3.5 h-3.5 text-orange-400" />
           Entry fee
         </p>
@@ -368,7 +368,7 @@ const DestinationFilters = ({
               className={`px-2.5 py-1.5 rounded-full text-[11px] font-medium transition-colors duration-150 ${
                 entryFeeFilter === opt.value
                   ? "bg-orange-500 text-white shadow-sm shadow-orange-200"
-                  : "bg-gray-50 text-gray-600 hover:bg-orange-50 hover:text-orange-700"
+                  : "bg-gray-50 dark:bg-slate-800 text-gray-600 dark:text-slate-300 hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-700 dark:hover:text-orange-400"
               }`}
             >
               {opt.label}
@@ -379,8 +379,8 @@ const DestinationFilters = ({
 
       {/* Collapsible: State / City / Area / Best time / Best month */}
       <Accordion type="multiple" defaultValue={["state"]} className="w-full">
-        <AccordionItem value="state" className="border-b border-gray-100">
-          <AccordionTrigger className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider py-3 hover:no-underline hover:text-orange-500">
+        <AccordionItem value="state" className="border-b border-gray-100 dark:border-slate-800">
+          <AccordionTrigger className="text-[11px] font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wider py-3 hover:no-underline hover:text-orange-500">
             State {selectedState && <span className="ml-1 text-orange-500 normal-case">· {selectedState}</span>}
           </AccordionTrigger>
           <AccordionContent className="pb-3">
@@ -395,8 +395,8 @@ const DestinationFilters = ({
           </AccordionContent>
         </AccordionItem>
 
-        <AccordionItem value="city" className="border-b border-gray-100">
-          <AccordionTrigger className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider py-3 hover:no-underline hover:text-orange-500">
+        <AccordionItem value="city" className="border-b border-gray-100 dark:border-slate-800">
+          <AccordionTrigger className="text-[11px] font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wider py-3 hover:no-underline hover:text-orange-500">
             City {selectedCity && <span className="ml-1 text-orange-500 normal-case">· {selectedCity}</span>}
           </AccordionTrigger>
           <AccordionContent className="pb-3">
@@ -411,8 +411,8 @@ const DestinationFilters = ({
           </AccordionContent>
         </AccordionItem>
 
-        <AccordionItem value="area" className="border-b border-gray-100">
-          <AccordionTrigger className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider py-3 hover:no-underline hover:text-orange-500">
+        <AccordionItem value="area" className="border-b border-gray-100 dark:border-slate-800">
+          <AccordionTrigger className="text-[11px] font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wider py-3 hover:no-underline hover:text-orange-500">
             Area {selectedArea && <span className="ml-1 text-orange-500 normal-case">· {selectedArea}</span>}
           </AccordionTrigger>
           <AccordionContent className="pb-3">
@@ -427,8 +427,8 @@ const DestinationFilters = ({
           </AccordionContent>
         </AccordionItem>
 
-        <AccordionItem value="season" className="border-b border-gray-100">
-          <AccordionTrigger className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider py-3 hover:no-underline hover:text-orange-500">
+        <AccordionItem value="season" className="border-b border-gray-100 dark:border-slate-800">
+          <AccordionTrigger className="text-[11px] font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wider py-3 hover:no-underline hover:text-orange-500">
             Best time to visit
           </AccordionTrigger>
           <AccordionContent className="pb-3">
@@ -441,7 +441,7 @@ const DestinationFilters = ({
                   className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors duration-150 ${
                     selectedSeason === season.value
                       ? "bg-orange-500 text-white shadow-sm shadow-orange-200"
-                      : "bg-gray-50 text-gray-600 hover:bg-orange-50 hover:text-orange-700"
+                      : "bg-gray-50 dark:bg-slate-800 text-gray-600 dark:text-slate-300 hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-700 dark:hover:text-orange-400"
                   }`}
                 >
                   {season.label}
@@ -452,7 +452,7 @@ const DestinationFilters = ({
         </AccordionItem>
 
         <AccordionItem value="month" className="border-none">
-          <AccordionTrigger className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider py-3 hover:no-underline hover:text-orange-500">
+          <AccordionTrigger className="text-[11px] font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wider py-3 hover:no-underline hover:text-orange-500">
             <span className="flex items-center gap-1.5">
               <CalendarDays className="w-3.5 h-3.5 text-orange-400" />
               Best month
@@ -468,7 +468,7 @@ const DestinationFilters = ({
                   className={`px-2 py-1.5 rounded-lg text-[11px] font-medium transition-colors duration-150 ${
                     selectedMonths.includes(month)
                       ? "bg-orange-500 text-white shadow-sm shadow-orange-200"
-                      : "bg-gray-50 text-gray-600 hover:bg-orange-50 hover:text-orange-700"
+                      : "bg-gray-50 dark:bg-slate-800 text-gray-600 dark:text-slate-300 hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-700 dark:hover:text-orange-400"
                   }`}
                 >
                   {month}

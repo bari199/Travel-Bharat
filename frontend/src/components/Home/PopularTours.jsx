@@ -43,12 +43,12 @@ const TourCard = memo(function TourCard({ tour }) {
 
   return (
     <motion.div variants={cardVariants}>
-      <Card className="rounded-2xl border border-slate-200 shadow-none hover:shadow-md transition-shadow duration-300 overflow-hidden h-full">
+      <Card className="rounded-2xl border border-slate-200 dark:border-slate-700 dark:bg-slate-900 shadow-none hover:shadow-md transition-shadow duration-300 overflow-hidden h-full">
         <CardContent className="px-2 pt-0">
           {/* Image */}
-          <div className="relative w-full h-40 sm:h-44 md:h-45 rounded-xl overflow-hidden bg-slate-100">
+          <div className="relative w-full h-40 sm:h-44 md:h-45 rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800">
             {!imgLoaded && (
-              <span className="absolute inset-0 animate-pulse bg-slate-200" />
+              <span className="absolute inset-0 animate-pulse bg-slate-200 dark:bg-slate-700" />
             )}
 
             <img
@@ -68,24 +68,24 @@ const TourCard = memo(function TourCard({ tour }) {
               whileTap={{ scale: 0.85 }}
               transition={{ type: "tween", duration: 0.15 }}
               aria-label="Save tour"
-              className="absolute bottom-3 right-3 bg-white w-8 h-8 rounded-full flex items-center justify-center shadow-sm"
+              className="absolute bottom-3 right-3 bg-white dark:bg-slate-800 w-8 h-8 rounded-full flex items-center justify-center shadow-sm"
             >
               <Heart
                 className={`w-4 h-4 transition-colors duration-200 ${
-                  liked ? "fill-red-500 stroke-red-500" : "text-slate-600"
+                  liked ? "fill-red-500 stroke-red-500" : "text-slate-600 dark:text-slate-300"
                 }`}
               />
             </motion.button>
           </div>
 
           {/* Location */}
-          <div className="flex items-center gap-1 text-xs text-slate-500 mt-4">
+          <div className="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 mt-4">
             <MapPin className="w-3 h-3" />
             <span>{tour.location}</span>
           </div>
 
           {/* Title */}
-          <h3 className="text-[15px] leading-6 font-semibold text-slate-900 mt-2 line-clamp-2 min-h-[32px]">
+          <h3 className="text-[15px] leading-6 font-semibold text-slate-900 dark:text-white mt-2 line-clamp-2 min-h-[32px]">
             {tour.title}
           </h3>
 
@@ -100,23 +100,23 @@ const TourCard = memo(function TourCard({ tour }) {
               ))}
             </div>
 
-            <span className="text-sm text-slate-700 font-medium">
+            <span className="text-sm text-slate-700 dark:text-slate-300 font-medium">
               {tour.rating}
             </span>
 
-            <span className="text-sm text-slate-500">{tour.reviews}</span>
+            <span className="text-sm text-slate-500 dark:text-slate-400">{tour.reviews}</span>
           </div>
 
           {/* Bottom */}
-          <div className="flex items-center justify-between border-t border-slate-200 mt-2 pt-2">
-            <div className="flex items-center gap-1 text-sm text-slate-600">
+          <div className="flex items-center justify-between border-t border-slate-200 dark:border-slate-700 mt-2 pt-2">
+            <div className="flex items-center gap-1 text-sm text-slate-600 dark:text-slate-400">
               <Clock3 className="w-4 h-4" />
               <span>{tour.days}</span>
             </div>
 
-            <div className="text-sm text-slate-500">
+            <div className="text-sm text-slate-500 dark:text-slate-400">
               From{" "}
-              <span className="font-semibold text-slate-900">
+              <span className="font-semibold text-slate-900 dark:text-white">
                 {tour.price}
               </span>
             </div>
@@ -129,11 +129,11 @@ const TourCard = memo(function TourCard({ tour }) {
 
 const PopularTours = () => {
   return (
-    <section className="w-full py-10 sm:py-14 bg-white">
+    <section className="w-full py-10 sm:py-14 bg-white dark:bg-slate-950 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-6 sm:mb-8">
-          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900">
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
             Find Popular Tours
           </h2>
 
@@ -141,7 +141,7 @@ const PopularTours = () => {
             whileHover={{ x: 2 }}
             whileTap={{ scale: 0.96 }}
             transition={{ type: "tween", duration: 0.15 }}
-            className="flex items-center gap-2 text-sm font-medium text-slate-700 hover:text-black transition-colors"
+            className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-black dark:hover:text-white transition-colors"
           >
             See all
             <ArrowUpRight className="w-4 h-4" />

@@ -6,6 +6,7 @@ import {
   addActivity,
   getActivities,
   getSingleActivity,
+  getActivityBySlug,
   getActivitiesByDestination,
   updateActivity,
   deleteActivity,
@@ -13,45 +14,21 @@ import {
 
 const router = express.Router();
 
-/* ADD */
-router.post(
-  "/",
-  adminAuth,
-  upload.fields([
-    {
-      name: "images",
-      maxCount: 20,
-    },
-  ]),
-  addActivity
-);
-
-/* GET ALL */
 router.get("/", getActivities);
 
-/* GET BY DESTINATION */
-router.get(
-  "/destination/:destinationId",
-  getActivitiesByDestination
-);
+router.get("/destination/:destinationId", getActivitiesByDestination);
 
-/* GET SINGLE */
+router.get("/slug/:slug", getActivityBySlug);
+
 router.get("/:id", getSingleActivity);
 
-/* UPDATE */
-router.put(
-  "/:id",
-  adminAuth,
-  upload.fields([
-    {
-      name: "images",
-      maxCount: 20,
-    },
-  ]),
-  updateActivity
-);
+router.put("/:id", adminAuth, upload.fields([
+  {
+    name: "images",
+    maxCount: 20,
+  },
+]), updateActivity);
 
-/* DELETE */
 router.delete("/:id", adminAuth, deleteActivity);
 
 export default router;

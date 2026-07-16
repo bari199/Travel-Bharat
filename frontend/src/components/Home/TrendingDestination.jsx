@@ -44,11 +44,11 @@ const DestinationCard = memo(function DestinationCard({ item }) {
         whileHover={{ scale: 1.06 }}
         whileTap={{ scale: 0.97 }}
         transition={{ type: "tween", duration: 0.2, ease: "easeOut" }}
-        className="relative w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full overflow-hidden shadow-md bg-slate-100"
+        className="relative w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full overflow-hidden shadow-md bg-slate-100 dark:bg-slate-800"
       >
         {/* Lightweight shimmer placeholder until the image paints */}
         {!loaded && (
-          <span className="absolute inset-0 animate-pulse bg-slate-200" />
+          <span className="absolute inset-0 animate-pulse bg-slate-200 dark:bg-slate-700" />
         )}
 
         <img
@@ -64,11 +64,11 @@ const DestinationCard = memo(function DestinationCard({ item }) {
       </motion.div>
 
       <div className="mt-3 sm:mt-4">
-        <h3 className="text-sm sm:text-base md:text-lg font-semibold text-slate-900">
+        <h3 className="text-sm sm:text-base md:text-lg font-semibold text-slate-900 dark:text-white">
           {item.name}
         </h3>
 
-        <p className="text-xs sm:text-sm text-slate-500 mt-1">
+        <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
           {item.tours}
         </p>
       </div>
@@ -78,20 +78,20 @@ const DestinationCard = memo(function DestinationCard({ item }) {
 
 const TrendingDestinations = () => {
   return (
-    <section className="w-full bg-white py-12 sm:py-16 md:py-20">
+    <section className="w-full bg-white dark:bg-slate-950 py-12 sm:py-16 md:py-20 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-8 sm:mb-12">
-          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900">
-            <span className="text-orange-600">Trending</span>
-            <span className="text-slate-900">&nbsp;destinations</span>
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
+            <span className="text-orange-600 dark:text-orange-400">Trending</span>
+            <span className="text-slate-900 dark:text-white">&nbsp;destinations</span>
           </h2>
 
           <motion.button
             whileHover={{ x: 2 }}
             whileTap={{ scale: 0.96 }}
             transition={{ type: "tween", duration: 0.15 }}
-            className="flex items-center gap-2 text-sm font-medium text-slate-700 hover:text-black transition-colors"
+            className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-black dark:hover:text-white transition-colors"
           >
             See all
             <ArrowUpRight className="w-4 h-4" />
@@ -113,11 +113,11 @@ const TrendingDestinations = () => {
 
         {/* Slider Dots */}
         <div className="flex items-center justify-center gap-2 mt-10 sm:mt-14">
-          <span className="w-7 h-2 rounded-full bg-slate-900 transition-all duration-300" />
-          <span className="w-2 h-2 rounded-full bg-slate-300" />
-          <span className="w-2 h-2 rounded-full bg-slate-300" />
-          <span className="w-2 h-2 rounded-full bg-slate-300" />
-          <span className="w-2 h-2 rounded-full bg-slate-300" />
+          <span className="w-7 h-2 rounded-full bg-slate-900 dark:bg-white transition-all duration-300" />
+          <span className="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700" />
+          <span className="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700" />
+          <span className="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700" />
+          <span className="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700" />
         </div>
       </div>
     </section>

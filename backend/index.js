@@ -20,7 +20,9 @@ import authRoute from "./routes/authRoute.js";
 import destinationRoutes from "./routes/destinationRoutes.js";
 import experienceRoutes from "./routes/experienceRoutes.js";
 import activityRoutes from "./routes/activityRoutes.js";
-import eventRoutes from "./routes/eventRoutes.js"; // ← was MISSING
+import eventRoutes from "./routes/eventRoutes.js";
+import activityWishlistRoutes from "./routes/activityWishlistRoutes.js";
+import experienceWishlistRoutes from "./routes/experienceWishlistRoutes.js";
 
 /*
 |--------------------------------------------------------------------------
@@ -80,11 +82,12 @@ app.get("/health", (_req, res) => {
 app.use("/auth", authRoute);
 app.use("/user", userRoute);
 
-app.use("/api/destinations",destinationRoutes);
-app.use("/api/experiences",experienceRoutes);
-app.use("/api/activities",activityRoutes);
-app.use("/api/events",eventRoutes);
-
+app.use("/api/destinations", destinationRoutes);
+app.use("/api/experiences", experienceRoutes);
+app.use("/api/activities", activityRoutes);
+app.use("/api/events", eventRoutes);
+app.use("/api/activity-wishlist", activityWishlistRoutes);
+app.use("/api/experience-wishlist", experienceWishlistRoutes);
 app.use("/api/states", stateRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/search", searchRoutes);
@@ -101,12 +104,10 @@ app.use("/api/admin", adminRoutes);
 */
 app.use((req, res) => {
   console.warn(`[404] Route not found: ${req.method} ${req.originalUrl}`);
-  res
-    .status(404)
-    .json({
-      success: false,
-      message: `Route not found: ${req.method} ${req.originalUrl}`,
-    });
+  res.status(404).json({
+    success: false,
+    message: `Route not found: ${req.method} ${req.originalUrl}`,
+  });
 });
 
 /*

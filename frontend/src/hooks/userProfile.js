@@ -1,107 +1,227 @@
-import { useEffect, useMemo, useState } from "react";
-import {toast} from "sonner";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
+
 import {
   getProfile,
-  getWishlist,
+  getProfileStats,
+  getSavedItems,
   getReviews,
   getRatings,
   updateProfile,
   changePassword,
 } from "@/services/profileService";
 
-import { generateActivity } from "@/lib/generateActivity";
+import { removeWishlist } from "@/services/wishlistService";
+import { removeExperienceWishlist } from "@/services/ExperienceWishlistService";
+import { removeActivityWishlist } from "@/services/activityWishlistService";
 
 export default function useProfile() {
   const [loading, setLoading] = useState(true);
 
   const [user, setUser] = useState(null);
 
-  const [wishlist, setWishlist] = useState([]);
+  const [stats, setStats] = useState({
+    wishlist: 0,
+    reviews: 0,
+    ratings: 0,
+  });
+
+  const [saved, setSaved] = useState({
+    destinations: [],
+    experiences: [],
+    activities: [],
+  });
 
   const [reviews, setReviews] = useState([]);
 
   const [ratings, setRatings] = useState([]);
 
-  useEffect(() => {
-    loadProfile();
-  }, []);
-
-  const loadProfile = async () => {
+  const loadProfile = useCallback(async () => {
     try {
       setLoading(true);
 
       const [
-        userData,
-        wishlistData,
+        profile,
+        profileStats,
+        savedItems,
         reviewData,
         ratingData,
       ] = await Promise.all([
         getProfile(),
-        getWishlist(),
+        getProfileStats(),
+        getSavedItems(),
         getReviews(),
         getRatings(),
       ]);
 
-      setUser(userData);
-      setWishlist(wishlistData);
+      setUser(profile);
+      setStats(profileStats);
+
+      setSaved({
+        destinations: savedItems?.destinations || [],
+        experiences: savedItems?.experiences || [],
+        activities: savedItems?.activities || [],
+      });
+
       setReviews(reviewData);
       setRatings(ratingData);
     } catch (error) {
-      console.log(error);
+      toast.error(
+        error?.response?.data?.message ||
+          "Failed to load profile."
+      );
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadProfile();
+  }, [loadProfile]);
+
+  /* ============================================================
+      User Activity Timeline
+  ============================================================ */
 
   const activity = useMemo(() => {
-    return generateActivity({
-      wishlist,
-      reviews,
-      ratings,
+    const items = [];
+
+    // ================= Destination Wishlist =================
+    saved.destinations.forEach((item) => {
+      items.push({
+        _id: item._id,
+        type: "wishlist",
+        category: "destination",
+        title: "Saved Destination",
+        description: item.destination?.name,
+        createdAt: item.createdAt,
+      });
     });
-  }, [wishlist, reviews, ratings]);
 
-  const stats = {
-    wishlist: wishlist.length,
-    reviews: reviews.length,
-    ratings: ratings.length,
-  };
+    // ================= Experience Wishlist =================
+    saved.experiences.forEach((item) => {
+      items.push({
+        _id: item._id,
+        type: "wishlist",
+        category: "experience",
+        title: "Saved Experience",
+        description: item.experience?.title,
+        createdAt: item.createdAt,
+      });
+    });
 
-  const handleProfileUpdate = async (data) => {
-    const updatedUser =
-      await updateProfile(data);
+    // ================= Activity Wishlist =================
+    saved.activities.forEach((item) => {
+      items.push({
+        _id: item._id,
+        type: "wishlist",
+        category: "activity",
+        title: "Saved Activity",
+        description: item.activity?.title,
+        createdAt: item.createdAt,
+      });
+    });
 
-    setUser(updatedUser);
-  };
+    // ================= Reviews =================
+    reviews.forEach((item) => {
+      items.push({
+        _id: item._id,
+        type: "review",
+        title: "Added Review",
+        description: item.destination?.name,
+        createdAt: item.createdAt,
+      });
+    });
 
- const handlePasswordChange = async (data) => {
-  try {
-    const response = await changePassword(data);
+    // ================= Ratings =================
+    ratings.forEach((item) => {
+      items.push({
+        _id: item._id,
+        type: "rating",
+        title: `Rated ${item.rating} ★`,
+        description: item.destination?.name,
+        createdAt: item.createdAt,
+      });
+    });
 
-    toast.success(
-      response.message || "Password updated successfully"
+    return items.sort(
+      (a, b) =>
+        new Date(b.createdAt) - new Date(a.createdAt)
     );
+  }, [saved, reviews, ratings]);
 
-    return response;
+  const handleProfileUpdate = async (profileData) => {
+    try {
+      const updatedUser = await updateProfile(profileData);
+
+      setUser(updatedUser);
+
+      toast.success("Profile updated successfully.");
+
+      return updatedUser;
+    } catch (error) {
+      toast.error(
+        error?.response?.data?.message ||
+          "Failed to update profile."
+      );
+
+      throw error;
+    }
+  };
+
+  const handlePasswordChange = async (passwordData) => {
+    try {
+      const response = await changePassword(passwordData);
+
+      toast.success(response.message);
+
+      return response;
+    } catch (error) {
+      toast.error(
+        error?.response?.data?.message ||
+          "Failed to update password."
+      );
+
+      throw error;
+    }
+  };
+
+  const handleRemoveWishlist = async (item) => {
+  try {
+    if (item.type === "destination") {
+      await removeWishlist(item._id);
+    }
+
+    if (item.type === "experience") {
+      await removeExperienceWishlist(item._id);
+    }
+
+    if (item.type === "activity") {
+      await removeActivityWishlist(item._id);
+    }
+
+    toast.success("Removed from wishlist");
+
+    loadProfile();
   } catch (error) {
     toast.error(
       error?.response?.data?.message ||
-      "Failed to update password"
+        "Failed to remove wishlist."
     );
-
-    throw error;
   }
 };
 
   return {
+    loading,
     user,
     stats,
-    wishlist,
+    saved,
     reviews,
     ratings,
     activity,
-    loading,
+    loadProfile,
     handleProfileUpdate,
     handlePasswordChange,
+    handleRemoveWishlist
   };
 }

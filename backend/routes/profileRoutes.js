@@ -7,6 +7,8 @@ import {
   getUserRatings,
   getUserStats,
   updatePassword,
+  getUserWishlist,
+  getSavedItems
 } from "../controllers/profileController.js";
 
 import { isAuthenticated } from "../middleware/isAuthenticated.js";
@@ -51,5 +53,18 @@ router.get(
   isAuthenticated,
   getUserStats
 );
+
+router.get(
+  "/wishlist",
+  isAuthenticated,
+  getUserWishlist
+);
+
+router.get(
+    "/saved",
+    isAuthenticated,
+    getSavedItems
+);
+
 
 export default router;

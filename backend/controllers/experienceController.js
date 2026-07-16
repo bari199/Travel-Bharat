@@ -141,10 +141,25 @@ export const addExperience = async (req, res) => {
       tips,
     });
 
+    await Destination.findByIdAndUpdate(destination, {
+      $push: {
+        bestExperiences: experience._id,
+      },
+    });
+
+    return res.status(201).json({
+      success: true,
+      experience,
+    });
+
     // Save only Experience ID
     destinationExists.bestExperiences.push(experience._id);
 
+    console.log("Before Save:", destinationExists.bestExperiences);
+
     await destinationExists.save();
+
+    console.log("Saved Successfully");
 
     return res.status(201).json({
       success: true,
@@ -224,6 +239,20 @@ export const getSingleExperience = async (req, res) => {
 ============================ */
 
 export const getExperiencesByDestination = async (req, res) => {
+  console.log("Param:", req.params.destinationId);
+  const all = await Experience.find();
+  console.log("ALL =", all.length);
+  console.log(all.map(x => ({
+  id: x._id,
+  destination: x.destination,
+  type: typeof x.destination
+})));
+
+  const experiences = await Experience.find({
+    destination: req.params.destinationId,
+  });
+
+  console.log("MATCH =", experiences.length);
   try {
     const experiences = await Experience.find({
       destination: req.params.destinationId,
@@ -234,7 +263,6 @@ export const getExperiencesByDestination = async (req, res) => {
       total: experiences.length,
       experiences,
     });
-
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -243,19 +271,47 @@ export const getExperiencesByDestination = async (req, res) => {
   }
 };
 
+// export const getExperiencesByDestination = async (req, res) => {
+//   try {
+//     console.log("Param:", req.params.destinationId);
+
+//     const objectId = new mongoose.Types.ObjectId(req.params.destinationId);
+
+//     console.log("ObjectId:", objectId);
+
+//     const experiences = await Experience.find({
+//       destination: objectId,
+//     });
+
+//     console.log("MATCH =", experiences.length);
+
+//     res.status(200).json({
+//       success: true,
+//       total: experiences.length,
+//       experiences,
+//     });
+//   } catch (error) {
+//     console.error(error);
+
+//     res.status(500).json({
+//       success: false,
+//       message: error.message,
+//     });
+//   }
+// };
+
 /* ============================
    UPDATE EXPERIENCE
 ============================ */
 
 export const updateExperience = async (req, res) => {
   try {
-
     const experience = await Experience.findById(req.params.id);
 
     if (!experience) {
       return res.status(404).json({
-        success:false,
-        message:"Experience not found.",
+        success: false,
+        message: "Experience not found.",
       });
     }
 
@@ -282,13 +338,11 @@ export const updateExperience = async (req, res) => {
 
     const existingImages = safeParse(
       req.body.existingImages,
-      experience.images
+      experience.images,
     );
 
     const keptPublicIds = new Set(
-      existingImages
-        .map((img) => img?.public_id)
-        .filter(Boolean)
+      existingImages.map((img) => img?.public_id).filter(Boolean),
     );
 
     for (const image of experience.images || []) {
@@ -299,17 +353,19 @@ export const updateExperience = async (req, res) => {
 
     const newImageFiles = req.files?.images || [];
 
-    const images = [
-      ...existingImages,
-      ...newImageFiles.map(buildImageObject),
-    ];
+    const images = [...existingImages, ...newImageFiles.map(buildImageObject)];
 
     /* ---------------------------------------------------------
      * Other Fields
      * ---------------------------------------------------------
      */
 
-    const { highlights: rawHighlights, tips: rawTips, existingImages: _omit, ...rest } = req.body;
+    const {
+      highlights: rawHighlights,
+      tips: rawTips,
+      existingImages: _omit,
+      ...rest
+    } = req.body;
 
     const highlights = safeParse(rawHighlights, experience.highlights);
     const tips = safeParse(rawTips, experience.tips);
@@ -323,18 +379,17 @@ export const updateExperience = async (req, res) => {
         tips,
       },
       {
-        new:true,
-        runValidators:true,
-      }
+        new: true,
+        runValidators: true,
+      },
     );
 
     res.status(200).json({
-      success:true,
-      message:"Experience updated successfully.",
-      experience:updatedExperience,
+      success: true,
+      message: "Experience updated successfully.",
+      experience: updatedExperience,
     });
-
-  } catch(error){
+  } catch (error) {
     console.error("[updateExperience]", error);
 
     const status =
@@ -343,10 +398,9 @@ export const updateExperience = async (req, res) => {
         : 500;
 
     res.status(status).json({
-      success:false,
-      message:error.message,
+      success: false,
+      message: error.message,
     });
-
   }
 };
 
@@ -356,25 +410,21 @@ export const updateExperience = async (req, res) => {
 
 export const deleteExperience = async (req, res) => {
   try {
-
     const experience = await Experience.findById(req.params.id);
 
     if (!experience) {
       return res.status(404).json({
-        success:false,
-        message:"Experience not found.",
+        success: false,
+        message: "Experience not found.",
       });
     }
 
     // Remove Experience ID from Destination
-    await Destination.findByIdAndUpdate(
-      experience.destination,
-      {
-        $pull:{
-          bestExperiences: experience._id,
-        },
-      }
-    );
+    await Destination.findByIdAndUpdate(experience.destination, {
+      $pull: {
+        bestExperiences: experience._id,
+      },
+    });
 
     /*
     |--------------------------------------------------------------------------
@@ -387,18 +437,16 @@ export const deleteExperience = async (req, res) => {
     await experience.deleteOne();
 
     res.status(200).json({
-      success:true,
-      message:"Experience deleted successfully.",
+      success: true,
+      message: "Experience deleted successfully.",
     });
-
-  } catch(error){
+  } catch (error) {
     console.error("[deleteExperience]", error);
 
     res.status(500).json({
-      success:false,
-      message:error.message,
+      success: false,
+      message: error.message,
     });
-
   }
 };
 
@@ -431,10 +479,7 @@ export const deleteAllExperiences = async (req, res) => {
     | Detach From Destinations
     |--------------------------------------------------------------------------
     */
-    await Destination.updateMany(
-      {},
-      { $set: { bestExperiences: [] } }
-    );
+    await Destination.updateMany({}, { $set: { bestExperiences: [] } });
 
     /*
     |--------------------------------------------------------------------------

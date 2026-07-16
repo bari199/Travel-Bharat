@@ -21,16 +21,16 @@ const PopularThingsToDo = () => {
   }
 
   return (
-    <section className="w-full py-14 bg-white">
+    <section className="w-full py-14 bg-white dark:bg-slate-950 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
 
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <h2 className="text-3xl font-bold text-slate-900">
+          <h2 className="text-3xl font-bold text-slate-900 dark:text-white">
             Popular things to do
           </h2>
 
-          <button className="flex items-center gap-1 text-sm font-medium text-slate-600 hover:text-black transition">
+          <button className="flex items-center gap-1 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-black dark:hover:text-white transition">
             See all
             <ArrowUpRight className="w-4 h-4" />
           </button>

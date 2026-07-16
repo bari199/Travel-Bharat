@@ -1,8 +1,6 @@
 import React from "react";
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { ThemeProvider } from "./context/themeContext";
 
 import Home from "./pages/Home";
 import VerifyEmail from "./pages/VerifyEmail";
@@ -22,8 +20,15 @@ import Destination from "./pages/Destination";
 
 import Profile from "./pages/Profile";
 
+import Activity from "./pages/Activity";
+
 import DestinationListing from "./pages/DestinationListing";
 
+import ActivityListing from "./pages/ActivityListing";
+
+import ExperienceListing from "./pages/ExperienceListing";
+
+import Experience from "./pages/Experience";
 
 const router = createBrowserRouter([
   {
@@ -32,17 +37,80 @@ const router = createBrowserRouter([
       <>
         <Navbar />
         <Home />
-       
       </>
     ),
   },
 
   {
-   path: "/destinations/:stateSlug",
-    element:(
+    path: "/destinations/:stateSlug",
+    element: (
       <>
+        <Navbar />
+        <DestinationListing />
+      </>
+    ),
+  },
+  {
+  path: "/experience/:id",
+  element: (
+    <>
       <Navbar />
-      <DestinationListing/>
+      <Experience />
+    </>
+  ),
+},
+
+  {
+    path: "/experiences",
+    element: (
+      <>
+        <Navbar />
+        <ExperienceListing />
+      </>
+    ),
+  },
+
+  
+
+  {
+    path: "/activity/:slug",
+    element: (
+      <>
+        <Navbar />
+        <Activity />
+      </>
+    ),
+  },
+
+  {
+    // Scoped to a state (all activities in that state)
+    path: "/activities/:stateSlug",
+    element: (
+      <>
+        <Navbar />
+        <ActivityListing />
+      </>
+    ),
+  },
+
+  {
+    // Scoped to a state + city
+    path: "/activities/:stateSlug/:citySlug",
+    element: (
+      <>
+        <Navbar />
+        <ActivityListing />
+      </>
+    ),
+  },
+
+  {
+    // Unscoped — all activities, filterable via the sidebar
+    path: "/activities",
+    element: (
+      <>
+        <Navbar />
+        <ActivityListing />
       </>
     ),
   },
@@ -106,14 +174,16 @@ const router = createBrowserRouter([
         <Profile />
       </>
     ),
-  }
+  },
 ]);
 
 const App = () => {
   return (
-    <div>
-      <RouterProvider router={router} />
-    </div>
+    <ThemeProvider>
+      <div className="bg-background text-foreground transition-colors duration-300">
+        <RouterProvider router={router} />
+      </div>
+    </ThemeProvider>
   );
 };
 

@@ -23,17 +23,14 @@ router.post(
       maxCount: 20,
     },
   ]),
-  addExperience
+  addExperience,
 );
 
 /* GET ALL */
 router.get("/", getExperiences);
 
 /* GET BY DESTINATION */
-router.get(
-  "/destination/:destinationId",
-  getExperiencesByDestination
-);
+router.get("/destination/:destinationId", getExperiencesByDestination);
 
 /* GET SINGLE */
 router.get("/:id", getSingleExperience);
@@ -48,7 +45,7 @@ router.put(
       maxCount: 20,
     },
   ]),
-  updateExperience
+  updateExperience,
 );
 
 /* DELETE */

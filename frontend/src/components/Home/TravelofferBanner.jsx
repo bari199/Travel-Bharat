@@ -20,25 +20,25 @@ const TravelOfferBanner = () => {
   }
 
   return (
-    <section className="w-full py-14 bg-white">
+    <section className="w-full py-14 bg-white dark:bg-slate-950 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
 
         {/* Banner */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 overflow-hidden rounded-[32px] bg-[#FFF7F2] border border-orange-100">
+        <div className="grid grid-cols-1 lg:grid-cols-2 overflow-hidden rounded-[32px] bg-[#FFF7F2] dark:bg-slate-900 border border-orange-100 dark:border-slate-700">
 
           {/* Left Content */}
           <div className="flex flex-col justify-center px-8 md:px-14 py-14">
 
-            <h2 className="text-3xl md:text-4xl font-bold leading-tight text-slate-900">
+            <h2 className="text-3xl md:text-4xl font-bold leading-tight text-slate-900 dark:text-white">
               Grab up to{" "}
-              <span className="text-orange-500">35% off</span>
+              <span className="text-orange-500 dark:text-orange-400">35% off</span>
               <br />
               on your favorite
               <br />
               Indian Destination
             </h2>
 
-            <p className="text-slate-500 mt-5 text-sm md:text-base max-w-md leading-7">
+            <p className="text-slate-500 dark:text-slate-400 mt-5 text-sm md:text-base max-w-md leading-7">
               Explore Kashmir valleys, Goa beaches, Rajasthan heritage,
               Kerala backwaters, and many more unforgettable places
               across India.

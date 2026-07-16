@@ -74,7 +74,7 @@ const activitySchema = new mongoose.Schema(
 
     difficulty: {
       type: String,
-      enum: ["Easy", "Moderate", "Hard","Challenging", "Difficult", "Expert"],
+      enum: ["Easy", "Moderate", "Hard", "Challenging", "Difficult", "Expert"],
       default: "Easy",
     },
 
@@ -138,6 +138,16 @@ const activitySchema = new mongoose.Schema(
         type: String,
       },
     ],
+
+    shares: {
+      type: Number,
+      default: 0,
+    },
+
+    featured: {
+      type: Boolean,
+      default: false,
+    },
 
     highlights: [
       {

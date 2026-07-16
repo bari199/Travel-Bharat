@@ -89,9 +89,9 @@ const ExperienceCard = ({ item, index, onClick }) => {
       "
     >
       <div className="relative h-[160px] w-full overflow-hidden shrink-0">
-        {item.images?.[0] ? (
+        {item.images?.[0] ?.url ? (
           <img
-            src={item.images[0]}
+            src={item.images[0].url}
             alt={item.title}
             loading="lazy"
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
@@ -102,9 +102,9 @@ const ExperienceCard = ({ item, index, onClick }) => {
           </div>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
-        {"Price: ₹ "+item.priceRange && (
+        {"Price: ₹ " + item.priceRange && (
           <Badge className="absolute top-3 left-3 bg-orange-500 hover:bg-orange-500 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full shadow-lg border-0">
-            {"Price: ₹ "+item.priceRange}
+            {"Price: ₹ " + item.priceRange}
           </Badge>
         )}
       </div>
@@ -302,9 +302,9 @@ const ExperienceDialog = ({ experience, onClose }) => {
         <div className="flex flex-col lg:flex-row h-full w-full overflow-hidden">
           {/* ── Left: Visual / Identity Panel ── */}
           <div className="relative w-full lg:w-[42%] shrink-0 h-[220px] lg:h-full overflow-hidden">
-            {experience.images?.[0] ? (
+            {experience.images?.[0]? (
               <img
-                src={experience.images[0]}
+                src={experience.images?.[0]?.url}
                 alt={experience.title}
                 className="absolute inset-0 w-full h-full object-cover"
               />
@@ -366,7 +366,11 @@ const ExperienceDialog = ({ experience, onClose }) => {
                         <span
                           className={`w-7 h-7 rounded-full ${f.iconBg} flex items-center justify-center shadow-sm`}
                         >
-                          <f.icon size={13} strokeWidth={2.5} className="text-white" />
+                          <f.icon
+                            size={13}
+                            strokeWidth={2.5}
+                            className="text-white"
+                          />
                         </span>
                         <div>
                           <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400">
@@ -422,7 +426,11 @@ const ExperienceDialog = ({ experience, onClose }) => {
                           "
                         >
                           <span className="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center shrink-0 mt-0.5 shadow-sm shadow-orange-200">
-                            <Star size={11} fill="currentColor" className="text-white" />
+                            <Star
+                              size={11}
+                              fill="currentColor"
+                              className="text-white"
+                            />
                           </span>
                           <span className="text-[13.5px] text-slate-700 leading-snug pt-0.5">
                             {item}
@@ -492,6 +500,10 @@ const BestExperiences = ({ destination }) => {
         setIsLoading(true);
 
         const res = await getExperiencesByDestination(destinationId);
+
+        console.log("Experience Response:", res);
+        console.log(res);
+        console.log(res.experiences);
 
         if (!cancelled) {
           setExperiences(res.experiences || []);

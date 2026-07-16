@@ -101,3 +101,17 @@ export const deleteComment = async (req, res) => {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
+
+export const addActivityComment = async (req,res)=>{
+   const { activityId } = req.params;
+   const { message } = req.body;
+
+   const comment = await Comment.create({
+      activity: activityId,
+      user: req.user._id,
+      username: req.user.username,
+      message
+   });
+
+   res.status(201).json(comment);
+}

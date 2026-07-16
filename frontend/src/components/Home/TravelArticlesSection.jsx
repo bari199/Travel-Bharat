@@ -28,25 +28,25 @@ export default function TravelArticlesSection() {
   }
 
   return (
-    <section className="w-full py-16 px-4 md:px-8 bg-white">
+    <section className="w-full py-16 px-4 md:px-8 bg-white dark:bg-slate-950 transition-colors duration-300">
       <div className="max-w-7xl mx-auto">
 
         {/* Header */}
         <div className="flex items-center justify-between mb-10">
 
           <div>
-            <p className="text-orange-500 uppercase tracking-[3px] text-sm font-semibold">
+            <p className="text-orange-500 dark:text-orange-400 uppercase tracking-[3px] text-sm font-semibold">
               Latest Blogs
             </p>
 
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mt-2">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mt-2">
               Travel Articles
             </h2>
           </div>
 
           <Button
             variant="ghost"
-            className="hidden md:flex items-center gap-2 text-sm hover:bg-orange-50 hover:text-orange-500"
+            className="hidden md:flex items-center gap-2 text-sm dark:text-slate-300 hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-orange-500 dark:hover:text-orange-400"
           >
             See All
             <ArrowUpRight className="w-4 h-4" />
@@ -83,6 +83,7 @@ export default function TravelArticlesSection() {
               <div
                 className="
                   bg-white
+                  dark:bg-slate-900
                   rounded-[24px]
                   overflow-hidden
                   shadow-md
@@ -91,6 +92,7 @@ export default function TravelArticlesSection() {
                   duration-500
                   border
                   border-orange-100
+                  dark:border-slate-700
                   max-w-[360px]
                   mx-auto
                 "
@@ -118,14 +120,18 @@ export default function TravelArticlesSection() {
                       top-4
                       left-4
                       bg-white
+                      dark:bg-slate-800
                       text-orange-600
+                      dark:text-orange-400
                       hover:bg-white
+                      dark:hover:bg-slate-800
                       rounded-full
                       px-3
                       py-1
                       shadow-md
                       border
                       border-orange-100
+                      dark:border-slate-700
                     "
                   >
                     {article.category}
@@ -137,9 +143,9 @@ export default function TravelArticlesSection() {
                 <div className="p-5">
 
                   {/* Date */}
-                  <div className="flex items-center gap-2 text-xs text-gray-500 mb-3 flex-wrap">
+                  <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-slate-400 mb-3 flex-wrap">
 
-                    <CalendarDays className="w-4 h-4 text-orange-500" />
+                    <CalendarDays className="w-4 h-4 text-orange-500 dark:text-orange-400" />
 
                     <span>{article.date}</span>
 
@@ -158,7 +164,9 @@ export default function TravelArticlesSection() {
                       font-bold
                       leading-relaxed
                       text-gray-900
+                      dark:text-white
                       group-hover:text-orange-500
+                      dark:group-hover:text-orange-400
                       transition-colors
                       duration-300
                     "
@@ -174,6 +182,7 @@ export default function TravelArticlesSection() {
                       items-center
                       gap-2
                       text-orange-500
+                      dark:text-orange-400
                       font-semibold
                       hover:gap-3
                       transition-all

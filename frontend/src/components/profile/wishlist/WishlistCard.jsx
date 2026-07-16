@@ -1,61 +1,236 @@
-// ── WishlistCard.jsx ─────────────────────────────────────────────────────────
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { MapPin, Heart, Trash2 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import {
+  MapPin,
+  Heart,
+  Trash2,
+} from "lucide-react";
 
 export const WishlistCard = ({ item, onRemove }) => {
-  const destination = item?.destination;
+
+  let title = "";
+  let image = "";
+  let location = "";
+  let description = "";
+  let category = "";
+
+  // ================= Destination =================
+
+  if (item.type === "destination" && item.destination) {
+
+    title = item.destination.name || "";
+
+    image =
+      item.destination.images?.[0]?.url ||
+      item.destination.images?.[0] ||
+      "https://placehold.co/600x400/f97316/ffffff?text=Destination";
+
+    location = `${item.destination.city || ""}${
+      item.destination.state
+        ? ", " + item.destination.state
+        : ""
+    }`;
+
+    description =
+      item.destination.shortDescription || "";
+
+    category =
+      item.destination.category ||
+      "Destination";
+  }
+
+  // ================= Experience =================
+
+  else if (
+    item.type === "experience" &&
+    item.experience
+  ) {
+
+    title = item.experience.title || "";
+
+    image =
+      item.experience.images?.[0]?.url ||
+      item.experience.images?.[0] ||
+      item.experience.destination?.images?.[0]?.url ||
+      item.experience.destination?.images?.[0] ||
+      "https://placehold.co/600x400/f97316/ffffff?text=Experience";
+
+    location =
+      item.experience.location || "";
+
+    description =
+      item.experience.shortDescription || "";
+
+    category = "Experience";
+  }
+
+  // ================= Activity =================
+
+  else if (
+    item.type === "activity" &&
+    item.activity
+  ) {
+
+    title = item.activity.title || "";
+
+    image =
+      item.activity.images?.[0]?.url ||
+      item.activity.images?.[0] ||
+      item.activity.destination?.images?.[0]?.url ||
+      item.activity.destination?.images?.[0] ||
+      "https://placehold.co/600x400/f97316/ffffff?text=Activity";
+
+    location =
+      item.activity.location || "";
+
+    description =
+      item.activity.shortDescription || "";
+
+    category = "Activity";
+  }
 
   return (
-    <Card className="group overflow-hidden rounded-2xl border border-gray-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+
+    <Card
+      className="
+      group
+      overflow-hidden
+      rounded-3xl
+      border
+      bg-card
+      shadow-sm
+      transition-all
+      duration-300
+      hover:-translate-y-2
+      hover:shadow-xl
+    "
+    >
+
       {/* Image */}
+
       <div className="relative aspect-video overflow-hidden">
+
         <img
-          src={destination?.images?.[0] || "https://placehold.co/600x400/f97316/ffffff?text=Destination"}
-          alt={destination?.name}
-          className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          src={image}
+          alt={title}
+          className="
+            h-full
+            w-full
+            object-cover
+            transition-transform
+            duration-500
+            group-hover:scale-110
+          "
         />
-        {/* Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-        {/* Heart badge */}
-        <div className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 shadow-md backdrop-blur-sm">
-          <Heart className="h-4 w-4 fill-rose-500 text-rose-500" />
+
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+
+        {/* Favourite */}
+
+        <div className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur">
+
+          <Heart className="h-5 w-5 fill-rose-500 text-rose-500" />
+
         </div>
-        {/* Category pill */}
-        <div className="absolute bottom-3 left-3">
-          <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-gray-700 backdrop-blur-sm shadow-sm">
-            {destination?.category}
-          </span>
-        </div>
+
+        {/* Category */}
+
+        <Badge
+          className="
+            absolute
+            bottom-4
+            left-4
+            rounded-full
+            border-0
+            bg-white/90
+            px-3
+            py-1
+            text-gray-700
+            backdrop-blur
+          "
+        >
+          {category}
+        </Badge>
+
       </div>
 
-      <CardContent className="p-4">
-        <h3 className="font-bold text-gray-900 group-hover:text-orange-500 transition-colors leading-tight">
-          {destination?.name}
+      <CardContent className="p-6">
+
+        {/* Title */}
+
+        <h3
+          className="
+          text-lg
+          font-bold
+          text-foreground
+          transition-colors
+          group-hover:text-orange-500
+        "
+        >
+          {title}
         </h3>
 
-        <div className="mt-1 flex items-center gap-1 text-xs text-gray-400">
-          <MapPin className="h-3.5 w-3.5 text-orange-400" />
-          {destination?.city}, {destination?.state}
-        </div>
+        {/* Location */}
 
-        <p className="mt-2.5 line-clamp-2 text-sm text-gray-500 leading-relaxed">
-          {destination?.shortDescription}
+        {location && (
+
+          <div className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
+
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-100 dark:bg-orange-500/20">
+
+              <MapPin className="h-4 w-4 text-orange-500" />
+
+            </div>
+
+            <span>
+
+              {location}
+
+            </span>
+
+          </div>
+
+        )}
+
+        {/* Description */}
+
+        <p className="mt-4 line-clamp-2 text-sm leading-6 text-muted-foreground">
+
+          {description}
+
         </p>
 
-        <div className="mt-4">
-          <Button
-            size="sm"
-            variant="destructive"
-            className="w-full rounded-xl bg-rose-50 text-rose-600 hover:bg-rose-500 hover:text-white border-0 transition-all duration-200"
-            onClick={() => onRemove(item._id)}
-          >
-            <Trash2 className="mr-1.5 h-3.5 w-3.5" />
-            Remove
-          </Button>
-        </div>
+        {/* Remove Button */}
+
+        <Button
+          onClick={() => onRemove(item)}
+          className="
+            mt-6
+            h-11
+            w-full
+            rounded-2xl
+            bg-rose-50
+            text-rose-600
+            transition-all
+            duration-300
+            hover:bg-rose-500
+            hover:text-white
+            dark:bg-rose-500/10
+            dark:hover:bg-rose-500
+          "
+        >
+
+          <Trash2 className="mr-2 h-4 w-4" />
+
+          Remove from Wishlist
+
+        </Button>
+
       </CardContent>
+
     </Card>
+
   );
 };
 

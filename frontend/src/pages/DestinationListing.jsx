@@ -248,7 +248,7 @@ const DestinationListing = () => {
     (featuredOnly ? 1 : 0);
 
   return (
-    <div className="min-h-screen bg-orange-50/30">
+    <div className="min-h-screen dark:bg-slate-800 ">
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Mobile filter button */}
         <div className="lg:hidden mb-4">

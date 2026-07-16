@@ -256,16 +256,16 @@ const SearchBox = () => {
     <div
       className={`relative flex items-center gap-2 sm:gap-3 w-full py-2.5 sm:py-1 lg:py-0 ${
         showBorder
-          ? "border-b lg:border-b-0 lg:border-r border-gray-100 lg:pr-4"
+          ? "border-b lg:border-b-0 lg:border-r border-gray-100 dark:border-slate-700 lg:pr-4"
           : ""
       }`}
     >
-      <div className="bg-orange-50 p-2 rounded-full shrink-0 transition-colors group-focus-within:bg-orange-100">
+      <div className="bg-orange-50 dark:bg-slate-800 p-2 rounded-full shrink-0 transition-colors group-focus-within:bg-orange-100 dark:group-focus-within:bg-slate-700">
         {icon}
       </div>
 
       <div className="w-full min-w-0">
-        <p className="text-[11px] sm:text-xs font-semibold text-gray-700">
+        <p className="text-[11px] sm:text-xs font-semibold text-gray-700 dark:text-slate-300">
           {label}
         </p>
 
@@ -277,16 +277,16 @@ const SearchBox = () => {
           onChange={handleChange}
           onFocus={() => setActiveDropdown(fieldKey)}
           autoComplete="off"
-          className="h-5 text-xs sm:text-sm border-0 shadow-none px-0 focus-visible:ring-0 truncate"
+          className="h-5 text-xs sm:text-sm border-0 shadow-none px-0 focus-visible:ring-0 truncate dark:text-slate-100 dark:placeholder:text-slate-500"
         />
 
         {activeDropdown === fieldKey && options.length > 0 && (
-          <div className="absolute left-0 right-0 top-[calc(100%+0.75rem)] sm:top-16 z-50 w-full bg-white border border-gray-100 rounded-xl shadow-xl max-h-56 overflow-y-auto animate-in fade-in slide-in-from-top-1 duration-150">
+          <div className="absolute left-0 right-0 top-[calc(100%+0.75rem)] sm:top-16 z-50 w-full bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-700 rounded-xl shadow-xl max-h-56 overflow-y-auto animate-in fade-in slide-in-from-top-1 duration-150">
             {options.map((item, index) => (
               <div
                 key={index}
                 onClick={() => onSelectField(item)}
-                className="px-4 py-2.5 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600 cursor-pointer transition-colors"
+                className="px-4 py-2.5 text-sm text-gray-700 dark:text-slate-200 hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-orange-600 dark:hover:text-orange-400 cursor-pointer transition-colors"
               >
                 {item}
               </div>
@@ -302,7 +302,7 @@ const SearchBox = () => {
 
       <div
         ref={wrapperRef}
-        className="w-full max-w-5xl bg-white border border-gray-100 rounded-2xl shadow-lg shadow-orange-900/5 px-4 py-4 lg:px-5 lg:py-3 flex flex-col lg:flex-row lg:items-center gap-1 lg:gap-2 transition-shadow hover:shadow-xl"
+        className="w-full max-w-5xl bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-700 rounded-2xl shadow-lg shadow-orange-900/5 px-4 py-4 lg:px-5 lg:py-3 flex flex-col lg:flex-row lg:items-center gap-1 lg:gap-2 transition-shadow hover:shadow-xl"
       >
 
         {/* STATE */}
@@ -368,7 +368,7 @@ const SearchBox = () => {
             <button
               type="button"
               onClick={handleClearAll}
-              className="hidden sm:flex items-center justify-center h-10 w-10 rounded-xl text-gray-400 hover:text-gray-600 hover:bg-gray-50 transition-colors shrink-0"
+              className="hidden sm:flex items-center justify-center h-10 w-10 rounded-xl text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors shrink-0"
               aria-label="Clear all filters"
             >
               <X className="h-4 w-4" />
@@ -389,7 +389,7 @@ const SearchBox = () => {
 
       <div className="mt-8 sm:mt-10 w-full max-w-5xl">
         {destinations.length > 0 && (
-          <p className="text-sm text-gray-500 mb-4">
+          <p className="text-sm text-gray-500 dark:text-slate-400 mb-4">
             {destinations.length} destination
             {destinations.length > 1 ? "s" : ""} found
           </p>
@@ -402,18 +402,18 @@ const SearchBox = () => {
               onClick={() =>
                 navigate(`/destination/${item._id}`)
               }
-              className="border border-gray-100 rounded-xl p-4 cursor-pointer bg-white hover:shadow-lg hover:-translate-y-0.5 hover:border-orange-200 transition-all duration-200"
+              className="border border-gray-100 dark:border-slate-700 rounded-xl p-4 cursor-pointer bg-white dark:bg-slate-900 hover:shadow-lg hover:-translate-y-0.5 hover:border-orange-200 dark:hover:border-orange-500/40 transition-all duration-200"
             >
-              <h1 className="font-semibold text-base sm:text-lg text-gray-900 truncate">
+              <h1 className="font-semibold text-base sm:text-lg text-gray-900 dark:text-white truncate">
                 {item.name}
               </h1>
 
-              <p className="text-sm text-gray-500 mt-1 flex items-center gap-1">
+              <p className="text-sm text-gray-500 dark:text-slate-400 mt-1 flex items-center gap-1">
                 <MapPin className="h-3.5 w-3.5 shrink-0" />
                 <span className="truncate">{item.city}</span>
               </p>
 
-              <p className="text-sm text-gray-400 truncate">
+              <p className="text-sm text-gray-400 dark:text-slate-500 truncate">
                 {item.state}
               </p>
             </div>

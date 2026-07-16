@@ -35,14 +35,14 @@ const Hero = () => {
   }
 
   return (
-    <section className="relative w-full overflow-hidden bg-gradient-to-b from-orange-50 via-white to-white py-6 md:py-10">
+    <section className="relative w-full overflow-hidden bg-gradient-to-b from-orange-50 via-white to-white dark:from-slate-950 dark:via-slate-900 dark:to-slate-900 py-6 md:py-10 transition-colors duration-300">
 
       {/* Decorative background layer behind the carousel */}
       <div className="pointer-events-none absolute inset-0 -z-0">
         {/* soft color blobs */}
-        <div className="absolute -top-24 -left-24 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-orange-300/30 blur-3xl" />
-        <div className="absolute top-10 -right-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-sky-300/25 blur-3xl" />
-        <div className="absolute bottom-0 left-1/3 w-72 h-72 rounded-full bg-amber-200/30 blur-3xl" />
+        <div className="absolute -top-24 -left-24 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-orange-300/30 dark:bg-orange-500/10 blur-3xl" />
+        <div className="absolute top-10 -right-20 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-sky-300/25 dark:bg-sky-500/10 blur-3xl" />
+        <div className="absolute bottom-0 left-1/3 w-72 h-72 rounded-full bg-amber-200/30 dark:bg-amber-500/10 blur-3xl" />
 
         {/* faint dotted grid pattern */}
         <div
@@ -56,12 +56,12 @@ const Hero = () => {
         />
 
         {/* thin orbiting ring accents */}
-        <div className="hidden sm:block absolute top-8 right-10 w-20 h-20 rounded-full border border-orange-300/50" />
-        <div className="hidden sm:block absolute bottom-12 left-8 w-14 h-14 rounded-full border border-sky-300/50" />
+        <div className="hidden sm:block absolute top-8 right-10 w-20 h-20 rounded-full border border-orange-300/50 dark:border-orange-500/30" />
+        <div className="hidden sm:block absolute bottom-12 left-8 w-14 h-14 rounded-full border border-sky-300/50 dark:border-sky-500/30" />
 
         {/* compass / sparkle accent */}
         <svg
-          className="hidden md:block absolute top-6 left-[8%] w-8 h-8 text-orange-400/60"
+          className="hidden md:block absolute top-6 left-[8%] w-8 h-8 text-orange-400/60 dark:text-orange-400/40"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -135,8 +135,8 @@ const Hero = () => {
               ))}
             </CarouselContent>
 
-            <CarouselPrevious className="left-2 sm:left-3 top-1/2 -translate-y-1/2 z-20 h-9 w-9 sm:h-10 sm:w-10 bg-white/90 hover:bg-white border-0 shadow-lg" />
-            <CarouselNext className="right-2 sm:right-3 top-1/2 -translate-y-1/2 z-20 h-9 w-9 sm:h-10 sm:w-10 bg-white/90 hover:bg-white border-0 shadow-lg" />
+            <CarouselPrevious className="left-2 sm:left-3 top-1/2 -translate-y-1/2 z-20 h-9 w-9 sm:h-10 sm:w-10 bg-white/90 dark:bg-slate-800/90 dark:text-slate-100 hover:bg-white dark:hover:bg-slate-800 border-0 shadow-lg" />
+            <CarouselNext className="right-2 sm:right-3 top-1/2 -translate-y-1/2 z-20 h-9 w-9 sm:h-10 sm:w-10 bg-white/90 dark:bg-slate-800/90 dark:text-slate-100 hover:bg-white dark:hover:bg-slate-800 border-0 shadow-lg" />
           </Carousel>
 
           {/* <SearchBox /> */}

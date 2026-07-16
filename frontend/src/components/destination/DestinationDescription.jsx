@@ -22,6 +22,8 @@ const SeasonBlock = memo(function SeasonBlock({
   essentials,
 }) {
   return (
+
+    
     <div className="flex gap-4">
       <div
         className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 ${iconBg}`}

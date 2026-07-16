@@ -1,5 +1,19 @@
 import mongoose from "mongoose";
 
+const imageSchema = new mongoose.Schema(
+  {
+    url: {
+      type: String,
+      default: "",
+    },
+    public_id: {
+      type: String,
+      default: "",
+    },
+  },
+  { _id: false },
+);
+
 const experienceSchema = new mongoose.Schema(
   {
     destination: {
@@ -24,11 +38,10 @@ const experienceSchema = new mongoose.Schema(
       required: true,
     },
 
-    images: [
-      {
-        type: String,
-      },
-    ],
+    images: {
+      type: [imageSchema],
+      default: [],
+    },
 
     duration: {
       type: String,
@@ -65,14 +78,14 @@ const experienceSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-     highlights: {
+    highlights: {
       type: [String],
       default: [],
     },
     tips: {
       type: [String],
       default: [],
-    }
+    },
   },
   {
     timestamps: true,

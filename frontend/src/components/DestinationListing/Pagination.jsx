@@ -16,14 +16,14 @@ const Pagination = ({ currentPage, totalPages, setCurrentPage }) => {
       <button
         disabled={currentPage === 1}
         onClick={() => setCurrentPage((p) => p - 1)}
-        className="w-9 h-9 rounded-xl border border-gray-200 bg-white flex items-center justify-center disabled:opacity-30 hover:border-orange-400 hover:text-orange-500 transition"
+        className="w-9 h-9 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 flex items-center justify-center disabled:opacity-30 hover:border-orange-400 dark:text-slate-300 hover:text-orange-500 transition"
       >
         <ChevronLeft className="w-4 h-4" />
       </button>
 
       {getPages().map((page, i) =>
         page === "…" ? (
-          <span key={`ellipsis-${i}`} className="w-9 h-9 flex items-center justify-center text-gray-400 text-sm">…</span>
+          <span key={`ellipsis-${i}`} className="w-9 h-9 flex items-center justify-center text-gray-400 dark:text-slate-500 text-sm">…</span>
         ) : (
           <button
             key={page}
@@ -31,7 +31,7 @@ const Pagination = ({ currentPage, totalPages, setCurrentPage }) => {
             className={`w-9 h-9 rounded-xl text-sm font-medium transition ${
               currentPage === page
                 ? "bg-orange-500 text-white border border-orange-500"
-                : "bg-white border border-gray-200 text-gray-700 hover:border-orange-400 hover:text-orange-500"
+                : "bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 text-gray-700 dark:text-slate-300 hover:border-orange-400 hover:text-orange-500"
             }`}
           >
             {page}
@@ -42,7 +42,7 @@ const Pagination = ({ currentPage, totalPages, setCurrentPage }) => {
       <button
         disabled={currentPage === totalPages}
         onClick={() => setCurrentPage((p) => p + 1)}
-        className="w-9 h-9 rounded-xl border border-gray-200 bg-white flex items-center justify-center disabled:opacity-30 hover:border-orange-400 hover:text-orange-500 transition"
+        className="w-9 h-9 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 flex items-center justify-center disabled:opacity-30 hover:border-orange-400 dark:text-slate-300 hover:text-orange-500 transition"
       >
         <ChevronRight className="w-4 h-4" />
       </button>

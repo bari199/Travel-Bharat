@@ -14,7 +14,7 @@ export const getExperiences = async () => {
    GET SINGLE EXPERIENCE
 ========================================================== */
 
-export const getExperience = async (id) => {
+export const getSingleExperience = async (id) => {
   const response = await api.get(`/api/experiences/${id}`);
 
   return response.data;

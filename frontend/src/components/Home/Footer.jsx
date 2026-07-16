@@ -52,13 +52,13 @@ const supportLinks = [
 const FooterLinkColumn = memo(function FooterLinkColumn({ title, links }) {
   return (
     <motion.div variants={fadeUp}>
-      <h3 className="text-xl font-bold text-gray-900 mb-6">{title}</h3>
+      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">{title}</h3>
 
-      <ul className="space-y-4 text-gray-600">
+      <ul className="space-y-4 text-gray-600 dark:text-slate-300">
         {links.map((item) => (
           <li
             key={item}
-            className="hover:text-orange-500 cursor-pointer transition-colors duration-200"
+            className="hover:text-orange-500 dark:hover:text-orange-400 cursor-pointer transition-colors duration-200"
           >
             {item}
           </li>
@@ -88,7 +88,7 @@ const NewsletterForm = memo(function NewsletterForm() {
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Enter your email"
         required
-        className="h-12 rounded-xl border-gray-200 bg-white"
+        className="h-12 rounded-xl border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500"
       />
 
       <Button
@@ -103,7 +103,7 @@ const NewsletterForm = memo(function NewsletterForm() {
 
 function TravelBharatFooter() {
   return (
-    <footer className="relative w-full bg-orange-300/80 pt-14 sm:pt-20 pb-0 rounded-t-[40px] overflow-hidden">
+    <footer className="relative w-full bg-orange-300/80 dark:bg-slate-900 pt-14 sm:pt-20 pb-0 rounded-t-[40px] overflow-hidden transition-colors duration-300">
       <div className="relative z-20 w-full mx-auto px-4 md:px-8">
         {/* Top CTA */}
         <motion.div
@@ -111,20 +111,20 @@ function TravelBharatFooter() {
           whileInView="show"
           viewport={{ once: true, amount: 0.3 }}
           variants={fadeUp}
-          className="flex flex-col lg:flex-row justify-between gap-8 sm:gap-10 border-b border-gray-200 pb-10 sm:pb-12"
+          className="flex flex-col lg:flex-row justify-between gap-8 sm:gap-10 border-b border-gray-200 dark:border-slate-700 pb-10 sm:pb-12"
         >
           {/* Left */}
           <div className="flex items-start gap-4">
-            <div className="bg-orange-100 p-4 rounded-2xl shrink-0">
-              <FaPlaneDeparture className="w-6 h-6 text-orange-500" />
+            <div className="bg-orange-100 dark:bg-slate-800 p-4 rounded-2xl shrink-0">
+              <FaPlaneDeparture className="w-6 h-6 text-orange-500 dark:text-orange-400" />
             </div>
 
             <div>
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
                 Explore Travel Bharat
               </h2>
 
-              <p className="text-gray-500 mt-2 leading-relaxed text-sm sm:text-base">
+              <p className="text-gray-500 dark:text-slate-400 mt-2 leading-relaxed text-sm sm:text-base">
                 Your trusted travel partner for discovering India's beauty and
                 unforgettable destinations.
               </p>
@@ -133,7 +133,7 @@ function TravelBharatFooter() {
 
           {/* Social */}
           <div>
-            <p className="text-gray-900 font-semibold mb-4 sm:mb-5">
+            <p className="text-gray-900 dark:text-white font-semibold mb-4 sm:mb-5">
               Follow Us
             </p>
 
@@ -144,7 +144,7 @@ function TravelBharatFooter() {
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                   transition={{ type: "tween", duration: 0.15 }}
-                  className="bg-white shadow-sm rounded-full p-3 cursor-pointer hover:bg-orange-500 hover:text-white transition-colors duration-300"
+                  className="bg-white dark:bg-slate-800 shadow-sm rounded-full p-3 cursor-pointer hover:bg-orange-500 hover:text-white transition-colors duration-300"
                 >
                   <Icon className="w-5 h-5" />
                 </motion.div>
@@ -163,11 +163,11 @@ function TravelBharatFooter() {
         >
           {/* Contact */}
           <motion.div variants={fadeUp}>
-            <h3 className="text-xl font-bold text-gray-900 mb-6">Contact</h3>
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Contact</h3>
 
-            <div className="space-y-5 text-gray-600">
+            <div className="space-y-5 text-gray-600 dark:text-slate-300">
               <div className="flex gap-3">
-                <FaMapMarkerAlt className="w-5 h-5 text-orange-500 mt-1 shrink-0" />
+                <FaMapMarkerAlt className="w-5 h-5 text-orange-500 dark:text-orange-400 mt-1 shrink-0" />
                 <p>
                   Kolkata, West Bengal,
                   <br />
@@ -176,12 +176,12 @@ function TravelBharatFooter() {
               </div>
 
               <div className="flex gap-3">
-                <FaEnvelope className="w-5 h-5 text-orange-500 mt-1 shrink-0" />
+                <FaEnvelope className="w-5 h-5 text-orange-500 dark:text-orange-400 mt-1 shrink-0" />
                 <p className="break-all">support@travelbharat.com</p>
               </div>
 
               <div className="flex gap-3">
-                <FaPhoneAlt className="w-5 h-5 text-orange-500 mt-1 shrink-0" />
+                <FaPhoneAlt className="w-5 h-5 text-orange-500 dark:text-orange-400 mt-1 shrink-0" />
                 <p>+91 98765 43210</p>
               </div>
             </div>
@@ -195,9 +195,9 @@ function TravelBharatFooter() {
 
           {/* Newsletter */}
           <motion.div variants={fadeUp}>
-            <h3 className="text-xl font-bold text-gray-900 mb-6">Newsletter</h3>
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Newsletter</h3>
 
-            <p className="text-gray-600 leading-relaxed mb-6 text-sm sm:text-base">
+            <p className="text-gray-600 dark:text-slate-300 leading-relaxed mb-6 text-sm sm:text-base">
               Subscribe for travel inspiration, destination updates and useful
               travel tips from across India.
             </p>

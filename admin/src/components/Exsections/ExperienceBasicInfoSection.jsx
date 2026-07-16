@@ -81,13 +81,6 @@ const FIELDS = [
     colSpan: 2,
   },
   {
-    name: "subtitle",
-    label: "Subtitle",
-    placeholder: "Witness the first golden rays over Kanchenjunga",
-    icon: Star,
-    colSpan: 2,
-  },
-  {
     name: "shortDescription",
     label: "Short Description",
     placeholder: "One line description shown inside cards.",

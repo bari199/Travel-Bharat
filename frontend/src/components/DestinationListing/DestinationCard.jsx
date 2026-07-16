@@ -12,7 +12,7 @@ const DestinationCard = ({ destination }) => {
     <motion.div
       whileHover={{ y: -4 }}
       transition={{ duration: 0.2 }}
-      className="bg-white rounded-2xl overflow-hidden border border-orange-100 hover:shadow-xl hover:shadow-orange-100/60 transition-all duration-300"
+      className="bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-orange-100 dark:border-slate-700 hover:shadow-xl hover:shadow-orange-100/60 dark:hover:shadow-slate-950/60 transition-all duration-300"
     >
       {/* Image */}
       <div className="relative h-44 overflow-hidden">
@@ -37,30 +37,30 @@ const DestinationCard = ({ destination }) => {
 
       {/* Body */}
       <div className="p-4">
-        <div className="flex items-center gap-1.5 text-xs text-gray-400 mb-1.5">
+        <div className="flex items-center gap-1.5 text-xs text-gray-400 dark:text-slate-400 mb-1.5">
           <MapPin className="w-3.5 h-3.5 text-orange-400" />
           {destination.city}, {destination.state}
         </div>
 
-        <h3 className="text-base font-semibold text-gray-900 mb-2 truncate">
+        <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-2 truncate">
           {destination.name}
         </h3>
 
-        <span className="inline-block bg-orange-50 text-orange-700 text-[11px] font-medium px-3 py-0.5 rounded-full mb-3">
+        <span className="inline-block bg-orange-50 dark:bg-orange-500/10 text-orange-700 dark:text-orange-400 text-[11px] font-medium px-3 py-0.5 rounded-full mb-3">
           {destination.category}
         </span>
 
-        <p className="text-gray-500 text-xs leading-relaxed line-clamp-2 mb-4">
+        <p className="text-gray-500 dark:text-slate-400 text-xs leading-relaxed line-clamp-2 mb-4">
           {destination.shortDescription}
         </p>
 
         {/* Meta pills */}
         <div className="flex gap-2 mb-4">
-          <div className="flex items-center gap-1 text-xs text-gray-500 bg-gray-50 rounded-lg px-2.5 py-1.5 flex-1 min-w-0 truncate">
+          <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-slate-300 bg-gray-50 dark:bg-slate-800 rounded-lg px-2.5 py-1.5 flex-1 min-w-0 truncate">
             <Calendar className="w-3.5 h-3.5 text-orange-400 shrink-0" />
             <span className="truncate">{destination.bestTimeToVisit}</span>
           </div>
-          <div className="flex items-center gap-1 text-xs text-gray-500 bg-gray-50 rounded-lg px-2.5 py-1.5 flex-1 min-w-0 truncate">
+          <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-slate-300 bg-gray-50 dark:bg-slate-800 rounded-lg px-2.5 py-1.5 flex-1 min-w-0 truncate">
             <Ticket className="w-3.5 h-3.5 text-orange-400 shrink-0" />
             <span className="truncate">{destination.entryFee}</span>
           </div>

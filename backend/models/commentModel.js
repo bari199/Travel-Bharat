@@ -16,7 +16,7 @@ const replySchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const commentSchema = new mongoose.Schema(
@@ -27,6 +27,7 @@ const commentSchema = new mongoose.Schema(
       required: true,
       index: true,
     },
+
 
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -63,10 +64,7 @@ const commentSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
-export const Comment = mongoose.model(
-  "Comment",
-  commentSchema
-);
+export const Comment = mongoose.model("Comment", commentSchema);
