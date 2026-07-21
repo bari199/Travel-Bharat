@@ -65,7 +65,7 @@ export const EditProfileForm = ({
 
     <Card
       className="
-        rounded-3xl
+        rounded-2xl
         border
         bg-card
         shadow-sm
@@ -76,25 +76,25 @@ export const EditProfileForm = ({
 
       {/* Header */}
 
-      <CardHeader className="border-b bg-muted/30">
+      <CardHeader className="border-b bg-muted/30 py-4">
 
-        <CardTitle className="flex items-center gap-3">
+        <CardTitle className="flex items-center gap-2.5">
 
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-100 dark:bg-orange-500/20">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-orange-100 dark:bg-orange-500/20">
 
-            <UserCircle className="h-5 w-5 text-orange-500" />
+            <UserCircle className="h-4 w-4 text-orange-500" />
 
           </div>
 
           <div>
 
-            <h2 className="text-lg font-bold text-foreground">
+            <h2 className="text-sm font-bold text-foreground">
 
               Edit Profile
 
             </h2>
 
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
 
               Update your profile information
 
@@ -106,11 +106,11 @@ export const EditProfileForm = ({
 
       </CardHeader>
 
-      <CardContent className="p-6">
+      <CardContent className="p-4">
 
         <form
           onSubmit={handleSubmit}
-          className="space-y-6"
+          className="space-y-4"
         >
 
           {/* Avatar Preview */}
@@ -126,24 +126,24 @@ export const EditProfileForm = ({
                 }
                 alt="Profile"
                 className="
-                  h-28
-                  w-28
+                  h-20
+                  w-20
                   rounded-full
                   border-4
                   border-background
                   object-cover
-                  shadow-xl
+                  shadow-lg
                 "
               />
 
               <div
                 className="
                   absolute
-                  bottom-1
-                  right-1
+                  bottom-0.5
+                  right-0.5
                   flex
-                  h-10
-                  w-10
+                  h-8
+                  w-8
                   items-center
                   justify-center
                   rounded-full
@@ -152,7 +152,7 @@ export const EditProfileForm = ({
                 "
               >
 
-                <Upload className="h-4 w-4 text-white" />
+                <Upload className="h-3.5 w-3.5 text-white" />
 
               </div>
 
@@ -162,9 +162,9 @@ export const EditProfileForm = ({
 
           {/* Username */}
 
-          <div className="space-y-2">
+          <div className="space-y-1.5">
 
-            <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+            <label className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
 
               Username
 
@@ -176,10 +176,11 @@ export const EditProfileForm = ({
               onChange={handleChange}
               placeholder="Enter username"
               className="
-                h-12
-                rounded-2xl
+                h-10
+                rounded-xl
                 border-border
                 bg-background
+                text-sm
                 focus-visible:ring-orange-500
               "
             />
@@ -188,11 +189,11 @@ export const EditProfileForm = ({
 
           {/* Upload */}
 
-          <div className="space-y-2">
+          <div className="space-y-1.5">
 
-            <label className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+            <label className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
 
-              <ImageIcon className="h-4 w-4" />
+              <ImageIcon className="h-3.5 w-3.5" />
 
               Profile Photo
 
@@ -220,15 +221,17 @@ export const EditProfileForm = ({
 
               }}
               className="
-                h-12
-                rounded-2xl
+                h-10
+                rounded-xl
                 border-border
-                file:mr-4
+                text-sm
+                file:mr-3
                 file:rounded-lg
                 file:border-0
                 file:bg-orange-100
-                file:px-3
-                file:py-2
+                file:px-2.5
+                file:py-1.5
+                file:text-xs
                 file:text-orange-600
                 hover:file:bg-orange-200
               "
@@ -242,12 +245,13 @@ export const EditProfileForm = ({
             type="submit"
             disabled={loading}
             className="
-              h-12
+              h-10
               w-full
-              rounded-2xl
+              rounded-xl
               bg-gradient-to-r
               from-orange-500
               to-orange-400
+              text-sm
               text-white
               shadow-lg
               transition-all
@@ -258,7 +262,7 @@ export const EditProfileForm = ({
             "
           >
 
-            <Save className="mr-2 h-5 w-5" />
+            <Save className="mr-2 h-4 w-4" />
 
             {loading
               ? "Saving Changes..."

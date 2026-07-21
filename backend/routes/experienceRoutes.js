@@ -6,6 +6,7 @@ import {
   addExperience,
   getExperiences,
   getSingleExperience,
+  getExperienceNavbar,
   getExperiencesByDestination,
   updateExperience,
   deleteExperience,
@@ -28,6 +29,7 @@ router.post(
 
 /* GET ALL */
 router.get("/", getExperiences);
+router.get("/navbar", getExperienceNavbar);
 
 /* GET BY DESTINATION */
 router.get("/destination/:destinationId", getExperiencesByDestination);
@@ -47,6 +49,7 @@ router.put(
   ]),
   updateExperience,
 );
+
 
 /* DELETE */
 router.delete("/:id", adminAuth, deleteExperience);

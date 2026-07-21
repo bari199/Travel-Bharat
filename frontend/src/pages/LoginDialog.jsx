@@ -122,6 +122,11 @@ const LoginDialog = ({ open, setOpen, showTrigger = true, }) => {
             border-orange-200
             hover:bg-orange-50
             hover:text-orange-600
+            dark:border-slate-700
+            dark:bg-slate-900
+            dark:text-slate-200
+            dark:hover:bg-slate-800
+            dark:hover:text-orange-400
           "
         >
           Login
@@ -148,15 +153,15 @@ const LoginDialog = ({ open, setOpen, showTrigger = true, }) => {
           }}
         >
 
-          <Card className="bg-white border border-orange-100 rounded-3xl shadow-xl">
+          <Card className="bg-white border border-orange-100 rounded-3xl shadow-xl dark:bg-slate-900 dark:border-slate-700 dark:shadow-black/40">
 
             <CardHeader className="space-y-2 pb-4">
 
-              <CardTitle className="text-2xl text-center font-bold text-orange-600">
+              <CardTitle className="text-2xl text-center font-bold text-orange-600 dark:text-orange-400">
                 Welcome Back
               </CardTitle>
 
-              <p className="text-sm text-center text-orange-400">
+              <p className="text-sm text-center text-orange-400 dark:text-slate-400">
                 Login to continue your journey
               </p>
 
@@ -172,7 +177,7 @@ const LoginDialog = ({ open, setOpen, showTrigger = true, }) => {
                 {/* Email */}
                 <div className="space-y-2">
 
-                  <Label className="text-orange-700">
+                  <Label className="text-orange-700 dark:text-slate-300">
                     Email
                   </Label>
 
@@ -189,6 +194,12 @@ const LoginDialog = ({ open, setOpen, showTrigger = true, }) => {
                       border-orange-200
                       bg-orange-50
                       focus-visible:ring-orange-500
+                      dark:border-slate-700
+                      dark:bg-slate-900
+                      dark:text-slate-100
+                      dark:placeholder:text-slate-500
+                      dark:focus-visible:ring-orange-500
+                      dark:focus-visible:border-orange-500
                     "
                   />
 
@@ -199,7 +210,7 @@ const LoginDialog = ({ open, setOpen, showTrigger = true, }) => {
 
                   <div className="flex items-center justify-between">
 
-                    <Label className="text-orange-700">
+                    <Label className="text-orange-700 dark:text-slate-300">
                       Password
                     </Label>
 
@@ -209,6 +220,8 @@ const LoginDialog = ({ open, setOpen, showTrigger = true, }) => {
                         text-xs
                         text-orange-500
                         hover:text-orange-700
+                        dark:text-orange-400
+                        dark:hover:text-orange-300
                       "
                     >
                       Forgot password?
@@ -236,6 +249,12 @@ const LoginDialog = ({ open, setOpen, showTrigger = true, }) => {
                         bg-orange-50
                         pr-10
                         focus-visible:ring-orange-500
+                        dark:border-slate-700
+                        dark:bg-slate-900
+                        dark:text-slate-100
+                        dark:placeholder:text-slate-500
+                        dark:focus-visible:ring-orange-500
+                        dark:focus-visible:border-orange-500
                       "
                     />
 
@@ -252,6 +271,9 @@ const LoginDialog = ({ open, setOpen, showTrigger = true, }) => {
                         top-1/2
                         -translate-y-1/2
                         text-orange-500
+                        dark:text-slate-400
+                        dark:hover:text-orange-400
+                        transition-colors
                       "
                     >
 
@@ -288,6 +310,11 @@ const LoginDialog = ({ open, setOpen, showTrigger = true, }) => {
                     rounded-xl
                     bg-orange-600
                     hover:bg-orange-700
+                    dark:bg-orange-600
+                    dark:hover:bg-orange-500
+                    dark:text-white
+                    dark:disabled:bg-slate-700
+                    dark:disabled:text-slate-400
                   "
                 >
 
@@ -324,6 +351,10 @@ const LoginDialog = ({ open, setOpen, showTrigger = true, }) => {
                     rounded-xl
                     border-orange-200
                     hover:bg-orange-50
+                    dark:border-slate-700
+                    dark:bg-slate-900
+                    dark:text-slate-200
+                    dark:hover:bg-slate-800
                   "
                 >
 
@@ -339,13 +370,13 @@ const LoginDialog = ({ open, setOpen, showTrigger = true, }) => {
 
               </motion.div>
 
-              <p className="text-xs text-center text-orange-500">
+              <p className="text-xs text-center text-orange-500 dark:text-slate-400">
 
                 Don’t have an account?{" "}
 
                 <Link
                   to={"/signup"}
-                  className="font-medium hover:text-orange-700"
+                  className="font-medium hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300"
                 >
                   Signup
                 </Link>

@@ -10,6 +10,9 @@ export const getExperiences = async () => {
   return response.data;
 };
 
+export const getExperienceNavbar = () =>
+  api.get("/api/experiences/navbar");
+
 /* ==========================================================
    GET SINGLE EXPERIENCE
 ========================================================== */

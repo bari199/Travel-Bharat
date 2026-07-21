@@ -46,6 +46,7 @@ const activitySchema = new mongoose.Schema(
       enum: [
         "Adventure",
         "Nature",
+        "Museum Tour",
         "Wildlife",
         "Water Sports",
         "Snow",

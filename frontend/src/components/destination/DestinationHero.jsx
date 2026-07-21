@@ -25,7 +25,7 @@ import api from "@/lib/api";
 |--------------------------------------------------------------------------
 */
 const HeroSkeleton = () => (
-  <section className="w-full bg-white py-8">
+  <section className="w-full bg-white dark:bg-slate-900 py-8">
     <div className="max-w-5xl mx-auto px-5 lg:px-2 space-y-5">
       {/* Breadcrumb */}
       <div className="flex items-center gap-2">
@@ -289,12 +289,12 @@ const DestinationHero = ({ destination, setOpenLogin }) => {
   |--------------------------------------------------------------------------
   */
   return (
-    <section className="w-full bg-white py-8">
+    <section className="w-full bg-white dark:bg-slate-900 py-8">
       <div className="max-w-5xl mx-auto px-5 lg:px-2">
 
         {/* ── Breadcrumb ── */}
         <nav
-          className="flex items-center gap-1.5 text-xs text-gray-400 mb-5 flex-wrap"
+          className="flex items-center gap-1.5 text-xs text-gray-400 dark:text-slate-500 mb-5 flex-wrap"
           aria-label="Breadcrumb"
         >
           {["Home", "Tours", destination?.state, destination?.city].map(
@@ -303,14 +303,14 @@ const DestinationHero = ({ destination, setOpenLogin }) => {
                 <span
                   className={
                     i === arr.length - 1
-                      ? "text-gray-700 font-semibold"
-                      : "hover:text-gray-600 cursor-pointer transition"
+                      ? "text-gray-700 dark:text-slate-300 font-semibold"
+                      : "hover:text-gray-600 dark:hover:text-slate-300 cursor-pointer transition"
                   }
                 >
                   {crumb}
                 </span>
                 {i < arr.length - 1 && (
-                  <ChevronRight size={12} className="text-gray-300" />
+                  <ChevronRight size={12} className="text-gray-300 dark:text-slate-600" />
                 )}
               </React.Fragment>
             )
@@ -319,13 +319,13 @@ const DestinationHero = ({ destination, setOpenLogin }) => {
 
         {/* ── Badge tags ── */}
         <div className="flex items-center gap-2 mb-5 flex-wrap">
-          <Badge className="bg-orange-100 text-orange-600 hover:bg-orange-100 border-0 text-xs font-semibold px-3 py-1 rounded-full gap-1">
+          <Badge className="bg-orange-100 dark:bg-orange-500/15 text-orange-600 hover:bg-orange-100 border-0 text-xs font-semibold px-3 py-1 rounded-full gap-1">
             <BadgePercent size={11} />
             Best Seller
           </Badge>
           <Badge
             variant="outline"
-            className="text-gray-600 border-gray-200 text-xs font-medium px-3 py-1 rounded-full gap-1"
+            className="text-gray-600 dark:text-slate-300 border-gray-200 dark:border-slate-700 text-xs font-medium px-3 py-1 rounded-full gap-1"
           >
             <CheckCircle2 size={11} className="text-green-500" />
             Free Cancellation
@@ -335,19 +335,19 @@ const DestinationHero = ({ destination, setOpenLogin }) => {
         {/* ── Title row ── */}
         <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-5 mb-7">
           <div className="max-w-2xl">
-            <h1 className="text-2xl lg:text-[1.85rem] font-extrabold text-slate-900 leading-snug tracking-tight">
+            <h1 className="text-2xl lg:text-[1.85rem] font-extrabold text-slate-900 dark:text-slate-100 leading-snug tracking-tight">
               {destination?.title}
             </h1>
 
             {/* Meta strip */}
-            <div className="flex flex-wrap items-center gap-4 mt-3 text-sm text-gray-500">
+            <div className="flex flex-wrap items-center gap-4 mt-3 text-sm text-gray-500 dark:text-slate-400">
               {/* Stars */}
               <div className="flex items-center gap-1.5">
                 <StarRow rating={averageRating} />
-                <span className="font-bold text-gray-800 text-sm">
+                <span className="font-bold text-gray-800 dark:text-slate-200 text-sm">
                   {averageRating > 0 ? averageRating.toFixed(1) : "—"}
                 </span>
-                <span className="text-gray-400 text-xs">
+                <span className="text-gray-400 dark:text-slate-500 text-xs">
                   ({totalRatings} {totalRatings === 1 ? "review" : "reviews"})
                 </span>
               </div>
@@ -356,7 +356,7 @@ const DestinationHero = ({ destination, setOpenLogin }) => {
               <span className="hidden sm:block w-px h-4 bg-gray-200" />
 
               {/* Location */}
-              <div className="flex items-center gap-1 text-gray-500 text-xs">
+              <div className="flex items-center gap-1 text-gray-500 dark:text-slate-400 text-xs">
                 <MapPin size={13} className="text-orange-400 shrink-0" />
                 <span>{destination?.location}</span>
               </div>
@@ -365,10 +365,10 @@ const DestinationHero = ({ destination, setOpenLogin }) => {
               <span className="hidden sm:block w-px h-4 bg-gray-200" />
 
               {/* Visitors */}
-              <div className="flex items-center gap-1 text-xs text-gray-500">
+              <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-slate-400">
                 <Users size={13} className="text-blue-400 shrink-0" />
                 <span>
-                  <strong className="text-gray-800">
+                  <strong className="text-gray-800 dark:text-slate-200">
                     {destination?.totalVisitors || "30K+"}
                   </strong>{" "}
                   visitors
@@ -383,7 +383,7 @@ const DestinationHero = ({ destination, setOpenLogin }) => {
             <button
               onClick={handleShare}
               title="Copy link"
-              className="flex items-center gap-2 text-sm text-gray-500 px-3 py-2 rounded-full border border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-all"
+              className="flex items-center gap-2 text-sm text-gray-500 dark:text-slate-400 px-3 py-2 rounded-full border border-gray-200 dark:border-slate-700 hover:border-gray-300 dark:hover:border-slate-600 hover:bg-gray-50 dark:hover:bg-slate-800 transition-all"
             >
               {copied ? (
                 <>
@@ -407,8 +407,8 @@ const DestinationHero = ({ destination, setOpenLogin }) => {
               title={isWishlisted ? "Remove from wishlist" : "Save to wishlist"}
               className={`flex items-center gap-2 text-sm px-3 py-2 rounded-full border transition-all ${
                 isWishlisted
-                  ? "bg-red-50 border-red-200 text-red-500"
-                  : "border-gray-200 text-gray-500 hover:border-red-200 hover:bg-red-50 hover:text-red-400"
+                  ? "bg-red-50 dark:bg-red-500/10 border-red-200 dark:border-red-500/30 text-red-500"
+                  : "border-gray-200 dark:border-slate-700 text-gray-500 dark:text-slate-400 hover:border-red-200 hover:bg-red-50 hover:text-red-400"
               }`}
             >
               <Heart
@@ -468,7 +468,7 @@ const DestinationHero = ({ destination, setOpenLogin }) => {
           </div>
         ) : (
           /* No images fallback */
-          <div className="w-full h-[350px] rounded-3xl bg-gray-100 border border-gray-200 flex flex-col items-center justify-center gap-3 text-gray-400">
+          <div className="w-full h-[350px] rounded-3xl bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 flex flex-col items-center justify-center gap-3 text-gray-400 dark:text-slate-500">
             <ImageOff size={40} strokeWidth={1.5} />
             <p className="text-sm font-medium">No images available</p>
           </div>
@@ -539,7 +539,7 @@ const DestinationHero = ({ destination, setOpenLogin }) => {
                     onClick={(e) => { e.stopPropagation(); setCurrentImage(i); }}
                     className={`rounded-full transition-all duration-200 ${
                       i === currentImage
-                        ? "w-5 h-1.5 bg-white"
+                        ? "w-5 h-1.5 bg-white dark:bg-slate-900"
                         : "w-1.5 h-1.5 bg-white/40 hover:bg-white/60"
                     }`}
                   />

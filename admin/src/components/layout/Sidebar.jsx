@@ -93,7 +93,7 @@ const Sidebar = ({ collapsed }) => {
         variants={sidebarVariants}
         animate={state}
         transition={{ duration: 0.1, ease: [0.1, 0, 0.1, 0] }}
-        className="flex flex-col h-screen bg-gradient-to-br from-stone-900 via-stone-900 to-neutral-900 overflow-hidden shrink-0 z-30"
+        className="flex flex-col fixed h-screen bg-gradient-to-br from-stone-900 via-stone-900 to-neutral-900 overflow-hidden shrink-0 z-40"
         aria-label="Sidebar navigation"
       >
         {/* Logo */}

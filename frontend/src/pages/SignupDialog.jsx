@@ -104,7 +104,7 @@ const SignupDialog = () => {
 
       <DialogTrigger asChild>
 
-        <Button className="rounded-full bg-orange-600 hover:bg-orange-700">
+        <Button className="rounded-full bg-orange-600 hover:bg-orange-700 dark:bg-orange-600 dark:hover:bg-orange-500 dark:text-white">
           Signup
         </Button>
 
@@ -128,15 +128,15 @@ const SignupDialog = () => {
           }}
         >
 
-          <Card className="bg-white border border-orange-100 rounded-3xl shadow-xl">
+          <Card className="bg-white border border-orange-100 rounded-3xl shadow-xl dark:bg-slate-900 dark:border-slate-700 dark:shadow-black/40">
 
             <CardHeader className="space-y-2 pb-4">
 
-              <CardTitle className="text-2xl text-center font-bold text-orange-600">
+              <CardTitle className="text-2xl text-center font-bold text-orange-600 dark:text-orange-400">
                 Create Account
               </CardTitle>
 
-              <p className="text-sm text-center text-orange-400">
+              <p className="text-sm text-center text-orange-400 dark:text-slate-400">
                 Start your journey with us
               </p>
 
@@ -152,7 +152,7 @@ const SignupDialog = () => {
                 {/* Username */}
                 <div className="space-y-2">
 
-                  <Label className="text-orange-700">
+                  <Label className="text-orange-700 dark:text-slate-300">
                     Full Name
                   </Label>
 
@@ -169,6 +169,12 @@ const SignupDialog = () => {
                       border-orange-200
                       bg-orange-50
                       focus-visible:ring-orange-500
+                      dark:border-slate-700
+                      dark:bg-slate-900
+                      dark:text-slate-100
+                      dark:placeholder:text-slate-500
+                      dark:focus-visible:ring-orange-500
+                      dark:focus-visible:border-orange-500
                     "
                   />
 
@@ -177,7 +183,7 @@ const SignupDialog = () => {
                 {/* Email */}
                 <div className="space-y-2">
 
-                  <Label className="text-orange-700">
+                  <Label className="text-orange-700 dark:text-slate-300">
                     Email
                   </Label>
 
@@ -194,6 +200,12 @@ const SignupDialog = () => {
                       border-orange-200
                       bg-orange-50
                       focus-visible:ring-orange-500
+                      dark:border-slate-700
+                      dark:bg-slate-900
+                      dark:text-slate-100
+                      dark:placeholder:text-slate-500
+                      dark:focus-visible:ring-orange-500
+                      dark:focus-visible:border-orange-500
                     "
                   />
 
@@ -202,7 +214,7 @@ const SignupDialog = () => {
                 {/* Password */}
                 <div className="space-y-2">
 
-                  <Label className="text-orange-700">
+                  <Label className="text-orange-700 dark:text-slate-300">
                     Password
                   </Label>
 
@@ -226,6 +238,12 @@ const SignupDialog = () => {
                         bg-orange-50
                         pr-10
                         focus-visible:ring-orange-500
+                        dark:border-slate-700
+                        dark:bg-slate-900
+                        dark:text-slate-100
+                        dark:placeholder:text-slate-500
+                        dark:focus-visible:ring-orange-500
+                        dark:focus-visible:border-orange-500
                       "
                     />
 
@@ -242,6 +260,9 @@ const SignupDialog = () => {
                         top-1/2
                         -translate-y-1/2
                         text-orange-500
+                        dark:text-slate-400
+                        dark:hover:text-orange-400
+                        transition-colors
                       "
                     >
 
@@ -278,6 +299,11 @@ const SignupDialog = () => {
                     rounded-xl
                     bg-orange-600
                     hover:bg-orange-700
+                    dark:bg-orange-600
+                    dark:hover:bg-orange-500
+                    dark:text-white
+                    dark:disabled:bg-slate-700
+                    dark:disabled:text-slate-400
                   "
                 >
 

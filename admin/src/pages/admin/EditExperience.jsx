@@ -28,6 +28,7 @@ const EditExperience = () => {
       const res = await getExperience(id);
 
       const data = res.experience;
+      console.log(data.images);
 
       // Map the backend document shape to the flat shape ExperienceForm
       // (and ExperienceBasicInfoSection) actually reads from.

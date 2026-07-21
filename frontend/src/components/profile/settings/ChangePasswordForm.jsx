@@ -57,7 +57,7 @@ export const ChangePasswordForm = ({
   return (
     <Card
       className="
-        rounded-3xl
+        rounded-2xl
         border
         bg-card
         shadow-sm
@@ -67,23 +67,23 @@ export const ChangePasswordForm = ({
     >
       {/* Header */}
 
-      <CardHeader className="border-b bg-muted/30">
+      <CardHeader className="border-b bg-muted/30 py-4">
 
-        <CardTitle className="flex items-center gap-3">
+        <CardTitle className="flex items-center gap-2.5">
 
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-100 dark:bg-orange-500/20">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-orange-100 dark:bg-orange-500/20">
 
-            <KeyRound className="h-5 w-5 text-orange-500" />
+            <KeyRound className="h-4 w-4 text-orange-500" />
 
           </div>
 
           <div>
 
-            <h2 className="text-lg font-bold text-foreground">
+            <h2 className="text-sm font-bold text-foreground">
               Change Password
             </h2>
 
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               Keep your account secure
             </p>
 
@@ -93,18 +93,18 @@ export const ChangePasswordForm = ({
 
       </CardHeader>
 
-      <CardContent className="p-6">
+      <CardContent className="p-4">
 
         <form
           onSubmit={handleSubmit}
-          className="space-y-6"
+          className="space-y-4"
         >
 
           {/* Current Password */}
 
-          <div className="space-y-2">
+          <div className="space-y-1.5">
 
-            <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+            <label className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
 
               Current Password
 
@@ -112,7 +112,7 @@ export const ChangePasswordForm = ({
 
             <div className="relative">
 
-              <Lock className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Lock className="absolute left-3.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
 
               <Input
                 type="password"
@@ -121,11 +121,12 @@ export const ChangePasswordForm = ({
                 onChange={handleChange}
                 placeholder="Enter current password"
                 className="
-                  h-12
-                  rounded-2xl
+                  h-10
+                  rounded-xl
                   border-border
                   bg-background
-                  pl-11
+                  pl-10
+                  text-sm
                   focus-visible:ring-orange-500
                 "
               />
@@ -136,9 +137,9 @@ export const ChangePasswordForm = ({
 
           {/* New Password */}
 
-          <div className="space-y-2">
+          <div className="space-y-1.5">
 
-            <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+            <label className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
 
               New Password
 
@@ -146,7 +147,7 @@ export const ChangePasswordForm = ({
 
             <div className="relative">
 
-              <Lock className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Lock className="absolute left-3.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
 
               <Input
                 type="password"
@@ -155,11 +156,12 @@ export const ChangePasswordForm = ({
                 onChange={handleChange}
                 placeholder="Enter new password"
                 className="
-                  h-12
-                  rounded-2xl
+                  h-10
+                  rounded-xl
                   border-border
                   bg-background
-                  pl-11
+                  pl-10
+                  text-sm
                   focus-visible:ring-orange-500
                 "
               />
@@ -170,9 +172,9 @@ export const ChangePasswordForm = ({
 
           {/* Confirm Password */}
 
-          <div className="space-y-2">
+          <div className="space-y-1.5">
 
-            <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+            <label className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
 
               Confirm Password
 
@@ -180,7 +182,7 @@ export const ChangePasswordForm = ({
 
             <div className="relative">
 
-              <ShieldCheck className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-green-500" />
+              <ShieldCheck className="absolute left-3.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-green-500" />
 
               <Input
                 type="password"
@@ -189,11 +191,12 @@ export const ChangePasswordForm = ({
                 onChange={handleChange}
                 placeholder="Confirm new password"
                 className="
-                  h-12
-                  rounded-2xl
+                  h-10
+                  rounded-xl
                   border-border
                   bg-background
-                  pl-11
+                  pl-10
+                  text-sm
                   focus-visible:ring-orange-500
                 "
               />
@@ -204,21 +207,21 @@ export const ChangePasswordForm = ({
 
           {/* Security Notice */}
 
-          <div className="rounded-2xl border border-orange-200 bg-orange-50 p-4 dark:border-orange-500/20 dark:bg-orange-500/10">
+          <div className="rounded-xl border border-orange-200 bg-orange-50 p-3 dark:border-orange-500/20 dark:bg-orange-500/10">
 
-            <div className="flex items-start gap-3">
+            <div className="flex items-start gap-2.5">
 
-              <ShieldCheck className="mt-0.5 h-5 w-5 text-orange-500" />
+              <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-orange-500" />
 
               <div>
 
-                <p className="text-sm font-semibold text-orange-600 dark:text-orange-300">
+                <p className="text-xs font-semibold text-orange-600 dark:text-orange-300">
 
                   Password Security
 
                 </p>
 
-                <p className="mt-1 text-xs leading-6 text-muted-foreground">
+                <p className="mt-1 text-[11px] leading-5 text-muted-foreground">
 
                   Use at least 8 characters with uppercase,
                   lowercase, numbers and special characters
@@ -238,12 +241,13 @@ export const ChangePasswordForm = ({
             type="submit"
             disabled={loading}
             className="
-              h-12
+              h-10
               w-full
-              rounded-2xl
+              rounded-xl
               bg-gradient-to-r
               from-orange-500
               to-orange-400
+              text-sm
               shadow-lg
               transition-all
               duration-300
@@ -253,7 +257,7 @@ export const ChangePasswordForm = ({
             "
           >
 
-            <ShieldCheck className="mr-2 h-5 w-5" />
+            <ShieldCheck className="mr-2 h-4 w-4" />
 
             {loading
               ? "Updating Password..."

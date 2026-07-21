@@ -23,6 +23,7 @@ const EditActivity = () => {
         const response = await getActivity(id);
 
         setActivity(response);
+        console.log(response.activity);
       } catch (error) {
         console.error(error);
 
@@ -40,7 +41,7 @@ const EditActivity = () => {
   if (loading) {
     return (
       <div
-      className="
+        className="
       flex
           items-center
           justify-center
@@ -56,7 +57,7 @@ const EditActivity = () => {
   if (!activity) {
     return (
       <div
-      className="
+        className="
           flex
           items-center
           justify-center
@@ -71,35 +72,34 @@ const EditActivity = () => {
   }
 
   return (
-    
     <AdminLayout>
-    <div
-      className="
+      <div
+        className="
         space-y-6
       "
-    >
-      <div>
-        <h1
-          className="
+      >
+        <div>
+          <h1
+            className="
             text-3xl
             font-bold
           "
-        >
-          Edit Activity
-        </h1>
+          >
+            Edit Activity
+          </h1>
 
-        <p
-          className="
+          <p
+            className="
             text-muted-foreground
             mt-2
           "
-        >
-          Update the activity information.
-        </p>
-      </div>
+          >
+            Update the activity information.
+          </p>
+        </div>
 
-      <ActivityForm initialData={activity} isEdit={true} />
-    </div>
+        <ActivityForm initialData={activity} isEdit={true} />
+      </div>
     </AdminLayout>
   );
 };

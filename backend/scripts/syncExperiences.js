@@ -11,28 +11,47 @@ const syncExperiences = async () => {
   try {
     await connectDB();
 
-    // Optional: পুরনো reference মুছে দাও
-    await Destination.updateMany(
-      {},
-      { $set: { bestExperiences: [] } }
-    );
+    // পুরনো reference clear
+    await Destination.updateMany({}, { $set: { bestExperiences: [] } });
 
-    const experiences = await Experience.find();
+    // সব experience আনো
+    const experiences = await Experience.find().sort({
+      destination: 1,
+      createdAt: 1,
+    });
+
+    // destination + title track করবে
+    const processed = new Set();
+
+    let added = 0;
+    let skipped = 0;
 
     for (const exp of experiences) {
-      await Destination.findByIdAndUpdate(
-        exp.destination,
-        {
-          $addToSet: {
-            bestExperiences: exp._id,
-          },
-        }
-      );
+      const key = `${exp.destination}_${exp.title.trim().toLowerCase()}`;
+
+      if (processed.has(key)) {
+        console.log(`⏭️ Duplicate skipped: ${exp.title}`);
+        skipped++;
+        continue;
+      }
+
+      processed.add(key);
+
+      await Destination.findByIdAndUpdate(exp.destination, {
+        $addToSet: {
+          bestExperiences: exp._id,
+        },
+      });
+
+      added++;
     }
 
-    console.log("✅ Experiences synced successfully.");
+    console.log("\n==============================");
+    console.log(`✅ Added   : ${added}`);
+    console.log(`⏭️ Skipped : ${skipped}`);
+    console.log("==============================");
 
-    process.exit();
+    process.exit(0);
   } catch (err) {
     console.error(err);
     process.exit(1);

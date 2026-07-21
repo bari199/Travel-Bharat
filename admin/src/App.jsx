@@ -18,6 +18,9 @@ import AddExperience from "./pages/admin/AddExperience";
 import Activities from "./pages/admin/Activities";
 import AddActivity from "./pages/admin/AddActivity";
 import EditActivity from "./pages/admin/EditActivity";
+import Events from "./pages/admin/Events";
+import AddEvents from "./pages/admin/AddEvents";
+import EditEvents from "./pages/admin/EditEvents";
 
 
 import ProtectedRoute from "./routes/ProtectedRoute";
@@ -94,6 +97,33 @@ function App() {
         element={
           <ProtectedRoute>
             <EditActivity />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/events"
+        element={
+          <ProtectedRoute>
+            <Events />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/events/add"
+        element={
+          <ProtectedRoute>
+            <AddEvents />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/events/edit/:id"
+        element={
+          <ProtectedRoute>
+            <EditEvents />
           </ProtectedRoute>
         }
       />

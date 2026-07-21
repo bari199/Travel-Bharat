@@ -47,6 +47,13 @@ const ActivityBasicInfoSection = ({ formData, setFormData }) => {
 
   const [loading, setLoading] = useState(true);
 
+  const selectedDestination = destinations.find(
+    (d) =>
+      d._id ===
+      (typeof formData.destination === "object"
+        ? formData.destination._id
+        : formData.destination),
+  );
   /* ============================================
       Fetch Destinations
   ============================================ */
@@ -110,15 +117,21 @@ const ActivityBasicInfoSection = ({ formData, setFormData }) => {
                 placeholder={
                   loading ? "Loading destinations..." : "Select Destination"
                 }
-              />
+              >
+                {selectedDestination
+                  ? `${selectedDestination.name} • ${selectedDestination.city}`
+                  : loading && formData.destination
+                    ? "Loading..."
+                    : undefined}
+              </SelectValue>
             </SelectTrigger>
 
-            <SelectContent className="rounded-xl border-orange-100 shadow-lg">
+            <SelectContent className="rounded-xl border-orange-100 shadow-lg ">
               {destinations.map((destination) => (
                 <SelectItem
                   key={destination._id}
                   value={destination._id}
-                  className="rounded-lg text-sm focus:bg-orange-50 focus:text-orange-700"
+                  className="dark:text-stone-100 dark:focus:bg-stone-800"
                 >
                   {destination.name}
                   {" • "}

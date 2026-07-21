@@ -242,11 +242,13 @@ export const getExperiencesByDestination = async (req, res) => {
   console.log("Param:", req.params.destinationId);
   const all = await Experience.find();
   console.log("ALL =", all.length);
-  console.log(all.map(x => ({
-  id: x._id,
-  destination: x.destination,
-  type: typeof x.destination
-})));
+  console.log(
+    all.map((x) => ({
+      id: x._id,
+      destination: x.destination,
+      type: typeof x.destination,
+    })),
+  );
 
   const experiences = await Experience.find({
     destination: req.params.destinationId,
@@ -499,6 +501,44 @@ export const deleteAllExperiences = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: error.message,
+    });
+  }
+};
+
+export const getExperienceNavbar = async (req, res) => {
+  try {
+    const experience = await Experience.find({}, "_id title category").sort({
+      category: 1,
+      title: 1,
+    });
+
+    const grouped = {};
+
+    experience.forEach((exp) => {
+      const category = exp.category || "Other";
+
+      if (!grouped[category]) {
+        grouped[category] = [];
+      }
+
+      grouped[category].push({
+        _id: exp._id,
+        title: exp.title,
+      });
+    });
+
+    const menu = Object.keys(grouped).map((category) => ({
+      heading: category,
+      items: grouped[category],
+    }));
+
+    res.json(menu);
+  } catch (err) {
+    console.log(err);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to load navbar",
     });
   }
 };

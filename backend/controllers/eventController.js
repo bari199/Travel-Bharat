@@ -34,7 +34,11 @@ export const addEvent = async (req, res) => {
       });
     }
 
-    const images = req.files?.images?.map((f) => f.path) || [];
+    const images =
+  req.files?.images?.map((file) => ({
+    url: file.path,
+    public_id: file.filename || file.public_id || "",
+  })) || [];
 
     const event = await Event.create({
       destination,
@@ -152,9 +156,12 @@ export const updateEvent = async (req, res) => {
     }
 
     const images =
-      req.files?.images?.length > 0
-        ? req.files.images.map((f) => f.path)
-        : existing.images;
+  req.files?.images?.length > 0
+    ? req.files.images.map((file) => ({
+        url: file.path,
+        public_id: file.filename || file.public_id || "",
+      }))
+    : existing.images;
 
     const updateData = {
       title: req.body.title ?? existing.title,

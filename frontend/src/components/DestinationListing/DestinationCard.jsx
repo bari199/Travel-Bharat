@@ -5,7 +5,7 @@ import { MapPin, Star, Calendar, Ticket, ArrowRight } from "lucide-react";
 
 const DestinationCard = ({ destination }) => {
   const image =
-    destination?.images?.[0] ||
+    destination?.images?.[0]?.url ||
     "https://images.unsplash.com/photo-1507525428034-b723cf961d3e";
 
   return (

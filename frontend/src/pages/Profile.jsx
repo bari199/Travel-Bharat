@@ -84,7 +84,7 @@ const Profile = () => {
     <div className="min-h-screen bg-gradient-to-br from-orange-50/30 via-white to-rose-50/20">
       <SidebarProvider>
         {/* Sidebar */}
-        <Sidebar>
+        <Sidebar collapsible="icon">
           <ProfileSidebar
             user={user}
             stats={stats}
@@ -97,7 +97,9 @@ const Profile = () => {
 
         {/* Main Content */}
         <SidebarInset>
-          <ProfileHeader activeNav={activeNav} />
+          <div className="px-5 pt-5 sm:px-7 sm:pt-7">
+            <ProfileHeader activeNav={activeNav} />
+          </div>
 
           <main className="p-5 sm:p-7">
             <ProfileContent

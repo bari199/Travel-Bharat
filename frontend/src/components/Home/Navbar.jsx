@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link, useLocation } from "react-router-dom";
-import { BookA, LogOut, User, Search, Globe2Icon, MapPin, Menu, X } from "lucide-react";
+import {
+  BookA,
+  LogOut,
+  User,
+  Search,
+  Globe2Icon,
+  MapPin,
+  Menu,
+  X,
+} from "lucide-react";
 import { toast } from "sonner";
 import { getData } from "@/context/userContext";
 import logo from "../../assets/travel-bharat-logo.svg";
@@ -23,6 +32,8 @@ import {
   NavigationMenuLink,
 } from "@/components/ui/navigation-menu";
 
+import { getExperienceNavbar } from "@/services/Experienceapi";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Accordion,
@@ -37,7 +48,6 @@ import SignupDialog from "../../pages/SignupDialog";
 import {
   DESTINATION_REGIONS,
   ACTIVITIES_COLUMNS,
-  EXPERIENCES_COLUMNS,
   REGIONS,
 } from "../../data/navdata";
 import ThemeToggle from "@/context/ThemeToggle";
@@ -176,14 +186,30 @@ const ActivitiesMega = () => {
   );
 };
 
-const ExperiencesMega = () => {
-  const [activeCategory, setActiveCategory] = useState(
-    EXPERIENCES_COLUMNS[0].heading,
-  );
+const ExperiencesMega = ({ experienceColumns }) => {
+  const [activeCategory, setActiveCategory] = useState("");
+
+  useEffect(() => {
+    if (experienceColumns.length > 0) {
+      setActiveCategory((prev) => prev || experienceColumns[0].heading);
+    }
+  }, [experienceColumns]);
+
+  if (!experienceColumns.length) {
+    return (
+      <div
+        className="flex items-center justify-center bg-white dark:bg-slate-900 rounded-xl border dark:border-slate-700 shadow-xl"
+        style={{ width: "650px", height: "300px" }}
+      >
+        <p className="text-gray-500">Loading experiences...</p>
+      </div>
+    );
+  }
 
   const items =
-    EXPERIENCES_COLUMNS.find((col) => col.heading === activeCategory)?.items ||
-    [];
+    experienceColumns.find(
+      (col) => col.heading === activeCategory
+    )?.items || [];
 
   return (
     <div
@@ -192,7 +218,7 @@ const ExperiencesMega = () => {
     >
       {/* Sidebar */}
       <div className="w-48 bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-slate-700 flex-shrink-0">
-        {EXPERIENCES_COLUMNS.map((col) => (
+        {experienceColumns.map((col) => (
           <button
             key={col.heading}
             onClick={() => setActiveCategory(col.heading)}
@@ -221,8 +247,8 @@ const ExperiencesMega = () => {
         <div className="grid grid-cols-2 gap-x-8 gap-y-3">
           {items.map((item) => (
             <Link
-              key={item.title}
-              to={`/experiences?search=${encodeURIComponent(item.title)}`}
+              key={item._id}
+              to={`/experiences?category=${encodeURIComponent(activeCategory)}`}
               className="text-sm text-gray-600 dark:text-slate-300 hover:text-orange-500 truncate"
             >
               {item.title}
@@ -238,11 +264,14 @@ const ExperiencesMega = () => {
  *  works below the `lg` breakpoint, where the desktop NavigationMenu is
  *  hidden. Reuses the exact same data sources and link targets as the
  *  desktop menus, so nothing about where links point changes. */
-const MobileNavPanel = ({ onNavigate }) => (
+const MobileNavPanel = ({ onNavigate, experienceColumns }) => (
   <div className="lg:hidden border-t border-orange-200 dark:border-slate-800 bg-orange-300/95 dark:bg-slate-900/98 backdrop-blur-md">
     <div className="max-w-7xl mx-auto px-4 py-4">
       <Accordion type="multiple" className="w-full">
-        <AccordionItem value="destinations" className="border-b border-orange-200/60 dark:border-slate-800">
+        <AccordionItem
+          value="destinations"
+          className="border-b border-orange-200/60 dark:border-slate-800"
+        >
           <AccordionTrigger className="text-sm font-semibold text-gray-800 dark:text-slate-100 hover:no-underline py-3">
             <span className="flex items-center gap-1.5">
               <MapPin className="h-3.5 w-3.5" />
@@ -280,14 +309,21 @@ const MobileNavPanel = ({ onNavigate }) => (
           </AccordionContent>
         </AccordionItem>
 
-        <AccordionItem value="activities" className="border-b border-orange-200/60 dark:border-slate-800">
+        <AccordionItem
+          value="activities"
+          className="border-b border-orange-200/60 dark:border-slate-800"
+        >
           <AccordionTrigger className="text-sm font-semibold text-gray-800 dark:text-slate-100 hover:no-underline py-3">
             Activities
           </AccordionTrigger>
           <AccordionContent className="pb-3">
             <Accordion type="multiple" className="w-full">
               {ACTIVITIES_COLUMNS.map((col) => (
-                <AccordionItem key={col.heading} value={col.heading} className="border-b-0">
+                <AccordionItem
+                  key={col.heading}
+                  value={col.heading}
+                  className="border-b-0"
+                >
                   <AccordionTrigger className="text-xs font-medium text-gray-600 dark:text-slate-300 hover:no-underline py-2">
                     {col.heading}
                   </AccordionTrigger>
@@ -311,14 +347,21 @@ const MobileNavPanel = ({ onNavigate }) => (
           </AccordionContent>
         </AccordionItem>
 
-        <AccordionItem value="experiences" className="border-b border-orange-200/60 dark:border-slate-800">
+        <AccordionItem
+          value="experiences"
+          className="border-b border-orange-200/60 dark:border-slate-800"
+        >
           <AccordionTrigger className="text-sm font-semibold text-gray-800 dark:text-slate-100 hover:no-underline py-3">
             Experiences
           </AccordionTrigger>
           <AccordionContent className="pb-3">
             <Accordion type="multiple" className="w-full">
-              {EXPERIENCES_COLUMNS.map((col) => (
-                <AccordionItem key={col.heading} value={col.heading} className="border-b-0">
+              {experienceColumns.map((col) => (
+                <AccordionItem
+                  key={col.heading}
+                  value={col.heading}
+                  className="border-b-0"
+                >
                   <AccordionTrigger className="text-xs font-medium text-gray-600 dark:text-slate-300 hover:no-underline py-2">
                     {col.heading}
                   </AccordionTrigger>
@@ -381,6 +424,21 @@ const Navbar = () => {
   const [openLogin, setOpenLogin] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const accessToken = localStorage.getItem("accessToken");
+  const [experienceColumns, setExperienceColumns] = useState([]);
+
+  useEffect(() => {
+    const loadNavbar = async () => {
+      try {
+        const { data } = await getExperienceNavbar();
+
+        setExperienceColumns(data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    loadNavbar();
+  }, []);
 
   useEffect(() => {
     if (location.state?.openLogin) setOpenLogin(true);
@@ -495,7 +553,7 @@ const Navbar = () => {
               </NavigationMenuTrigger>
 
               <NavigationMenuContent className="p-0">
-                <ExperiencesMega />
+                <ExperiencesMega experienceColumns={experienceColumns} />
               </NavigationMenuContent>
             </NavigationMenuItem>
 
@@ -549,7 +607,11 @@ const Navbar = () => {
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             className="lg:hidden flex items-center justify-center h-9 w-9 rounded-lg text-gray-700 dark:text-slate-200 hover:bg-orange-300/60 dark:hover:bg-slate-800 transition-colors"
           >
-            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {mobileMenuOpen ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <Menu className="h-5 w-5" />
+            )}
           </button>
 
           {user ? (
@@ -603,7 +665,10 @@ const Navbar = () => {
       </div>
 
       {mobileMenuOpen && (
-        <MobileNavPanel onNavigate={() => setMobileMenuOpen(false)} />
+        <MobileNavPanel
+          experienceColumns={experienceColumns}
+          onNavigate={() => setMobileMenuOpen(false)}
+        />
       )}
     </nav>
   );

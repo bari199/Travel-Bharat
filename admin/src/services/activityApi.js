@@ -17,7 +17,7 @@ export const getActivities = async () => {
 export const getActivity = async (id) => {
   const response = await api.get(`/api/activities/${id}`);
 
-  return response.data;
+  return response.data.activity;
 };
 
 /* ============================================

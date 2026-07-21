@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import ExperienceFilters, {
   normalizeCategory,
   matchesPriceRange,
@@ -49,11 +49,23 @@ const ExperienceListing = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const { destinationId } = useParams();
+  
+
+  const [searchParams] = useSearchParams();
+
+  const navbarSearch = searchParams.get("search") || "";
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(search), SEARCH_DEBOUNCE_MS);
     return () => clearTimeout(timer);
   }, [search]);
+
+  useEffect(() => {
+  if (navbarSearch) {
+    setSearch(navbarSearch);
+    setDebouncedSearch(navbarSearch);
+  }
+}, [navbarSearch]);
 
   const fetchExperiences = async () => {
     try {
@@ -241,7 +253,7 @@ const ExperienceListing = () => {
     (freeOnly ? 1 : 0);
 
   return (
-    <div className="min-h-screen bg-orange-50/30">
+    <div className="min-h-screen bg-orange-50/30 dark:bg-slate-950 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Mobile filter button */}
         <div className="lg:hidden mb-4">
@@ -339,8 +351,8 @@ const ExperienceListing = () => {
               </div>
             )}
 
-            <p className="text-sm text-gray-500 mb-4">
-              <span className="font-semibold text-gray-900">{filteredExperiences.length}</span>{" "}
+            <p className="text-sm text-gray-500 dark:text-slate-400 mb-4">
+              <span className="font-semibold text-gray-900 dark:text-slate-100">{filteredExperiences.length}</span>{" "}
               experiences found
             </p>
 
@@ -366,9 +378,9 @@ const ExperienceListing = () => {
 };
 
 const FilterChip = ({ label, onClear }) => (
-  <span className="flex items-center gap-1.5 bg-orange-50 border border-orange-200 text-orange-700 text-xs px-3 py-1 rounded-full">
+  <span className="flex items-center gap-1.5 bg-orange-50 dark:bg-orange-500/10 border border-orange-200 dark:border-orange-500/20 text-orange-700 dark:text-orange-400 text-xs px-3 py-1 rounded-full">
     {label}
-    <button type="button" onClick={onClear} className="text-orange-400 hover:text-orange-600">
+    <button type="button" onClick={onClear} className="text-orange-400 hover:text-orange-600 dark:hover:text-orange-300">
       ×
     </button>
   </span>

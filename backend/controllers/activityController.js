@@ -1,6 +1,8 @@
 import { Activity } from "../models/activityModel.js";
 import { Destination } from "../models/destination.js";
 import { Wishlist } from "../models/wishlistModel.js";
+import { Comment } from "../models/commentModel.js";
+import { Rating } from "../models/ratingModel.js";
 /*
 |--------------------------------------------------------------------------
 | Helper — Safe JSON Parse

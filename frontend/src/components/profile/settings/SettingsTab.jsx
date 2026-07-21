@@ -45,33 +45,33 @@ export const SettingsTab = ({
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
 
       {/* ================= Account Information ================= */}
 
-      <Card className="rounded-3xl border bg-card shadow-sm">
+      <Card className="rounded-2xl border bg-card shadow-sm">
 
         <CardContent className="p-0">
 
           {/* Header */}
 
-          <div className="flex items-center gap-3 border-b p-6">
+          <div className="flex items-center gap-2.5 border-b p-4">
 
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-orange-100 dark:bg-orange-500/20">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-orange-100 dark:bg-orange-500/20">
 
-              <UserCircle2 className="h-5 w-5 text-orange-500" />
+              <UserCircle2 className="h-4 w-4 text-orange-500" />
 
             </div>
 
             <div>
 
-              <h2 className="text-lg font-bold text-foreground">
+              <h2 className="text-sm font-bold text-foreground">
 
                 Account Information
 
               </h2>
 
-              <p className="text-sm text-muted-foreground">
+              <p className="text-xs text-muted-foreground">
 
                 View your account details
 
@@ -96,28 +96,28 @@ export const SettingsTab = ({
 
                 <div
                   key={label}
-                  className="flex items-center gap-4 p-6 transition-colors hover:bg-muted/30"
+                  className="flex items-center gap-3 p-4 transition-colors hover:bg-muted/30"
                 >
 
                   <div
-                    className={`flex h-11 w-11 items-center justify-center rounded-xl ${bg}`}
+                    className={`flex h-9 w-9 items-center justify-center rounded-lg ${bg}`}
                   >
 
                     <Icon
-                      className={`h-5 w-5 ${color}`}
+                      className={`h-4 w-4 ${color}`}
                     />
 
                   </div>
 
                   <div>
 
-                    <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
 
                       {label}
 
                     </p>
 
-                    <p className="mt-1 font-medium text-foreground">
+                    <p className="mt-0.5 text-sm font-medium text-foreground">
 
                       {value}
 
@@ -132,21 +132,21 @@ export const SettingsTab = ({
 
             {/* Verification */}
 
-            <div className="flex items-center gap-4 p-6 transition-colors hover:bg-muted/30">
+            <div className="flex items-center gap-3 p-4 transition-colors hover:bg-muted/30">
 
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-green-100 dark:bg-green-500/20">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-green-100 dark:bg-green-500/20">
 
                 {user?.isVerified ? (
-                  <ShieldCheck className="h-5 w-5 text-green-500" />
+                  <ShieldCheck className="h-4 w-4 text-green-500" />
                 ) : (
-                  <ShieldX className="h-5 w-5 text-red-500" />
+                  <ShieldX className="h-4 w-4 text-red-500" />
                 )}
 
               </div>
 
               <div>
 
-                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
 
                   Account Status
 
@@ -156,10 +156,11 @@ export const SettingsTab = ({
 
                   <Badge
                     className="
-                      mt-2
+                      mt-1.5
                       rounded-full
                       border-0
                       bg-green-100
+                      text-xs
                       text-green-700
                       dark:bg-green-500/20
                       dark:text-green-300
@@ -172,7 +173,7 @@ export const SettingsTab = ({
 
                   <Badge
                     variant="destructive"
-                    className="mt-2 rounded-full"
+                    className="mt-1.5 rounded-full text-xs"
                   >
                     Not Verified
                   </Badge>

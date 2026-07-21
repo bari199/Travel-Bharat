@@ -77,18 +77,28 @@ function ImageUploadBlock({
   const [cache] = useState(() => new WeakMap());
 
   const getPreview = useCallback(
-    (image) => {
-      if (typeof image === "string") return image;
+  (image) => {
+    if (!image) return "";
 
+    if (typeof image === "string") return image;
+
+    if (image instanceof File || image instanceof Blob) {
       if (!cache.has(image)) {
         cache.set(image, URL.createObjectURL(image));
       }
 
       return cache.get(image);
-    },
+    }
 
-    [cache],
-  );
+    if (image.url) return image.url;
+    if (image.secure_url) return image.secure_url;
+
+    console.log("Invalid image:", image);
+
+    return "";
+  },
+  [cache]
+);
 
   const {
     getRootProps,

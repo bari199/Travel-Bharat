@@ -11,31 +11,53 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  MapPinned, Tag, Map, Building2,
-  Layers, Navigation, Ruler, RotateCcw,
+  MapPinned,
+  Tag,
+  Map,
+  Building2,
+  Layers,
+  Navigation,
+  Ruler,
+  RotateCcw,
 } from "lucide-react";
 
 /* ── Category options matching Travel Bharat regions ── */
 const CATEGORIES = [
-  "Beach", "Mountain", "Heritage", "Forest",
-  "Desert", "Wildlife", "Religious", "Hill Station",
-  "Waterfall", "Lake", "Adventure", "Cultural",
+  "Beach",
+  "Mountain",
+  "Heritage",
+  "Forest",
+  "Desert",
+  "Wildlife",
+  "Religious",
+  "Hill Station",
+  "Waterfall",
+  "Lake",
+  "Adventure",
+  "Cultural",
+  "Nature",
+  "Pilgrimage",
+  "Cultural",
 ];
 
 /* ── Category color dots ── */
 const CATEGORY_COLORS = {
-  Beach:        "bg-sky-400",
-  Mountain:     "bg-indigo-400",
-  Heritage:     "bg-amber-400",
-  Forest:       "bg-emerald-400",
-  Desert:       "bg-orange-400",
-  Wildlife:     "bg-lime-500",
-  Spiritual:    "bg-purple-400",
-  "Hill Station":"bg-cyan-400",
-  Waterfall:    "bg-blue-400",
-  Lake:         "bg-teal-400",
-  Adventure:    "bg-rose-400",
-  Cultural:     "bg-pink-400",
+  Beach: "bg-sky-400",
+  Mountain: "bg-indigo-400",
+  Heritage: "bg-amber-400",
+  Forest: "bg-emerald-400",
+  Desert: "bg-orange-400",
+  Wildlife: "bg-lime-500",
+  Spiritual: "bg-purple-400",
+  "Hill Station": "bg-cyan-400",
+  Waterfall: "bg-blue-400",
+  Lake: "bg-teal-400",
+  Adventure: "bg-rose-400",
+  Cultural: "bg-pink-400",
+  Nature: "bg-green-400",
+  Pilgrimage:"bg-rose-950",
+  Cultural:"bg-lime-950"
+
 };
 
 /* ── Field config ── */
@@ -122,18 +144,24 @@ const IconInput = ({ icon: Icon, error, ...props }) => (
 const BasicInfoSection = ({ formData, handleChange, errors = {} }) => {
   const [touched, setTouched] = useState({});
 
-  const handleBlur = (name) => setTouched((prev) => ({ ...prev, [name]: true }));
+  const handleBlur = (name) =>
+    setTouched((prev) => ({ ...prev, [name]: true }));
 
   const getFieldError = (field) => {
     if (errors[field.name]) return errors[field.name];
-    if (field.required && touched[field.name] && !String(formData[field.name] || "").trim()) {
+    if (
+      field.required &&
+      touched[field.name] &&
+      !String(formData[field.name] || "").trim()
+    ) {
       return `${field.label} is required`;
     }
     return null;
   };
 
   const categoryError =
-    errors.category || (touched.category && !formData.category ? "Category is required" : null);
+    errors.category ||
+    (touched.category && !formData.category ? "Category is required" : null);
 
   /* Adapter so Select onChange matches handleChange signature */
   const handleSelectChange = (value) => {
@@ -161,11 +189,18 @@ const BasicInfoSection = ({ formData, handleChange, errors = {} }) => {
       {/* ── Section header ── */}
       <div className="flex flex-wrap items-center gap-3 px-4 sm:px-6 py-4 border-b border-slate-100 dark:border-stone-800 bg-slate-50/60 dark:bg-stone-800/60">
         <span className="w-8 h-8 rounded-xl bg-orange-50 dark:bg-orange-500/10 flex items-center justify-center shrink-0">
-          <MapPinned size={16} className="text-orange-500 dark:text-orange-400" />
+          <MapPinned
+            size={16}
+            className="text-orange-500 dark:text-orange-400"
+          />
         </span>
         <div>
-          <h2 className="text-sm font-bold text-slate-800 dark:text-stone-100">Added Here Basic Information</h2>
-          <p className="text-xs text-slate-400 dark:text-stone-500 mt-0.5">Core details about the destination</p>
+          <h2 className="text-sm font-bold text-slate-800 dark:text-stone-100">
+            Added Here Basic Information
+          </h2>
+          <p className="text-xs text-slate-400 dark:text-stone-500 mt-0.5">
+            Core details about the destination
+          </p>
         </div>
         <span className="ml-auto text-xs text-slate-400 dark:text-stone-500 whitespace-nowrap">
           <span className="text-rose-400">*</span> Required fields
@@ -175,7 +210,8 @@ const BasicInfoSection = ({ formData, handleChange, errors = {} }) => {
       {/* ── Form body ── */}
       <div className="p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-5">
         {FIELDS.map((field, i) => {
-          const { name, label, placeholder, icon, hint, required, colSpan } = field;
+          const { name, label, placeholder, icon, hint, required, colSpan } =
+            field;
           const fieldError = getFieldError(field);
           return (
             <FormField key={name} delay={i * 0.05}>
@@ -185,7 +221,9 @@ const BasicInfoSection = ({ formData, handleChange, errors = {} }) => {
                   className="text-xs font-semibold text-slate-600 dark:text-stone-300 mb-1.5 flex items-center gap-1"
                 >
                   {label}
-                  {required && <span className="text-rose-400 text-[10px]">*</span>}
+                  {required && (
+                    <span className="text-rose-400 text-[10px]">*</span>
+                  )}
                 </Label>
                 <IconInput
                   id={name}
@@ -203,7 +241,9 @@ const BasicInfoSection = ({ formData, handleChange, errors = {} }) => {
                     {fieldError}
                   </p>
                 ) : hint ? (
-                  <p className="text-xs text-slate-400 dark:text-stone-500 mt-1.5">{hint}</p>
+                  <p className="text-xs text-slate-400 dark:text-stone-500 mt-1.5">
+                    {hint}
+                  </p>
                 ) : null}
               </div>
             </FormField>
@@ -217,7 +257,10 @@ const BasicInfoSection = ({ formData, handleChange, errors = {} }) => {
               htmlFor="category"
               className="text-xs font-semibold text-slate-600 dark:text-stone-300 mb-1.5 flex items-center gap-1"
             >
-              <Layers size={12} className="text-slate-400 dark:text-stone-500" />
+              <Layers
+                size={12}
+                className="text-slate-400 dark:text-stone-500"
+              />
               Category
               <span className="text-rose-400 text-[10px]">*</span>
             </Label>
@@ -266,15 +309,20 @@ const BasicInfoSection = ({ formData, handleChange, errors = {} }) => {
 
       {/* ── Progress hint ── */}
       {(() => {
-        const filled = [...FIELDS.map((f) => f.name), "category"]
-          .filter((k) => formData[k]?.trim()).length;
+        const filled = [...FIELDS.map((f) => f.name), "category"].filter((k) =>
+          formData[k]?.trim(),
+        ).length;
         const total = FIELDS.length + 1;
         const pct = Math.round((filled / total) * 100);
         return (
           <div className="px-4 sm:px-6 pb-5">
             <div className="flex items-center justify-between mb-1.5">
-              <span className="text-xs text-slate-400 dark:text-stone-500">Section progress</span>
-              <span className="text-xs font-semibold text-slate-500 dark:text-stone-400">{filled}/{total} filled</span>
+              <span className="text-xs text-slate-400 dark:text-stone-500">
+                Section progress
+              </span>
+              <span className="text-xs font-semibold text-slate-500 dark:text-stone-400">
+                {filled}/{total} filled
+              </span>
             </div>
             <div className="h-1.5 bg-slate-100 dark:bg-stone-800 rounded-full overflow-hidden">
               <motion.div

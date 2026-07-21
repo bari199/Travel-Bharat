@@ -1,5 +1,20 @@
 import mongoose from "mongoose";
 
+const imageSchema = new mongoose.Schema(
+  {
+    url: {
+      type: String,
+      default: "",
+    },
+    public_id: {
+      type: String,
+      default: "",
+    },
+  },
+  { _id: false },
+);
+
+
 const eventSchema = new mongoose.Schema(
   {
     destination: {
@@ -25,11 +40,10 @@ const eventSchema = new mongoose.Schema(
       required: true,
     },
 
-    images: [
-      {
-        type: String,
-      },
-    ],
+   images: {
+      type: [imageSchema],
+      default: [],
+    },
 
     category: {
       type: String,

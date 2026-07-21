@@ -1,4 +1,5 @@
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, PanelLeft } from "lucide-react";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export default function ProfileHeader({ activeNav }) {
   if (!activeNav) return null;
@@ -6,41 +7,21 @@ export default function ProfileHeader({ activeNav }) {
   const Icon = activeNav.Icon;
 
   return (
-    <div className="flex items-center gap-3 rounded-2xl border bg-card px-5 py-3 shadow-sm">
+    <div className="flex items-center gap-3 rounded-2xl border bg-card px-4 py-2.5 shadow-sm sm:px-5 sm:py-3">
+      <SidebarTrigger className="h-9 w-9 shrink-0 rounded-xl border border-orange-100 text-stone-500 hover:bg-orange-50 hover:text-orange-600 dark:border-stone-700 dark:text-stone-400 dark:hover:bg-stone-800 dark:hover:text-orange-400">
+        <PanelLeft className="h-4 w-4" />
+      </SidebarTrigger>
 
-      {/* Icon */}
-
-      <div
-        className="
-          flex h-10 w-10 items-center justify-center
-          rounded-xl
-          bg-orange-100
-          dark:bg-orange-500/20
-        "
-      >
-        <Icon
-          className={`h-5 w-5 ${activeNav.color}`}
-        />
-      </div>
-
-      {/* Title */}
-
-      <div className="flex flex-col">
-
-        <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+      <div className="flex min-w-0 flex-col">
+        <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground sm:text-xs">
           Dashboard
         </span>
-
-        <h2 className="text-lg font-bold text-foreground">
+        <h2 className="truncate text-base font-bold text-foreground sm:text-lg">
           {activeNav.label}
         </h2>
-
       </div>
 
-      {/* Right Arrow */}
-
-      <ChevronRight className="ml-auto h-5 w-5 text-muted-foreground" />
-
+      <ChevronRight className="ml-auto h-4 w-4 shrink-0 text-muted-foreground sm:h-5 sm:w-5" />
     </div>
   );
 }

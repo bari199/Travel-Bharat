@@ -46,8 +46,11 @@ const ActivityForm = ({
     if (isEdit && initialData) {
       setFormData({
         ...initialActivityData,
-
         ...initialData,
+        destination:
+          typeof initialData.destination === "object"
+            ? initialData.destination._id
+            : initialData.destination,
       });
     }
   }, [isEdit, initialData]);
@@ -83,6 +86,7 @@ const ActivityForm = ({
       }
     } catch (error) {
       console.error(error);
+      console.log(error.response?.data);
 
       toast.error(error?.response?.data?.message || "Something went wrong.");
     } finally {
@@ -95,88 +99,85 @@ const ActivityForm = ({
   ============================================ */
 
   return (
-      <form
-        onSubmit={handleSubmit}
-        className="
+    <form
+      onSubmit={handleSubmit}
+      className="
         space-y-6
       "
-      >
-        {/* =====================================
+    >
+      {/* =====================================
           Basic Information
       ===================================== */}
 
-        <ActivityBasicInfoSection
-          formData={formData}
-          setFormData={setFormData}
-        />
+      <ActivityBasicInfoSection formData={formData} setFormData={setFormData} />
 
-        {/* =====================================
+      {/* =====================================
           Description
       ===================================== */}
 
-        <ActivityDescriptionSection
-          formData={formData}
-          setFormData={setFormData}
-        />
+      <ActivityDescriptionSection
+        formData={formData}
+        setFormData={setFormData}
+      />
 
-        {/* =====================================
+      {/* =====================================
           Images
       ===================================== */}
 
-        <ActivityImagesSection formData={formData} setFormData={setFormData} />
+      <ActivityImagesSection formData={formData} setFormData={setFormData} />
 
-        {/* =====================================
+      {/* =====================================
           Activity Details
       ===================================== */}
 
-        <ActivityDetailsSection formData={formData} setFormData={setFormData} />
+      <ActivityDetailsSection formData={formData} setFormData={setFormData} />
 
-        {/* =====================================
+      {/* =====================================
           Visitor Information
       ===================================== */}
 
-        <ActivityVisitorInfoSection
-          formData={formData}
-          setFormData={setFormData}
-        />
+      <ActivityVisitorInfoSection
+        formData={formData}
+        setFormData={setFormData}
+      />
 
-        {/* =====================================
+      {/* =====================================
           Activity Lists
       ===================================== */}
 
-        <ActivityListsSection formData={formData} setFormData={setFormData} />
+      <ActivityListsSection formData={formData} setFormData={setFormData} />
 
-        {/* =====================================
+      {/* =====================================
           Action Buttons
       ===================================== */}
 
-        <div
-          className="
+      <div
+        className="
           flex
           justify-end
           gap-4
           pt-6
         "
+      >
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => (onSuccess ? onSuccess() : navigate("/activities"))}
         >
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => (onSuccess ? onSuccess() : navigate("/activities"))}
-          >
-            Cancel
-          </Button>
+          Cancel
+        </Button>
 
-          <Button type="submit" disabled={loading}>
-            {loading
-              ? isEdit
-                ? "Updating..."
-                : "Creating..."
-              : isEdit
-                ? "Update Activity"
-                : "Create Activity"}
-          </Button>
-        </div>
-      </form>
+        <Button type="submit" disabled={loading}>
+          {loading
+            ? isEdit
+              ? "Updating..."
+              : "Creating..."
+            : isEdit
+              ? "Update Activity"
+              : "Create Activity"}
+        </Button>
+      </div>
+    </form>
   );
 };
 

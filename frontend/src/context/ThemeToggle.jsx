@@ -1,7 +1,7 @@
 import React from "react";
 import { Sun, Moon } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
-import { useTheme } from "@/context/themeContext";
+import { useTheme } from "@/context/ThemeContext";
 
 /**
  * Light/dark toggle built on shadcn's <Switch>. Meant to sit in the
@@ -23,7 +23,13 @@ const ThemeToggle = ({ className = "" }) => {
         checked={isDark}
         onCheckedChange={toggleTheme}
         aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-        className="data-[state=checked]:bg-slate-800 data-[state=unchecked]:bg-orange-300 border border-black/5 dark:border-white/10"
+        className="
+          data-[state=checked]:bg-slate-800
+          data-[state=unchecked]:bg-orange-300
+          border border-black/5 dark:border-white/10
+          [&>span]:bg-white
+          [&>span]:shadow-md
+        "
       />
 
       <Moon

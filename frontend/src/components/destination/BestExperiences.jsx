@@ -27,15 +27,15 @@ import { getExperiencesByDestination } from "@/services/Experienceapi.js";
    Skeleton Card
 ───────────────────────────────────────────── */
 const ExperienceCardSkeleton = () => (
-  <div className="flex-shrink-0 w-[220px] sm:w-[270px] lg:w-[300px] rounded-[22px] overflow-hidden bg-white/60 border border-orange-100 shadow-md">
-    <Skeleton className="h-[170px] w-full rounded-none bg-orange-100/60" />
+  <div className="flex-shrink-0 w-[220px] sm:w-[270px] lg:w-[300px] rounded-[22px] overflow-hidden bg-white/60 dark:bg-slate-900/60 border border-orange-100/60 dark:border-orange-500/20 shadow-md">
+    <Skeleton className="h-[170px] w-full rounded-none bg-orange-100/60 dark:bg-orange-500/15" />
     <div className="p-4 space-y-2">
       <Skeleton className="h-3 w-16 rounded-full bg-orange-200/70" />
       <Skeleton className="h-5 w-36 rounded-full bg-gray-300" />
       <Skeleton className="h-3 w-24 rounded-full bg-gray-200" />
       <div className="flex gap-2 pt-2">
-        <Skeleton className="h-5 w-20 rounded-full bg-orange-100" />
-        <Skeleton className="h-5 w-16 rounded-full bg-blue-100" />
+        <Skeleton className="h-5 w-20 rounded-full bg-orange-100 dark:bg-orange-500/15" />
+        <Skeleton className="h-5 w-16 rounded-full bg-blue-100 dark:bg-blue-500/15" />
       </div>
       <div className="flex items-center justify-between pt-3">
         <Skeleton className="h-10 w-10 rounded-full bg-orange-200" />
@@ -75,8 +75,8 @@ const ExperienceCard = ({ item, index, onClick }) => {
         flex-shrink-0
         w-[220px] sm:w-[270px] lg:w-[300px]
         rounded-[22px]
-        border border-orange-100/60
-        bg-white
+        border border-orange-100/60 dark:border-orange-500/20
+        bg-white dark:bg-slate-900
         overflow-hidden
         shadow-md
         hover:shadow-2xl
@@ -97,7 +97,7 @@ const ExperienceCard = ({ item, index, onClick }) => {
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           />
         ) : (
-          <div className="absolute inset-0 flex items-center justify-center bg-orange-50">
+          <div className="absolute inset-0 flex items-center justify-center bg-orange-50 dark:bg-orange-500/10">
             <Compass className="w-10 h-10 text-orange-200" />
           </div>
         )}
@@ -115,7 +115,7 @@ const ExperienceCard = ({ item, index, onClick }) => {
             {item.subtitle}
           </p>
         )}
-        <h3 className="text-[16px] font-bold text-gray-900 leading-snug line-clamp-2 mt-1 group-hover:text-orange-500 transition-colors duration-300">
+        <h3 className="text-[16px] font-bold text-gray-900 dark:text-slate-100 leading-snug line-clamp-2 mt-1 group-hover:text-orange-500 transition-colors duration-300">
           {item.title}
         </h3>
         {(item.category || item.difficultyLevel) && (
@@ -137,7 +137,7 @@ const ExperienceCard = ({ item, index, onClick }) => {
           </div>
         )}
         {(item.distance || item.location) && (
-          <div className="flex items-center gap-1.5 mt-2.5 text-gray-500">
+          <div className="flex items-center gap-1.5 mt-2.5 text-gray-500 dark:text-slate-400">
             <Navigation
               size={11}
               strokeWidth={2.5}
@@ -149,7 +149,7 @@ const ExperienceCard = ({ item, index, onClick }) => {
           </div>
         )}
         {item.bestTime && (
-          <div className="flex items-center gap-1.5 mt-1.5 text-gray-500">
+          <div className="flex items-center gap-1.5 mt-1.5 text-gray-500 dark:text-slate-400">
             <CalendarDays
               size={11}
               strokeWidth={2.5}
@@ -161,7 +161,7 @@ const ExperienceCard = ({ item, index, onClick }) => {
           </div>
         )}
         {highlightCount > 0 && (
-          <div className="flex items-center gap-1.5 mt-1.5 text-gray-500">
+          <div className="flex items-center gap-1.5 mt-1.5 text-gray-500 dark:text-slate-400">
             <Star
               size={11}
               strokeWidth={2.5}
@@ -172,7 +172,7 @@ const ExperienceCard = ({ item, index, onClick }) => {
             </span>
           </div>
         )}
-        <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-100">
+        <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-100 dark:border-slate-800">
           <button
             aria-label={`Explore ${item.title}`}
             className="
@@ -187,7 +187,7 @@ const ExperienceCard = ({ item, index, onClick }) => {
           >
             <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" />
           </button>
-          <span className="text-[11px] text-gray-400 font-semibold tracking-wide uppercase">
+          <span className="text-[11px] text-gray-400 dark:text-slate-500 font-semibold tracking-wide uppercase">
             Explore Now
           </span>
         </div>
@@ -293,7 +293,7 @@ const ExperienceDialog = ({ experience, onClose }) => {
           p-0
           gap-0
           overflow-hidden
-          bg-white
+          bg-white dark:bg-slate-900
           rounded-[28px]
           border-0
           shadow-2xl
@@ -309,7 +309,7 @@ const ExperienceDialog = ({ experience, onClose }) => {
                 className="absolute inset-0 w-full h-full object-cover"
               />
             ) : (
-              <div className="absolute inset-0 flex items-center justify-center bg-orange-50">
+              <div className="absolute inset-0 flex items-center justify-center bg-orange-50 dark:bg-orange-500/10">
                 <Compass className="w-16 h-16 text-orange-200" />
               </div>
             )}
@@ -373,10 +373,10 @@ const ExperienceDialog = ({ experience, onClose }) => {
                           />
                         </span>
                         <div>
-                          <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400">
+                          <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400 dark:text-slate-500">
                             {f.label}
                           </p>
-                          <p className="text-[13.5px] font-bold text-slate-800 leading-tight mt-0.5">
+                          <p className="text-[13.5px] font-bold text-slate-800 dark:text-slate-200 leading-tight mt-0.5">
                             {f.value}
                           </p>
                         </div>
@@ -394,7 +394,7 @@ const ExperienceDialog = ({ experience, onClose }) => {
                         About this experience
                       </h3>
                     </div>
-                    <p className="text-gray-600 text-[15px] leading-8 max-w-[760px]">
+                    <p className="text-gray-600 dark:text-slate-300 text-[15px] leading-8 max-w-[760px]">
                       {experience.description}
                     </p>
                   </div>
@@ -418,7 +418,7 @@ const ExperienceDialog = ({ experience, onClose }) => {
                             flex items-start gap-3
                             px-4 py-3.5
                             rounded-2xl
-                            bg-white
+                            bg-white dark:bg-slate-900
                             ring-1 ring-orange-100
                             shadow-sm
                             hover:shadow-md hover:ring-orange-200
@@ -432,7 +432,7 @@ const ExperienceDialog = ({ experience, onClose }) => {
                               className="text-white"
                             />
                           </span>
-                          <span className="text-[13.5px] text-slate-700 leading-snug pt-0.5">
+                          <span className="text-[13.5px] text-slate-700 dark:text-slate-300 leading-snug pt-0.5">
                             {item}
                           </span>
                         </div>
@@ -443,9 +443,9 @@ const ExperienceDialog = ({ experience, onClose }) => {
 
                 {/* CTA footer */}
                 <div className="pt-2">
-                  <Separator className="mb-6 bg-orange-100" />
+                  <Separator className="mb-6 bg-orange-100 dark:bg-orange-500/15" />
                   <div className="flex items-center justify-between gap-4 flex-wrap">
-                    <p className="text-sm text-gray-500 max-w-xs">
+                    <p className="text-sm text-gray-500 dark:text-slate-400 max-w-xs">
                       Ready to add this to your itinerary?
                     </p>
                     <Button className="rounded-full bg-orange-500 hover:bg-orange-600 active:scale-95 text-white px-7 h-12 text-sm font-semibold shadow-lg shadow-orange-200 transition-all duration-300 flex items-center gap-2">
@@ -545,9 +545,9 @@ const BestExperiences = ({ destination }) => {
   const skeletonCount = 4;
 
   return (
-    <section className="w-full bg-[#fdf8f3] py-14 overflow-hidden relative">
+    <section className="w-full dark:bg-slate-900 py-14 overflow-hidden relative">
       {/* Decorative blobs */}
-      <div className="pointer-events-none absolute -top-24 -right-24 w-72 h-72 rounded-full bg-orange-100/40 blur-3xl" />
+      <div className="pointer-events-none absolute -top-24 -right-24 w-72 h-72 rounded-full bg-orange-100/40 dark:bg-orange-500/10 blur-3xl" />
       <div className="pointer-events-none absolute bottom-0 -left-16 w-56 h-56 rounded-full bg-amber-100/30 blur-2xl" />
 
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -555,7 +555,7 @@ const BestExperiences = ({ destination }) => {
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5 mb-10">
           <div className="max-w-xl">
             <div className="flex items-center gap-2 mb-3">
-              <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-orange-100">
+              <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-orange-100 dark:bg-orange-500/15">
                 <Compass className="w-3.5 h-3.5 text-orange-500" />
               </span>
               <p className="text-orange-500 font-bold text-[11px] uppercase tracking-[3px]">
@@ -563,7 +563,7 @@ const BestExperiences = ({ destination }) => {
               </p>
             </div>
 
-            <h2 className="text-3xl md:text-[2.5rem] font-extrabold text-gray-900 leading-tight tracking-tight">
+            <h2 className="text-3xl md:text-[2.5rem] font-extrabold text-gray-900 dark:text-slate-100 leading-tight tracking-tight">
               Best Travel{" "}
               <span className="relative inline-block">
                 Experiences
@@ -571,19 +571,19 @@ const BestExperiences = ({ destination }) => {
               </span>
             </h2>
 
-            <p className="text-gray-500 mt-4 text-sm leading-relaxed max-w-lg">
+            <p className="text-gray-500 dark:text-slate-400 mt-4 text-sm leading-relaxed max-w-lg">
               Discover curated destinations, luxury stays, scenic escapes,
               adventure tours, and unforgettable travel moments across India.
             </p>
 
             <div className="flex flex-wrap gap-2 mt-4">
-              <span className="inline-flex items-center gap-1.5 bg-white border border-orange-100 text-orange-600 text-[11px] font-semibold px-3 py-1 rounded-full shadow-sm">
+              <span className="inline-flex items-center gap-1.5 bg-white dark:bg-slate-900 border border-orange-100 dark:border-orange-500/20 text-orange-600 text-[11px] font-semibold px-3 py-1 rounded-full shadow-sm">
                 <Navigation size={10} /> Top Locations
               </span>
-              <span className="inline-flex items-center gap-1.5 bg-white border border-sky-100 text-sky-600 text-[11px] font-semibold px-3 py-1 rounded-full shadow-sm">
+              <span className="inline-flex items-center gap-1.5 bg-white dark:bg-slate-900 border border-sky-100 text-sky-600 text-[11px] font-semibold px-3 py-1 rounded-full shadow-sm">
                 <CalendarDays size={10} /> Best Time Picks
               </span>
-              <span className="inline-flex items-center gap-1.5 bg-white border border-amber-100 text-amber-600 text-[11px] font-semibold px-3 py-1 rounded-full shadow-sm">
+              <span className="inline-flex items-center gap-1.5 bg-white dark:bg-slate-900 border border-amber-100 text-amber-600 text-[11px] font-semibold px-3 py-1 rounded-full shadow-sm">
                 <Star size={10} /> Highlights
               </span>
             </div>
@@ -603,8 +603,8 @@ const BestExperiences = ({ destination }) => {
                   aria-label={`Scroll ${dir}`}
                   className={`w-11 h-11 rounded-full border flex items-center justify-center transition-all duration-300 shadow-sm ${
                     can
-                      ? "bg-white border-gray-200 hover:bg-orange-500 hover:text-white hover:border-orange-500 hover:shadow-md text-gray-700"
-                      : "bg-gray-50 border-gray-100 text-gray-300 cursor-not-allowed"
+                      ? "bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 hover:bg-orange-500 hover:text-white hover:border-orange-500 hover:shadow-md text-gray-700 dark:text-slate-300"
+                      : "bg-gray-50 dark:bg-slate-950 border-gray-100 dark:border-slate-800 text-gray-300 dark:text-slate-600 cursor-not-allowed"
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -644,7 +644,7 @@ const BestExperiences = ({ destination }) => {
         )}
 
         {!isLoading && experiences.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-20 gap-3 text-gray-400">
+          <div className="flex flex-col items-center justify-center py-20 gap-3 text-gray-400 dark:text-slate-500">
             <Compass className="w-10 h-10 text-orange-200" />
             <p className="text-sm font-medium">
               No experiences found for this destination.

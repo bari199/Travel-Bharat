@@ -1,6 +1,6 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { ThemeProvider } from "./context/themeContext";
+import { ThemeProvider } from "./context/ThemeContext";
 
 import Home from "./pages/Home";
 import VerifyEmail from "./pages/VerifyEmail";
@@ -29,6 +29,9 @@ import ActivityListing from "./pages/ActivityListing";
 import ExperienceListing from "./pages/ExperienceListing";
 
 import Experience from "./pages/Experience";
+
+import Event from "@/pages/Event";
+import EventListing from "@/pages/EventListing";
 
 const router = createBrowserRouter([
   {
@@ -69,6 +72,28 @@ const router = createBrowserRouter([
       </>
     ),
   },
+
+  /* EVENTS */
+
+{
+  path: "/events/:id",
+  element: (
+    <>
+      <Navbar />
+      <Event />
+    </>
+  ),
+},
+
+{
+  path: "/events",
+  element: (
+    <>
+      <Navbar />
+      <EventListing />
+    </>
+  ),
+},
 
   
 
@@ -114,6 +139,8 @@ const router = createBrowserRouter([
       </>
     ),
   },
+
+  
 
   {
     path: "/login",
@@ -175,6 +202,8 @@ const router = createBrowserRouter([
       </>
     ),
   },
+
+
 ]);
 
 const App = () => {

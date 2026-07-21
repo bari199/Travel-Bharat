@@ -96,20 +96,20 @@ export const WishlistCard = ({ item, onRemove }) => {
       className="
       group
       overflow-hidden
-      rounded-3xl
+      rounded-2xl
       border
       bg-card
       shadow-sm
       transition-all
       duration-300
-      hover:-translate-y-2
-      hover:shadow-xl
+      hover:-translate-y-1
+      hover:shadow-lg
     "
     >
 
       {/* Image */}
 
-      <div className="relative aspect-video overflow-hidden">
+      <div className="relative aspect-[16/10] overflow-hidden">
 
         <img
           src={image}
@@ -128,9 +128,9 @@ export const WishlistCard = ({ item, onRemove }) => {
 
         {/* Favourite */}
 
-        <div className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur">
+        <div className="absolute right-2.5 top-2.5 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur">
 
-          <Heart className="h-5 w-5 fill-rose-500 text-rose-500" />
+          <Heart className="h-4 w-4 fill-rose-500 text-rose-500" />
 
         </div>
 
@@ -139,13 +139,14 @@ export const WishlistCard = ({ item, onRemove }) => {
         <Badge
           className="
             absolute
-            bottom-4
-            left-4
+            bottom-2.5
+            left-2.5
             rounded-full
             border-0
             bg-white/90
-            px-3
-            py-1
+            px-2.5
+            py-0.5
+            text-xs
             text-gray-700
             backdrop-blur
           "
@@ -155,13 +156,14 @@ export const WishlistCard = ({ item, onRemove }) => {
 
       </div>
 
-      <CardContent className="p-6">
+      <CardContent className="p-4">
 
         {/* Title */}
 
         <h3
           className="
-          text-lg
+          truncate
+          text-sm
           font-bold
           text-foreground
           transition-colors
@@ -175,15 +177,15 @@ export const WishlistCard = ({ item, onRemove }) => {
 
         {location && (
 
-          <div className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
+          <div className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground">
 
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-100 dark:bg-orange-500/20">
+            <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-orange-100 dark:bg-orange-500/20">
 
-              <MapPin className="h-4 w-4 text-orange-500" />
+              <MapPin className="h-3.5 w-3.5 text-orange-500" />
 
             </div>
 
-            <span>
+            <span className="truncate">
 
               {location}
 
@@ -195,7 +197,7 @@ export const WishlistCard = ({ item, onRemove }) => {
 
         {/* Description */}
 
-        <p className="mt-4 line-clamp-2 text-sm leading-6 text-muted-foreground">
+        <p className="mt-2.5 line-clamp-2 text-xs leading-5 text-muted-foreground">
 
           {description}
 
@@ -205,12 +207,14 @@ export const WishlistCard = ({ item, onRemove }) => {
 
         <Button
           onClick={() => onRemove(item)}
+          size="sm"
           className="
-            mt-6
-            h-11
+            mt-4
+            h-9
             w-full
-            rounded-2xl
+            rounded-xl
             bg-rose-50
+            text-xs
             text-rose-600
             transition-all
             duration-300
@@ -221,7 +225,7 @@ export const WishlistCard = ({ item, onRemove }) => {
           "
         >
 
-          <Trash2 className="mr-2 h-4 w-4" />
+          <Trash2 className="mr-1.5 h-3.5 w-3.5" />
 
           Remove from Wishlist
 
