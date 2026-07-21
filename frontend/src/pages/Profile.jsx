@@ -112,7 +112,7 @@ const Profile = () => {
               loading={loading}
               handleProfileUpdate={handleProfileUpdate}
               handlePasswordChange={handlePasswordChange}
-               handleRemoveWishlist={handleRemoveWishlist}
+              handleRemoveWishlist={handleRemoveWishlist}
             />
           </main>
         </SidebarInset>
