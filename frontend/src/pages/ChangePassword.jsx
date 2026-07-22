@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import axios from "axios";
+
 import {
   useNavigate,
   useParams,
@@ -24,9 +26,6 @@ import {
 import { Button } from "@/components/ui/button";
 
 import { Input } from "@/components/ui/input";
-
-
-import api from "@/services/axios";
 
 import {
   Alert,
@@ -79,15 +78,15 @@ const ChangePassword = () => {
     try {
       setIsLoading(true);
 
-      const res = await api.post(
-        `/user/change-password/${email}`,
+      const res = await axios.post(
+        `http://localhost:8000/user/change-password/${email}`,
         {
           newPassword,
           confirmPassword,
         }
       );
 
-      setSuccess(data.message);
+      setSuccess(res.data.message);
 
       setTimeout(() => {
         navigate("/");
