@@ -27,8 +27,9 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 function App() {
   return (
     <Routes>
-      <Route path="/admin/login" element={<Login />} />
+      <Route path="/" element={<Navigate to="/admin/login" replace />} />
 
+      <Route path="/admin/login" element={<Login />} />
       <Route
         path="/admin/dashboard"
         element={
