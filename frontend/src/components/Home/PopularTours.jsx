@@ -11,6 +11,7 @@ import {
 
 import { tours } from "../../data/data";
 
+
 /**
  * Light, GPU-friendly variants — only opacity/transform animated.
  */

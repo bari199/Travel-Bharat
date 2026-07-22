@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 
 import { articles } from "../../data/data";
 
-import TravelArticlesSectionSkeleton from "../skeletons/TravelArticlesSectionSkeleton";
+import TravelArticlesSectionSkeleton from "../Skeletons/TravelArticlesSectionSkeleton";
 
 export default function TravelArticlesSection() {
   const [loading, setLoading] = useState(true);

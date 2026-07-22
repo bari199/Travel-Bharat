@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 
 import { trendingDestinations } from "../../data/data";
-import TopTrendingSectionSkeleton from "../skeletons/TopTrendingSectionSkeleton";
+import TopTrendingSectionSkeleton from "../Skeletons/TopTrendingSectionSkeleton";
 
 const TopTrendingSection = () => {
   const [loading, setLoading] = useState(true);

@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { ArrowUpRight } from "lucide-react";
 import { activities } from "../../data/data";
 
-import PopularThingsToDoSkeleton from "../skeletons/PopularThingsToDoSkeleton";
+import PopularThingsToDoSkeleton from "../Skeletons/PopularThingsToDoSkeleton";
 
 const PopularThingsToDo = () => {
   const [loading, setLoading] = useState(true);
