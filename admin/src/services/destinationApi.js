@@ -5,7 +5,7 @@ import api from "./axios";
 ========================= */
 export const getDestinations = async () => {
   const response = await api.get(
-    "/api/destinations"
+    "/destinations"
   );
 
   return response.data;
@@ -18,7 +18,7 @@ export const getDestination = async (
   id
 ) => {
   const response = await api.get(
-    `/api/destinations/${id}`
+    `/destinations/${id}`
   );
 
   return response.data;

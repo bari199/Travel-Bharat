@@ -4,7 +4,7 @@ export const getComments =
   async () => {
     const response =
       await api.get(
-        "/api/admin/comments"
+        "/admin/comments"
       );
 
     return response.data;
@@ -14,7 +14,7 @@ export const deleteComment =
   async (id) => {
     const response =
       await api.delete(
-        `/api/admin/comments/${id}`
+        `/admin/comments/${id}`
       );
 
     return response.data;

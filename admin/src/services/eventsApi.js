@@ -41,7 +41,7 @@ const buildEventFormData = (data) => {
 =========================================================== */
 
 export const getEvents = async () => {
-  const res = await axiosInstance.get("/api/events");
+  const res = await axiosInstance.get("/events");
   return res.data;
 };
 
@@ -51,7 +51,7 @@ export const getEvents = async () => {
 
 export const getEventsByDestination = async (destinationId) => {
   const res = await axiosInstance.get(
-    `/api/events/destination/${destinationId}`,
+    `/events/destination/${destinationId}`,
   );
   return res.data;
 };
@@ -61,7 +61,7 @@ export const getEventsByDestination = async (destinationId) => {
 =========================================================== */
 
 export const getEvent = async (id) => {
-  const res = await axiosInstance.get(`/api/events/${id}`);
+  const res = await axiosInstance.get(`/events/${id}`);
   return res.data;
 };
 
@@ -72,7 +72,7 @@ export const getEvent = async (id) => {
 export const createEvent = async (data) => {
   const formData = buildEventFormData(data);
 
-  const res = await axiosInstance.post("/api/events", formData, {
+  const res = await axiosInstance.post("/events", formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
 
@@ -87,7 +87,7 @@ export const updateEvent = async (id, data) => {
   
   const formData = buildEventFormData(data);
 
-  const res = await axiosInstance.put(`/api/events/${id}`, formData, {
+  const res = await axiosInstance.put(`/events/${id}`, formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
 
@@ -99,6 +99,6 @@ export const updateEvent = async (id, data) => {
 =========================================================== */
 
 export const deleteEvent = async (id) => {
-  const res = await axiosInstance.delete(`/api/events/${id}`);
+  const res = await axiosInstance.delete(`/events/${id}`);
   return res.data;
 };

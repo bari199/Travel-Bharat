@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAdminAuth } from "@/context/AdminAuthContext";
 import {
   Tooltip,
   TooltipContent,
@@ -27,7 +28,7 @@ const NAV_SECTIONS = [
   {
     label: "ADMIN",
     items: [
-      { name: "Dashboard", path: "/", icon: LayoutDashboard },
+      { name: "Dashboard", path: "/admin/dashboard", icon: LayoutDashboard },
       {
         name: "Destinations",
         path: "/destinations",
@@ -80,11 +81,12 @@ const labelVariants = {
 
 const Sidebar = ({ collapsed }) => {
   const navigate = useNavigate();
+  const { admin } = useAdminAuth();
   const state = collapsed ? "collapsed" : "expanded";
 
   const logout = () => {
     localStorage.removeItem("adminToken");
-    navigate("/login");
+    navigate("/admin/login");
   };
 
   return (
@@ -233,14 +235,15 @@ const Sidebar = ({ collapsed }) => {
               >
                 <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-[9px] bg-white/[0.04] mb-1">
                   <div className="w-7 h-7 rounded-full bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center text-white text-xs font-bold shrink-0">
-                    A
+                   {admin?.email?.charAt(0).toUpperCase() || "A"}
                   </div>
                   <div className="min-w-0">
-                    <p className="text-xs font-semibold text-stone-200 truncate">
-                      Admin User
+                    <p className="font-semibold text-stone-800 dark:text-stone-100">
+                      {admin?.email?.split("@")[0] || "Admin"}
                     </p>
-                    <p className="text-[10px] text-stone-500 truncate">
-                      Super Admin
+
+                    <p className="text-xs text-stone-400 dark:text-stone-500 font-normal">
+                      {admin?.email}
                     </p>
                   </div>
                   <ChevronRight

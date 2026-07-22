@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { adminLogin } from "../../services/authApi";
+import { useAdminAuth } from "../../context/AdminAuthContext";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,7 +17,7 @@ import { Mail, Lock, Eye, EyeOff, Compass, Loader2 } from "lucide-react";
 
 const Login = () => {
   const navigate = useNavigate();
-
+  const { loginAdmin } = useAdminAuth();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -27,29 +27,47 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    console.log("LOGIN CLICKED"); // 👈 ADD THIS
+  try {
+    setLoading(true);
 
-    try {
-      setLoading(true);
+    const res = await loginAdmin(
+      formData.email,
+      formData.password
+    );
 
-      const res = await adminLogin(formData);
 
-      console.log("LOGIN RESPONSE:", res); // 👈 ADD THIS
+    if (res.success) {
 
-      if (res?.token) {
-        localStorage.setItem("adminToken", res.token);
-        navigate("/");
-      } else {
-        console.log("NO TOKEN RECEIVED");
-      }
-    } catch (error) {
-      toast.error(error?.response?.data?.message || "Login Failed");
-    } finally {
-      setLoading(false);
+      toast.success(
+        "Admin login successful"
+      );
+
+      navigate("/admin/dashboard");
+
+    } else {
+
+      toast.error(
+        res.message || "Login Failed"
+      );
+
     }
-  };
+
+
+  } catch (error) {
+
+    toast.error(
+      error?.response?.data?.message ||
+      "Login Failed"
+    );
+
+  } finally {
+
+    setLoading(false);
+
+  }
+};
 
   return (
     <div className="flex min-h-screen w-full bg-orange-50/40">

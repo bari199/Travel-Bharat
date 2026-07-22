@@ -9,7 +9,7 @@ import api from "./axios";
 ========================================================== */
 
 export const getExperiences = async () => {
-  const response = await api.get("/api/experiences");
+  const response = await api.get("/experiences");
 
   return response.data;
 };
@@ -19,7 +19,7 @@ export const getExperiences = async () => {
 ========================================================== */
 
 export const getExperience = async (id) => {
-  const response = await api.get(`/api/experiences/${id}`);
+  const response = await api.get(`/experiences/${id}`);
 
   return response.data;
 };
@@ -133,7 +133,7 @@ export const createExperience = async (data) => {
   const formData = buildFormData(data);
 
   const response = await api.post(
-    "/api/experiences",
+    "/experiences",
 
     formData,
 
@@ -155,7 +155,7 @@ export const updateExperience = async (id, data) => {
   const formData = buildFormData(data);
 
   const response = await api.put(
-    `/api/experiences/${id}`,
+    `/experiences/${id}`,
 
     formData,
 
@@ -174,7 +174,7 @@ export const updateExperience = async (id, data) => {
 ========================================================== */
 
 export const deleteExperience = async (id) => {
-  const response = await api.delete(`/api/experiences/${id}`);
+  const response = await api.delete(`/experiences/${id}`);
 
   return response.data;
 };

@@ -22,16 +22,15 @@ import Events from "./pages/admin/Events";
 import AddEvents from "./pages/admin/AddEvents";
 import EditEvents from "./pages/admin/EditEvents";
 
-
 import ProtectedRoute from "./routes/ProtectedRoute";
 
 function App() {
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
+      <Route path="/admin/login" element={<Login />} />
 
       <Route
-        path="/"
+        path="/admin/dashboard"
         element={
           <ProtectedRoute>
             <Dashboard />
@@ -127,7 +126,6 @@ function App() {
           </ProtectedRoute>
         }
       />
-
 
       <Route
         path="/users"

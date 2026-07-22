@@ -5,7 +5,7 @@ import api from "./axios";
 ============================================ */
 
 export const getActivities = async () => {
-  const response = await api.get("/api/activities");
+  const response = await api.get("/activities");
 
   return response.data;
 };
@@ -15,7 +15,7 @@ export const getActivities = async () => {
 ============================================ */
 
 export const getActivity = async (id) => {
-  const response = await api.get(`/api/activities/${id}`);
+  const response = await api.get(`/activities/${id}`);
 
   return response.data.activity;
 };
@@ -26,7 +26,7 @@ export const getActivity = async (id) => {
 
 export const getActivitiesByDestination = async (destinationId) => {
   const response = await api.get(
-    `/api/activities/destination/${destinationId}`,
+    `/activities/destination/${destinationId}`,
   );
 
   return response.data;
@@ -186,7 +186,7 @@ export const updateActivity = async (
   const formData = buildFormData(data);
 
   const response = await api.put(
-    `/api/activities/${id}`,
+    `/activities/${id}`,
 
     formData,
 
@@ -205,7 +205,7 @@ export const updateActivity = async (
 ============================================ */
 
 export const deleteActivity = async (id) => {
-  const response = await api.delete(`/api/activities/${id}`);
+  const response = await api.delete(`/activities/${id}`);
 
   return response.data;
 };

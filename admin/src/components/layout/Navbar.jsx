@@ -1,5 +1,4 @@
 import { Bell, HelpCircle, Menu, Moon, Search, Sun } from "lucide-react";
-import { useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -18,6 +17,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+
+import { useAdminAuth } from "@/context/AdminAuthContext";
+import { useLocation, useNavigate } from "react-router-dom";
 
 /* ============================================================
    Business logic below — routeLabels, currentLabel resolution,
@@ -39,6 +41,7 @@ const routeLabels = {
 };
 
 const Navbar = ({ collapsed, onToggle }) => {
+  const { admin, logout } = useAdminAuth();
   const { pathname } = useLocation();
   const currentLabel = routeLabels[pathname] ?? "Admin";
 
