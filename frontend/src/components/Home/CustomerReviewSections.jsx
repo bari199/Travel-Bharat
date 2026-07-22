@@ -4,7 +4,7 @@ import { Star, Quote } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { reviews } from "../../data/data";
 
-import CustomerReviewsSectionSkeleton from "../skeletons/CustomerReviewsSectionSkeleton";
+import CustomerReviewsSectionSkeleton from "../Skeletons/CustomerReviewsSectionSkeleton";
 
 const CustomerReviewsSection = () => {
   const [loading, setLoading] = useState(true);

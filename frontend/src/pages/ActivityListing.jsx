@@ -6,11 +6,11 @@ import ActivityFilters, {
   PRICE_RANGES,
 } from "@/components/ActivityListing/ActivityFilters";
 import ActivityGrid from "@/components/ActivityListing/ActivityGrid";
-import SearchBar from "@/components/ActivityListing/SearchBar";
-import SortDropdown from "@/components/ActivityListing/SortDropdown";
+import SearchBar from "@/components/ActivityListing/Searchbar";
+import SortDropdown from "@/components/ActivityListing/Sortdropdown";
 import Pagination from "@/components/ActivityListing/Pagination";
-import MobileFilterDrawer from "@/components/ActivityListing/MobileFilterDrawer";
-import ListingSkeleton from "@/components/ActivityListing/ListingSkeleton";
+import MobileFilterDrawer from "@/components/ActivityListing/Mobilefilterdrawer";
+import ListingSkeleton from "@/components/ActivityListing/Listingskeleton";
 import Footer from "@/components/Home/Footer";
 
 import api from "@/lib/api";
