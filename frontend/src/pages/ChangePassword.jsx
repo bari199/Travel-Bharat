@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import axios from "axios";
+import api from "@/lib/api";
 
 import {
   useNavigate,
@@ -78,8 +78,8 @@ const ChangePassword = () => {
     try {
       setIsLoading(true);
 
-      const res = await axios.post(
-        `http://localhost:8000/user/change-password/${email}`,
+      const res = await api.post(
+        `/user/change-password/${email}`,
         {
           newPassword,
           confirmPassword,

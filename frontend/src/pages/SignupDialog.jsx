@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-import axios from "axios";
+import api from "@/lib/api";
 
 import {
   Card,
@@ -69,8 +69,8 @@ const SignupDialog = () => {
     try {
       setIsLoading(true);
 
-      const res = await axios.post(
-        `http://localhost:8000/user/register`,
+      const res = await api.post(
+        `/user/register`,
         formData,
         {
           headers: {

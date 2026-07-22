@@ -1,4 +1,5 @@
-import axios from "axios";
+import api from "@/lib/api";
+
 
 import React, { useEffect, useState } from "react";
 
@@ -40,8 +41,8 @@ const Verify = () => {
   useEffect(() => {
     const verifyEmail = async () => {
       try {
-        const res = await axios.post(
-          `http://localhost:8000/user/verify`,
+        const res = await api.post(
+          `/user/verify`,
           {},
           {
             headers: {
