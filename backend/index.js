@@ -48,11 +48,31 @@ const PORT = process.env.PORT || 8000;
 */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:5174",
+
+  // Frontend (Vercel)
+  "https://travel-bharat-e639.vercel.app",
+
+  // Admin (Render)
+  "https://travel-bharata.onrender.com",
+];
+
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:5174"],
+    origin: (origin, callback) => {
+      // Allow Postman, mobile apps, server-to-server requests
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error(`CORS blocked: ${origin}`));
+    },
     credentials: true,
-  }),
+  })
 );
 
 /*
