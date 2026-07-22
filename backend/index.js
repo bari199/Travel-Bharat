@@ -29,6 +29,7 @@ import ratingRoutes from "./routes/ratingRoutes.js";
 import reactionRoutes from "./routes/reactionRoutes.js";
 import profileRoutes from "./routes/profileRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
+import adminAuthRoutes from "./routes/adminAuthRoutes.js";
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -74,7 +75,7 @@ app.use(
       return callback(new Error("Not allowed by CORS"));
     },
     credentials: true,
-  })
+  }),
 );
 
 /*
@@ -84,9 +85,7 @@ app.use(
 */
 
 app.use((req, res, next) => {
-  console.log(
-    `[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`
-  );
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
   next();
 });
 
@@ -134,6 +133,7 @@ app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/ratings", ratingRoutes);
 app.use("/api/reactions", reactionRoutes);
 app.use("/api/profile", profileRoutes);
+app.use("/api/admin/auth", adminAuthRoutes);
 app.use("/api/admin", adminRoutes);
 
 /*

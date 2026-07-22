@@ -10,7 +10,8 @@
     "dev": "nodemon index.js",
     "server": "node index.js",
     "bulk-hero": "node scripts/bulkHeroUpload.js",
-    "migrate-images": "node scripts/migrateDestinationImages.js"
+    "migrate-images": "node scripts/migrateDestinationImages.js",
+    "create-admin": "node scripts/createAdmin.js"
   },
   "author": "@Md Abdul Bari",
   "license": "ISC",
@@ -29,6 +30,7 @@
     "nodemon": "^3.1.14",
     "passport": "^0.7.0",
     "passport-google-oauth": "^2.0.0",
+    "prompts": "^2.4.2",
     "yup": "^1.7.1"
   }
 }
