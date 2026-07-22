@@ -19,7 +19,7 @@ import {
   RotateCcw,
 } from "lucide-react";
 
-import EvsectionsBasicInfo from "../Evsections/EvsectionsBasicInfo";
+import EvsectionsBasicInfo from "../Evsections/Evsectionsbasicinfo";
 
 import { initialEventData } from "./InitialeventsData";
 
