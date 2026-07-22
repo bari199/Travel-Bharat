@@ -12,7 +12,7 @@ import {
 
 import { Input } from "@/components/ui/input";
 
-import axios from "axios";
+import api from "@/services/axios";
 
 import {
   CheckCircle2,
@@ -99,17 +99,17 @@ const VerifyOTP = () => {
 
       setIsLoading(true);
 
-      const res = await axios.post(
-        `http://localhost:8000/user/verify-otp/${email}`,
+      const data = await api.post(
+        `/user/verify-otp/${email}`,
         {
           otp: finalOtp,
         }
       );
 
-      if (res.data.success) {
+      if (data.success) {
         setIsVerified(true);
 
-        setSuccessMessage(res.data.message);
+        setSuccessMessage(data.message);
 
         setTimeout(() => {
           navigate(

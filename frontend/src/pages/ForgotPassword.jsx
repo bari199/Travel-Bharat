@@ -18,7 +18,7 @@ import { Input } from "@/components/ui/input";
 
 import { Label } from "@/components/ui/label";
 
-import axios from "axios";
+import api from "@/services/axios";
 
 import {
   CheckCircle,
@@ -55,17 +55,17 @@ const ForgotPassword = () => {
     try {
       setIsLoading(true);
 
-      const res = await axios.post(
-        `http://localhost:8000/user/forgot-password`,
+      const res = await api.post(
+        `/user/forgot-password`,
         {
           email,
         }
       );
 
-      if (res.data.success) {
+      if (data.success) {
         setIsSubmitted(true);
 
-        toast.success(res.data.message);
+        toast.success(data.message);
 
         setTimeout(() => {
           navigate(`/verify-otp/${email}`);

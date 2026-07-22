@@ -1,39 +1,39 @@
 import jwt from "jsonwebtoken";
+import { Admin } from "../models/admin.js";
 
-const authMiddleware = async(req,res,next)=>{
+const authMiddleware = async (req, res, next) => {
+  try {
+    const authHeader = req.headers.authorization;
 
-    try {
-
-        const authHeader = req.headers.authorization;
-
-        if(!authHeader || !authHeader.startsWith("Bearer ")){
-
-            return res.status(401).json({
-                success:false,
-                message:"Unauthorized"
-            });
-        }
-
-        const token = authHeader.split(" ")[1];
-
-        const decoded = jwt.verify(
-            token,
-            process.env.JWT_SECRET
-        );
-
-        req.adminId = decoded.id;
-
-        next();
-
-    } catch (error) {
-
-        return res.status(500).json({
-            success:false,
-            message:error.message
-        });
-
+    if (!authHeader?.startsWith("Bearer ")) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized",
+      });
     }
 
-}
+    const token = authHeader.split(" ")[1];
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const admin = await Admin.findById(decoded.id).select("-password");
+
+    if (!admin) {
+      return res.status(401).json({
+        success: false,
+        message: "Admin not found",
+      });
+    }
+
+    req.admin = admin;
+
+    next();
+  } catch (error) {
+    return res.status(401).json({
+      success: false,
+      message: "Invalid token",
+    });
+  }
+};
 
 export default authMiddleware;

@@ -1,7 +1,5 @@
-import axios from "axios";
-
 import React, { useEffect, useState } from "react";
-
+import api from "@/services/axios";
 import {
   useNavigate,
   useParams,
@@ -40,8 +38,8 @@ const Verify = () => {
   useEffect(() => {
     const verifyEmail = async () => {
       try {
-        const res = await axios.post(
-          `http://localhost:8000/user/verify`,
+        const res = await api.post(
+          `/user/verify`,
           {},
           {
             headers: {

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-import axios from "axios";
+import api from "@/services/axios";
 
 import {
   Card,
@@ -27,6 +27,7 @@ import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
 
 import {
+  AppWindowMac,
   Eye,
   EyeOff,
   Loader2,
@@ -65,47 +66,44 @@ const LoginDialog = ({ open, setOpen, showTrigger = true, }) => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e?.preventDefault();
 
-    try {
-      setIsLoading(true);
+  try {
+    setIsLoading(true);
 
-      const res = await axios.post(
-        "http://localhost:8000/user/login",
-        formData,
-        {
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-        }
-      );
+    const { data } = await api.post("/user/login", formData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-      if (res.data.success) {
-        setUser(res.data.user);
+    if (data.success) {
+      setUser(data.user);
 
-        localStorage.setItem(
-          "accessToken",
-          res.data.accessToken
-        );
-
-        toast.success(res.data.message);
-
-        setOpen(false);
-
-        setFormData({
-          email: "",
-          password: "",
-        });
+      if (data.accessToken) {
+        localStorage.setItem("accessToken", data.accessToken);
       }
-    } catch (error) {
-      console.log(error);
 
-      toast.error("Login failed");
-    } finally {
-      setIsLoading(false);
+      toast.success(data.message || "Login successful");
+
+      setOpen(false);
+
+      setFormData({
+        email: "",
+        password: "",
+      });
     }
-  };
+  } catch (error) {
+    console.error("LOGIN ERROR:", error);
+
+    toast.error(
+      error.response?.data?.message ||
+      "Login failed"
+    );
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   return (
     <Dialog
@@ -340,7 +338,7 @@ const LoginDialog = ({ open, setOpen, showTrigger = true, }) => {
                 <Button
                   onClick={() =>
                     window.open(
-                      "http://localhost:8000/auth/google",
+                      `${import.meta.env.VITE_BACKEND_URL}/auth/google`,
                       "_self"
                     )
                   }

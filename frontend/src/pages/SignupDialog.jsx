@@ -2,8 +2,6 @@
 
 import React, { useState } from "react";
 
-import axios from "axios";
-
 import {
   Card,
   CardContent,
@@ -29,6 +27,8 @@ import {
   EyeOff,
   Loader2,
 } from "lucide-react";
+
+import api from "@/services/axios";
 
 import { toast } from "sonner";
 
@@ -69,8 +69,8 @@ const SignupDialog = () => {
     try {
       setIsLoading(true);
 
-      const res = await axios.post(
-        `http://localhost:8000/user/register`,
+      const {data} = await api.post(
+        "/user/register",
         formData,
         {
           headers: {
@@ -80,8 +80,8 @@ const SignupDialog = () => {
         }
       );
 
-      if (res.data.success) {
-        toast.success(res.data.message);
+      if (data.success) {
+        toast.success(data.message);
 
         setOpen(false);
 
