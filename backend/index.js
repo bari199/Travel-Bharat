@@ -1,34 +1,26 @@
 import express from "express";
 import "dotenv/config";
-import connectDB from "./config/db.js";
 import cors from "cors";
+
+import connectDB from "./config/db.js";
 import "./config/passport.js";
 
 /*
 |--------------------------------------------------------------------------
-| Auth & User
+| Routes
 |--------------------------------------------------------------------------
 */
 import userRoute from "./routes/userRoute.js";
 import authRoute from "./routes/authRoute.js";
 
-/*
-|--------------------------------------------------------------------------
-| Core Content
-|--------------------------------------------------------------------------
-*/
 import destinationRoutes from "./routes/destinationRoutes.js";
 import experienceRoutes from "./routes/experienceRoutes.js";
 import activityRoutes from "./routes/activityRoutes.js";
 import eventRoutes from "./routes/eventRoutes.js";
+
 import activityWishlistRoutes from "./routes/activityWishlistRoutes.js";
 import experienceWishlistRoutes from "./routes/experienceWishlistRoutes.js";
 
-/*
-|--------------------------------------------------------------------------
-| Supporting Features
-|--------------------------------------------------------------------------
-*/
 import stateRoutes from "./routes/stateRoutes.js";
 import commentRoutes from "./routes/commentRoutes.js";
 import searchRoutes from "./routes/searchRoutes.js";
@@ -43,11 +35,10 @@ const PORT = process.env.PORT || 8000;
 
 /*
 |--------------------------------------------------------------------------
-| Middleware
+| Allowed Origins
 |--------------------------------------------------------------------------
 */
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:5174",
@@ -59,17 +50,28 @@ const allowedOrigins = [
   "https://travel-bharata.onrender.com",
 ];
 
+/*
+|--------------------------------------------------------------------------
+| Middleware
+|--------------------------------------------------------------------------
+*/
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use(
   cors({
-    origin: (origin, callback) => {
-      // Allow Postman, mobile apps, server-to-server requests
+    origin(origin, callback) {
+      // Allow Postman/server-server requests
       if (!origin) return callback(null, true);
 
       if (allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
 
-      return callback(new Error(`CORS blocked: ${origin}`));
+      console.log("❌ Blocked CORS:", origin);
+
+      return callback(new Error("Not allowed by CORS"));
     },
     credentials: true,
   })
@@ -77,21 +79,35 @@ app.use(
 
 /*
 |--------------------------------------------------------------------------
-| Request logger — helps pinpoint which endpoint is failing
+| Logger
 |--------------------------------------------------------------------------
 */
-app.use((req, _res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
+
+app.use((req, res, next) => {
+  console.log(
+    `[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`
+  );
   next();
 });
 
 /*
 |--------------------------------------------------------------------------
-| Health check
+| Health
 |--------------------------------------------------------------------------
 */
-app.get("/health", (_req, res) => {
-  res.json({ success: true, message: "Server is running" });
+
+app.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Travel Bharat Backend Running 🚀",
+  });
+});
+
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Server Healthy",
+  });
 });
 
 /*
@@ -99,6 +115,7 @@ app.get("/health", (_req, res) => {
 | Routes
 |--------------------------------------------------------------------------
 */
+
 app.use("/auth", authRoute);
 app.use("/user", userRoute);
 
@@ -106,8 +123,10 @@ app.use("/api/destinations", destinationRoutes);
 app.use("/api/experiences", experienceRoutes);
 app.use("/api/activities", activityRoutes);
 app.use("/api/events", eventRoutes);
+
 app.use("/api/activity-wishlist", activityWishlistRoutes);
 app.use("/api/experience-wishlist", experienceWishlistRoutes);
+
 app.use("/api/states", stateRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/search", searchRoutes);
@@ -119,37 +138,49 @@ app.use("/api/admin", adminRoutes);
 
 /*
 |--------------------------------------------------------------------------
-| 404 handler — returns JSON, never HTML
+| 404
 |--------------------------------------------------------------------------
 */
+
 app.use((req, res) => {
-  console.warn(`[404] Route not found: ${req.method} ${req.originalUrl}`);
   res.status(404).json({
     success: false,
-    message: `Route not found: ${req.method} ${req.originalUrl}`,
+    message: `Route not found : ${req.method} ${req.originalUrl}`,
   });
 });
 
 /*
 |--------------------------------------------------------------------------
-| Global error handler — catches any unhandled error, returns JSON
-| This is what prevents Express from sending [object Object] HTML pages
+| Error Handler
 |--------------------------------------------------------------------------
 */
-app.use((err, req, res, _next) => {
-  console.error(`[GLOBAL ERROR] ${req.method} ${req.originalUrl}:`, err);
+
+app.use((err, req, res, next) => {
+  console.error(err);
+
   res.status(err.status || 500).json({
     success: false,
-    message: err.message || "Internal server error",
+    message: err.message || "Internal Server Error",
   });
 });
 
 /*
 |--------------------------------------------------------------------------
-| Start
+| Start Server
 |--------------------------------------------------------------------------
 */
-app.listen(PORT, () => {
-  connectDB();
-  console.log(`Server listening on port ${PORT}`);
-});
+
+const startServer = async () => {
+  try {
+    await connectDB();
+
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+    });
+  } catch (err) {
+    console.error("Database Connection Failed", err);
+    process.exit(1);
+  }
+};
+
+startServer();
