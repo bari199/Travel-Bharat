@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import AdminLayout from "../../components/layout/AdminLayout";
-import EventsForm from "@/components/events/EventsForm";
+import EventsForm from "@/components/events/Eventsform";
 
 const AddEvents = () => {
   const navigate = useNavigate();
