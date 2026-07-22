@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "axios";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import {
   BookA,
@@ -450,8 +450,8 @@ const Navbar = () => {
 
   const logoutHandler = async () => {
     try {
-      const res = await axios.post(
-        "http://localhost:8000/user/logout",
+      const res = await api.post(
+        "/user/logout",
         {},
         { headers: { Authorization: `Bearer ${accessToken}` } },
       );
