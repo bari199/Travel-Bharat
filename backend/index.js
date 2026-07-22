@@ -116,8 +116,8 @@ app.get("/health", (req, res) => {
 |--------------------------------------------------------------------------
 */
 
-app.use("/auth", authRoute);
-app.use("/user", userRoute);
+app.use("/api/auth", authRoute);
+app.use("/api/user", userRoute);
 
 app.use("/api/destinations", destinationRoutes);
 app.use("/api/experiences", experienceRoutes);
