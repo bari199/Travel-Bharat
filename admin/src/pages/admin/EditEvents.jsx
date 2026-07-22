@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 import AdminLayout from "@/components/layout/AdminLayout";
-import EventsForm from "@/components/events/EventsForm";
+import EventsForm from "@/components/events/Eventsform";
 
 import { getEvent } from "@/services/eventsApi";
 
