@@ -2,96 +2,150 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <title>Email Verification</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #f4f4f4;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verify Your Email</title>
 
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        .header {
-            text-align: center;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #eee;
-        }
+    body {
+      background: #f5f7fb;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #444;
+      padding: 30px 15px;
+    }
 
-        .header h2 {
-            color: #333;
-        }
+    .wrapper {
+      max-width: 600px;
+      margin: auto;
+      background: #ffffff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
+    }
 
-        .message {
-            font-size: 16px;
-            color: #555;
-            line-height: 1.6;
-            padding: 20px 0;
-        }
+    .header {
+      background: linear-gradient(135deg, #ff8a00, #ffb000);
+      padding: 35px 20px;
+      text-align: center;
+    }
 
-        .button {
-            display: inline-block;
-            padding: 12px 24px;
-            background-color: #00a63d;
-            color: #ffffff;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            margin-top: 20px;
-        }
+    .header h1 {
+      color: #ffffff;
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
 
-        .footer {
-            font-size: 13px;
-            color: #999;
-            text-align: center;
-            margin-top: 30px;
-        }
+    .header p {
+      color: rgba(255, 255, 255, .9);
+      font-size: 15px;
+    }
 
-        a {
-            color: #ffffff;
-        }
-    </style>
+    .content {
+      padding: 40px 35px;
+    }
+
+    .content h2 {
+      color: #222;
+      margin-bottom: 20px;
+    }
+
+    .content p {
+      font-size: 15px;
+      line-height: 1.8;
+      color: #555;
+      margin-bottom: 18px;
+    }
+
+    .button-wrapper {
+      text-align: center;
+      margin: 35px 0;
+    }
+
+    .button {
+      display: inline-block;
+      background: #ff9800;
+      color: #ffffff !important;
+      text-decoration: none;
+      padding: 14px 30px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .button:hover {
+      background: #e68900;
+    }
+
+    .note {
+      font-size: 13px;
+      color: #777;
+      margin-top: 20px;
+    }
+
+    .footer {
+      text-align: center;
+      background: #fafafa;
+      padding: 20px;
+      font-size: 13px;
+      color: #999;
+      border-top: 1px solid #eee;
+    }
+  </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="header">
-            <h2>Verify Your Email Address</h2>
-        </div>
-        <div class="message">
-            <p>Hello,</p>
-            <p>
-                Thank you for registering on our website. To complete your signup process and activate your account,
-                please verify your email address by clicking the button below.
-            </p>
-            <p style="text-align: center; color:#ffffff">
-                <a href="http://localhost:5173/verify/{{token}}" target="_blank" style="
-      display: inline-block;
-      padding: 12px 24px;
-      background-color: #e79807;
-      color: #ffffff !important;
-      text-decoration: none;
-      border-radius: 5px;
-      font-weight: bold;
-    ">
-                    Verify Your Email
-                </a>
-            </p>
-            <p>If you did not initiate this request, you can safely ignore this email.</p>
-        </div>
-        <div class="footer">
-            &copy; 2025 Webelite Builders. All rights reserved.
-        </div>
+
+  <div class="wrapper">
+
+    <div class="header">
+      <h1>Travel Bharat</h1>
+      <p>Email Verification</p>
     </div>
+
+    <div class="content">
+
+      <h2>Hello 👋</h2>
+
+      <p>
+        Thank you for creating your <strong>Travel Bharat</strong> account.
+      </p>
+
+      <p>
+        Please verify your email address to activate your account and start
+        exploring India's best travel destinations, experiences, and adventures.
+      </p>
+
+      <div class="button-wrapper">
+        <a
+          href="{{frontendUrl}}/verify/{{token}}"
+          class="button"
+          target="_blank">
+          Verify Email
+        </a>
+      </div>
+
+      <p class="note">
+        This verification link will expire in <strong>10 minutes</strong>.
+      </p>
+
+      <p class="note">
+        If you didn't create an account, you can safely ignore this email.
+      </p>
+
+    </div>
+
+    <div class="footer">
+      © 2026 Travel Bharat. All Rights Reserved.
+    </div>
+
+  </div>
+
 </body>
 
 </html>
