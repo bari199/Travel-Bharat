@@ -1,60 +1,34 @@
-import * as brevo from "@getbrevo/brevo";
 import "dotenv/config";
 
-const apiInstance = new brevo.TransactionalEmailsApi();
-
-apiInstance.setApiKey(
-  brevo.TransactionalEmailsApiApiKeys.apiKey,
-  process.env.BREVO_API_KEY
-);
-
 export const sendOtpMail = async (email, otp) => {
-  try {
-    const emailData = {
+  const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "api-key": process.env.BREVO_API_KEY,
+    },
+    body: JSON.stringify({
       sender: {
         name: "Travel Bharat",
         email: process.env.MAIL_USER,
       },
-
-      to: [
-        {
-          email,
-        },
-      ],
-
+      to: [{ email }],
       subject: "Password Reset OTP",
-
       htmlContent: `
         <h2>Travel Bharat</h2>
-
-        <p>Your OTP for password reset is:</p>
-
-        <h1 style="letter-spacing:5px;">
-          ${otp}
-        </h1>
-
-        <p>
-          This OTP is valid for <b>10 minutes</b>.
-        </p>
-
-        <p>
-          If you didn't request this, please ignore this email.
-        </p>
+        <p>Your OTP is:</p>
+        <h1>${otp}</h1>
+        <p>Valid for 10 minutes.</p>
       `,
-    };
+    }),
+  });
 
-    const response = await apiInstance.sendTransacEmail(emailData);
+  const data = await response.json();
 
-    console.log("=================================");
-    console.log("✅ OTP Email Sent");
-    console.log(response);
-    console.log("=================================");
-  } catch (error) {
-    console.log("=================================");
-    console.log("❌ OTP Email Failed");
-    console.error(error);
-    console.log("=================================");
-
-    throw error;
+  if (!response.ok) {
+    console.error(data);
+    throw new Error(data.message || "Brevo OTP Failed");
   }
-};
+
+  console.log("✅ OTP Email Sent");
+}
