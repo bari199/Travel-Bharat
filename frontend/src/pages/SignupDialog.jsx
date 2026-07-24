@@ -64,37 +64,42 @@ const SignupDialog = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      setIsLoading(true);
+  try {
+    setIsLoading(true);
 
-      const res = await api.post(
-        `/user/register`,
-        formData,
-        {
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-        }
-      );
-
-      if (res.data.success) {
-        toast.success(res.data.message);
-
-        setOpen(false);
-
-        navigate("/verify");
+    const res = await api.post(
+      "/user/register",
+      formData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
-    } catch (error) {
-      console.log(error);
+    );
 
-      toast.error("Signup failed");
-    } finally {
-      setIsLoading(false);
+    if (res.data.success) {
+      toast.success(res.data.message);
+
+      setOpen(false);
+
+      navigate("/verify", {
+        state: {
+          email: formData.email,
+        },
+      });
     }
-  };
+  } catch (error) {
+    console.error(error);
+
+    toast.error(
+      error.response?.data?.message || "Signup failed"
+    );
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   return (
     <Dialog
