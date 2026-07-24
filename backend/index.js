@@ -40,16 +40,21 @@ const PORT = process.env.PORT || 8000;
 |--------------------------------------------------------------------------
 */
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "http://localhost:5174",
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:5174",
+      "https://travel-bharat-e639.vercel.app",
+      "https://travel-bharata.onrender.com",
+    ],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
-  // Frontend (Vercel)
-  "https://travel-bharat-e639.vercel.app",
-
-  // Admin (Render)
-  "https://travel-bharata.onrender.com",
-];
+app.options("*", cors());
 
 /*
 |--------------------------------------------------------------------------

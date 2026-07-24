@@ -1,4 +1,4 @@
-import brevo from "@getbrevo/brevo";
+import * as brevo from "@getbrevo/brevo";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
