@@ -1,32 +1,60 @@
-import nodemailer from "nodemailer";
+import brevo from "@getbrevo/brevo";
 import "dotenv/config";
 
-const transporter = nodemailer.createTransport({
-  host: process.env.MAIL_HOST,
-  port: Number(process.env.MAIL_PORT),
-  secure: false, // Port 587
-  auth: {
-    user: process.env.MAIL_USER,
-    pass: process.env.MAIL_PASS,
-  },
-});
+const apiInstance = new brevo.TransactionalEmailsApi();
+
+apiInstance.setApiKey(
+  brevo.TransactionalEmailsApiApiKeys.apiKey,
+  process.env.BREVO_API_KEY
+);
 
 export const sendOtpMail = async (email, otp) => {
-  const mailOptions = {
-    from: `"Travel Bharat" <${process.env.MAIL_USER}>`,
-    to: email,
-    subject: "Password Reset OTP",
-    html: `
-      <h2>Travel Bharat</h2>
-      <p>Your OTP for password reset is:</p>
+  try {
+    const emailData = {
+      sender: {
+        name: "Travel Bharat",
+        email: process.env.MAIL_USER,
+      },
 
-      <h1 style="letter-spacing:4px;">${otp}</h1>
+      to: [
+        {
+          email,
+        },
+      ],
 
-      <p>This OTP is valid for <b>10 minutes</b>.</p>
+      subject: "Password Reset OTP",
 
-      <p>If you didn't request a password reset, please ignore this email.</p>
-    `,
-  };
+      htmlContent: `
+        <h2>Travel Bharat</h2>
 
-  await transporter.sendMail(mailOptions);
+        <p>Your OTP for password reset is:</p>
+
+        <h1 style="letter-spacing:5px;">
+          ${otp}
+        </h1>
+
+        <p>
+          This OTP is valid for <b>10 minutes</b>.
+        </p>
+
+        <p>
+          If you didn't request this, please ignore this email.
+        </p>
+      `,
+    };
+
+    const response = await apiInstance.sendTransacEmail(emailData);
+
+    console.log("=================================");
+    console.log("✅ OTP Email Sent");
+    console.log(response);
+    console.log("=================================");
+  } catch (error) {
+    console.log("=================================");
+    console.log("❌ OTP Email Failed");
+    console.error(error);
+    console.log("=================================");
+
+    throw error;
+  }
 };

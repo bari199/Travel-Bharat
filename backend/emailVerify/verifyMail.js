@@ -1,51 +1,57 @@
-import nodemailer from "nodemailer";
-import "dotenv/config";
+import brevo from "@getbrevo/brevo";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import handlebars from "handlebars";
+import "dotenv/config";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Create transporter once
-const transporter = nodemailer.createTransport({
-  host: process.env.MAIL_HOST,
-  port: Number(process.env.MAIL_PORT),
-  secure: false, // Port 587
-  auth: {
-    user: process.env.MAIL_USER,
-    pass: process.env.MAIL_PASS,
-  },
-});
+const apiInstance = new brevo.TransactionalEmailsApi();
+
+apiInstance.setApiKey(
+  brevo.TransactionalEmailsApiApiKeys.apiKey,
+  process.env.BREVO_API_KEY
+);
 
 export const verifyMail = async (token, email) => {
-  const emailTemplateSource = fs.readFileSync(
-    path.join(__dirname, "template.hbs"),
-    "utf-8"
-  );
-
-  const template = handlebars.compile(emailTemplateSource);
-
-  const htmlToSend = template({
-    token: encodeURIComponent(token),
-    frontendUrl: process.env.FRONTEND_URL,
-  });
-
-  const mailConfigurations = {
-    from: `"Travel Bharat" <${process.env.MAIL_USER}>`,
-    to: email,
-    subject: "Email Verification",
-    html: htmlToSend,
-  };
-
   try {
-    const info = await transporter.sendMail(mailConfigurations);
+    const templateSource = fs.readFileSync(
+      path.join(__dirname, "template.hbs"),
+      "utf8"
+    );
 
-    console.log("✅ Email sent successfully");
-    console.log(info.messageId);
-  } catch (error) {
-    console.error("❌ Email send failed:", error);
-    throw error;
+    const template = handlebars.compile(templateSource);
+
+    const html = template({
+      token: encodeURIComponent(token),
+      frontendUrl: process.env.FRONTEND_URL,
+    });
+
+    const emailData = {
+      sender: {
+        name: "Travel Bharat",
+        email: process.env.MAIL_USER,
+      },
+      to: [
+        {
+          email,
+        },
+      ],
+      subject: "Verify Your Email",
+      htmlContent: html,
+    };
+
+    const response = await apiInstance.sendTransacEmail(emailData);
+
+    console.log("✅ Verification Email Sent");
+    console.log(response);
+
+  } catch (err) {
+    console.error("❌ Brevo API Error");
+    console.error(err);
+
+    throw err;
   }
 };
