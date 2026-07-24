@@ -216,6 +216,74 @@ export const verification = async (req, res) => {
   }
 };
 
+
+
+export const resendVerificationMail = async (req, res) => {
+  try {
+    console.log("======================================");
+    console.log("📩 RESEND VERIFICATION EMAIL");
+    console.log("======================================");
+
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is required",
+      });
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    if (user.isVerified) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is already verified",
+      });
+    }
+
+    console.log("🎫 Generating New Token...");
+
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.SECRET_KEY,
+      { expiresIn: "10m" }
+    );
+
+    user.token = token;
+    await user.save();
+
+    console.log("✅ Token Saved");
+
+    await verifyMail(token, user.email);
+
+    console.log("✅ Verification Email Sent Again");
+
+    return res.status(200).json({
+      success: true,
+      message: "Verification email sent successfully",
+    });
+
+  } catch (error) {
+    console.log("======================================");
+    console.log("❌ RESEND EMAIL FAILED");
+    console.log(error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
 /* ==========================================================
    LOGIN
 ========================================================== */

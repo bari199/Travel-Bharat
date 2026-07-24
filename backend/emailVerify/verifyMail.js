@@ -21,6 +21,7 @@ export const verifyMail = async (token, email) => {
   });
 
   const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+    
     method: "POST",
     headers: {
       "Content-Type": "application/json",

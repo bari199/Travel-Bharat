@@ -11,28 +11,37 @@ import {
 
 import { Button } from "@/components/ui/button";
 
-import { MailCheck, Mail, LogIn, RefreshCw } from "lucide-react";
+import {
+  MailCheck,
+  Mail,
+  LogIn,
+  RefreshCw,
+} from "lucide-react";
 
 import axios from "axios";
 import { toast } from "sonner";
 
 const VerifyEmail = () => {
-  const [open, setOpen] = useState(false);
-  const [countdown, setCountdown] = useState(60);
+  const [open, setOpen] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [countdown, setCountdown] = useState(60);
 
-  const location = useLocation();
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const email = location.state?.email || "";
+  // email from signup
+  const email =
+    location.state?.email || localStorage.getItem("verifyEmail") || "";
 
   useEffect(() => {
-    setOpen(true);
-  }, []);
+    if (location.state?.email) {
+      localStorage.setItem("verifyEmail", location.state.email);
+    }
+  }, [location]);
 
-  // Countdown
+  // countdown
   useEffect(() => {
-    if (countdown === 0) return;
+    if (countdown <= 0) return;
 
     const timer = setInterval(() => {
       setCountdown((prev) => prev - 1);
@@ -41,12 +50,10 @@ const VerifyEmail = () => {
     return () => clearInterval(timer);
   }, [countdown]);
 
-  // Open Gmail
   const openGmail = () => {
     window.open("https://mail.google.com", "_blank");
   };
 
-  // Resend Verification Email
   const resendVerification = async () => {
     if (!email) {
       toast.error("Email not found.");
@@ -56,19 +63,20 @@ const VerifyEmail = () => {
     try {
       setLoading(true);
 
-      const res = await axios.post(
+      const { data } = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/user/resend-verification`,
         {
           email,
         }
       );
 
-      toast.success(res.data.message);
+      toast.success(data.message);
 
       setCountdown(60);
-    } catch (error) {
+    } catch (err) {
       toast.error(
-        error.response?.data?.message || "Failed to resend verification email."
+        err.response?.data?.message ||
+          "Failed to resend verification email."
       );
     } finally {
       setLoading(false);
@@ -84,19 +92,15 @@ const VerifyEmail = () => {
 
           <DialogHeader className="items-center text-center">
 
-            <div className="h-24 w-24 rounded-full bg-orange-100 flex items-center justify-center mb-4">
-
+            <div className="w-24 h-24 rounded-full bg-orange-100 flex items-center justify-center mb-5">
               <MailCheck className="h-12 w-12 text-orange-600" />
-
             </div>
 
             <DialogTitle className="text-3xl font-bold text-orange-600">
-
-              Check Your Email
-
+              Verify Your Email
             </DialogTitle>
 
-            <DialogDescription className="text-base leading-7 mt-3">
+            <DialogDescription className="text-base mt-3 leading-7">
 
               We've sent a verification link to
 
@@ -106,14 +110,14 @@ const VerifyEmail = () => {
               {email}
             </p>
 
-            <p className="text-gray-500 text-sm mt-4">
-              Open your inbox and click the verification link to activate your
-              account.
+            <p className="text-gray-500 text-sm mt-4 leading-6">
+              Please open your inbox and click the verification link to
+              activate your Travel Bharat account.
             </p>
 
           </DialogHeader>
 
-          <div className="space-y-3 mt-8">
+          <div className="space-y-4 mt-8">
 
             <Button
               onClick={openGmail}
@@ -125,8 +129,8 @@ const VerifyEmail = () => {
 
             <Button
               variant="outline"
-              onClick={() => navigate("/login")}
               className="w-full h-12"
+              onClick={() => navigate("/login")}
             >
               <LogIn className="mr-2 h-5 w-5" />
               Go To Login
@@ -134,9 +138,9 @@ const VerifyEmail = () => {
 
             <Button
               variant="secondary"
-              disabled={countdown > 0 || loading}
-              onClick={resendVerification}
               className="w-full h-12"
+              disabled={loading || countdown > 0}
+              onClick={resendVerification}
             >
               <RefreshCw className="mr-2 h-5 w-5" />
 
@@ -149,11 +153,15 @@ const VerifyEmail = () => {
 
           </div>
 
-          <p className="text-center text-xs text-gray-500 mt-6">
+          <div className="text-center mt-6 text-sm text-gray-500 leading-6">
+
             Didn't receive the email?
+
             <br />
+
             Check your Spam or Promotions folder.
-          </p>
+
+          </div>
 
         </DialogContent>
 

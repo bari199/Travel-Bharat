@@ -63,27 +63,28 @@ const SignupDialog = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
   e.preventDefault();
 
   try {
     setIsLoading(true);
 
-    const res = await api.post(
-      "/user/register",
-      formData,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const res = await api.post("/user/register", formData);
 
     if (res.data.success) {
       toast.success(res.data.message);
 
+      // close signup dialog
       setOpen(false);
 
+      // clear form
+      setFormData({
+        username: "",
+        email: "",
+        password: "",
+      });
+
+      // go to verify page
       navigate("/verify", {
         state: {
           email: formData.email,

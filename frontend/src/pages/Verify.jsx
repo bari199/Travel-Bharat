@@ -1,42 +1,27 @@
 import api from "@/lib/api";
 
-
 import React, { useEffect, useState } from "react";
 
-import {
-  useNavigate,
-  useParams,
-} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { motion } from "framer-motion";
 
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
 import { Button } from "@/components/ui/button";
 
-import {
-  CheckCircle2,
-  XCircle,
-  Loader2,
-} from "lucide-react";
+import { CheckCircle2, XCircle, Loader2 } from "lucide-react";
 
 const Verify = () => {
   const { token } = useParams();
 
   const navigate = useNavigate();
 
-  const [status, setStatus] = useState(
-    "Verifying your email..."
-  );
+  const [status, setStatus] = useState("Verifying your email...");
 
-  const [isSuccess, setIsSuccess] =
-    useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
-  const [isLoading, setIsLoading] =
-    useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const verifyEmail = async () => {
@@ -48,15 +33,13 @@ const Verify = () => {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
 
         if (res.data.success) {
           setIsSuccess(true);
 
-          setStatus(
-            "Email Verified Successfully"
-          );
+          setStatus("Email Verified Successfully");
 
           setTimeout(() => {
             navigate("/", {
@@ -68,18 +51,14 @@ const Verify = () => {
         } else {
           setIsSuccess(false);
 
-          setStatus(
-            "Invalid or Expired Token"
-          );
+          setStatus("Invalid or Expired Token");
         }
       } catch (error) {
         console.log(error);
 
         setIsSuccess(false);
 
-        setStatus(
-          "Verification Failed. Please try again"
-        );
+        setStatus("Verification Failed. Please try again");
       } finally {
         setIsLoading(false);
       }
@@ -103,7 +82,6 @@ const Verify = () => {
         overflow-hidden
       "
     >
-
       {/* Background Blur */}
       <div className="absolute w-72 h-72 bg-orange-300/30 rounded-full blur-3xl top-10 left-10" />
 
@@ -125,7 +103,6 @@ const Verify = () => {
         }}
         className="relative z-10 w-full max-w-md"
       >
-
         <Card
           className="
             rounded-3xl
@@ -137,9 +114,7 @@ const Verify = () => {
             overflow-hidden
           "
         >
-
           <CardContent className="p-8 md:p-10 text-center">
-
             {/* Icon */}
             <motion.div
               initial={{
@@ -155,7 +130,6 @@ const Verify = () => {
               }}
               className="flex justify-center mb-6"
             >
-
               {isLoading ? (
                 <div
                   className="
@@ -199,7 +173,6 @@ const Verify = () => {
                   <XCircle className="w-10 h-10 text-red-500" />
                 </div>
               )}
-
             </motion.div>
 
             {/* Title */}
@@ -223,13 +196,11 @@ const Verify = () => {
                 mb-3
               "
             >
-
               {isLoading
                 ? "Verifying..."
                 : isSuccess
-                ? "Verification Complete"
-                : "Verification Failed"}
-
+                  ? "Verification Complete"
+                  : "Verification Failed"}
             </motion.h2>
 
             {/* Description */}
@@ -252,9 +223,7 @@ const Verify = () => {
                 leading-relaxed
               "
             >
-
               {status}
-
             </motion.p>
 
             {/* Button */}
@@ -273,11 +242,8 @@ const Verify = () => {
                 }}
                 className="mt-8"
               >
-
                 <Button
-                  onClick={() =>
-                    navigate("/")
-                  }
+                  onClick={() => navigate("/")}
                   className="
                     bg-orange-500
                     hover:bg-orange-600
@@ -292,16 +258,11 @@ const Verify = () => {
                 >
                   Go To Home
                 </Button>
-
               </motion.div>
             )}
-
           </CardContent>
-
         </Card>
-
       </motion.div>
-
     </div>
   );
 };
