@@ -214,7 +214,7 @@ const Navbar = ({ collapsed, onToggle }) => {
         ====================================================== */}
 
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+          
             <button
               type="button"
               className="h-8 w-8 rounded-full bg-gradient-to-br from-orange-400 to-amber-500 text-white text-xs font-bold flex items-center justify-center border-2 border-orange-100 dark:border-stone-700 hover:scale-105 transition-transform focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 dark:focus:ring-offset-stone-900"
@@ -222,7 +222,7 @@ const Navbar = ({ collapsed, onToggle }) => {
             >
               A
             </button>
-          </DropdownMenuTrigger>
+  
 
           <DropdownMenuContent
             align="end"
