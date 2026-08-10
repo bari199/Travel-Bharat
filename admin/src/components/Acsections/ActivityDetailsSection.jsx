@@ -17,11 +17,8 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 
-/* ============================================================
-   Business logic below (all setFormData calls) is unchanged
-   from the original — only markup, structure, and styling
-   are new.
-============================================================ */
+
+
 
 function FieldLabel({ icon: Icon, children }) {
   return (

@@ -24,11 +24,7 @@ const applyThemeClass = (theme) => {
   }
 };
 
-/**
- * Wrap the app (or a subtree) with <ThemeProvider> to enable light/dark
- * mode. Applies the `dark` class to <html>, so it works with Tailwind's
- * `darkMode: "class"` strategy — same approach the admin console uses.
- */
+
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(getPreferredTheme);
 

@@ -43,10 +43,7 @@ export const CATEGORIES = [
   { value: "Other", label: "Other", icon: MapPin },
 ];
 
-/* Maps whatever category string is on a destination doc to one of the
-   fixed buckets above (case-insensitive), so filtering stays correct
-   even if the DB has slightly different casing. Anything unrecognized
-   falls into "Other" instead of silently not matching anything. */
+
 export const normalizeCategory = (raw) => {
   if (!raw) return "Other";
   const val = String(raw).trim().toLowerCase();

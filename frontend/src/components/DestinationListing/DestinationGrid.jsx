@@ -20,7 +20,5 @@ const DestinationGrid = ({ destinations }) => {
   );
 };
 
-// Memoized: only re-renders when the `destinations` array reference
-// actually changes (i.e. after filtering/pagination), not on every
-// keystroke or unrelated state update elsewhere on the page.
+
 export default React.memo(DestinationGrid);

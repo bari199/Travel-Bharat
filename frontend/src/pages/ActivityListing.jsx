@@ -22,9 +22,8 @@ const ActivityListing = () => {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // `search` is what the input shows; `debouncedSearch` is what filtering
-  // actually uses — so fast typing doesn't re-filter the whole list on
-  // every keystroke (this was the main source of the lag).
+
+  
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
 
@@ -48,14 +47,12 @@ const ActivityListing = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Location now comes from the URL as state/city slugs (e.g.
-  // /activities/West%20Bengal/Puri) instead of a destinationId — the full
-  // activity list is fetched once from GET /activities and scoped to this
-  // location client-side (see `locationScopedActivities` below).
+
+  
   const { stateSlug, citySlug } = useParams();
 
-  // Seeded from the navbar's Activities mega-menu, e.g. /activities?search=Kayaking.
-  // Only applied on first mount so it doesn't fight the user once they start typing.
+
+  
   const [searchParams] = useSearchParams();
   useEffect(() => {
     const seeded = searchParams.get("search");
@@ -83,14 +80,13 @@ const ActivityListing = () => {
     }
   };
 
-  // Fetched once — the full list doesn't depend on the URL's location
-  // params, only the client-side filtering below does.
+  
   useEffect(() => {
     fetchActivities();
   }, []);
 
-  // route params come through URL-decoded already; just normalize case/
-  // whitespace so "west bengal" / "West Bengal" / " West Bengal " all match.
+
+  
   const normalizeSlug = (str) => (str || "").toString().trim().toLowerCase();
 
   const locationScopedActivities = useMemo(() => {
@@ -104,18 +100,15 @@ const ActivityListing = () => {
     });
   }, [activities, stateSlug, citySlug]);
 
-  // State/city come from the populated `destination` field
-  // (see activityController.js — populate("destination", "name city state category")).
-  // Built from locationScopedActivities so the sidebar only offers
-  // states/cities that actually exist within the URL's location scope.
+
+  
   const states = useMemo(
     () =>
       [...new Set(locationScopedActivities.map((a) => a.destination?.state).filter(Boolean))].sort(),
     [locationScopedActivities]
   );
 
-  // Cities narrow to the selected state (if any) so the list stays short
-  // and relevant instead of dumping every city in India up front.
+  
   const cities = useMemo(() => {
     const pool = selectedState
       ? locationScopedActivities.filter((a) => a.destination?.state === selectedState)
@@ -123,9 +116,8 @@ const ActivityListing = () => {
     return [...new Set(pool.map((a) => a.destination?.city).filter(Boolean))].sort();
   }, [locationScopedActivities, selectedState]);
 
-  // If the parent filter changes and the child selection no longer
-  // exists in that scope, clear it — prevents a "stuck" filter that
-  // silently returns zero results.
+
+  
   useEffect(() => {
     if (selectedCity && !cities.includes(selectedCity)) setSelectedCity("");
   }, [cities, selectedCity]);

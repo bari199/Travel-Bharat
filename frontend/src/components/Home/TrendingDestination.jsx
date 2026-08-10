@@ -3,11 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { destinations } from "../../data/data";
 
-/**
- * Light, GPU-friendly variants.
- * - No layout-affecting properties (only opacity/transform) -> no reflow jank.
- * - Stagger is small and capped so long lists don't feel slow.
- */
+
 const containerVariants = {
   hidden: {},
   show: {

@@ -5,12 +5,15 @@ import "./index.css";
 import App from "./App.jsx";
 import { Toaster } from "sonner";
 import { UserProvider } from "./context/userContext";
+import { ThemeProvider } from "./context/ThemeContext";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <UserProvider>
-      <App />
-      <Toaster />
-    </UserProvider>
+    <ThemeProvider>
+      <UserProvider>
+        <App />
+        <Toaster />
+      </UserProvider>
+    </ThemeProvider>
   </StrictMode>
 );

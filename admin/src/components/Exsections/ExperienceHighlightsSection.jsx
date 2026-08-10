@@ -6,11 +6,7 @@ import { Input } from "@/components/ui/input";
 
 import { Sparkles, Plus, X, CheckCircle2 } from "lucide-react";
 
-/* ============================================================
-   Business logic below is unchanged from the original —
-   only markup, structure, and styling have been touched to
-   match HighlightsSection's card layout / orange theme.
-============================================================ */
+
 
 /* ============================================================
    Animations — unchanged

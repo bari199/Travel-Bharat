@@ -77,6 +77,4 @@ const DestinationCard = ({ destination }) => {
   );
 };
 
-// Memoized so filter/sort changes elsewhere on the page don't force
-// every card in the grid to re-render.
 export default React.memo(DestinationCard);

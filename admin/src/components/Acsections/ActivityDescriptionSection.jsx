@@ -3,11 +3,7 @@ import { Input } from "@/components/ui/input";
 import { AlignLeft, FileText } from "lucide-react";
 import { motion } from "framer-motion";
 
-/* ============================================================
-   Business logic below — formData, setFormData, the field
-   names on shortDescription/description — is unchanged from
-   the original. Only markup, structure, and styling are new.
-============================================================ */
+
 
 function FieldLabel({ icon: Icon, children }) {
   return (

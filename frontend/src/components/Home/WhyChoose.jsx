@@ -4,8 +4,8 @@ import { features } from "../../data/data";
 
 import WhyChooseSkeleton from "../Skeletons/WhyChooseSkeleton";
 
-/* Lightweight, GPU-friendly variants — opacity + small translate only,
-   no blur/scale combos, short durations to avoid jank on lower-end devices */
+
+
 
 const container = {
   hidden: {},

@@ -15,11 +15,7 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
-/* ============================================================
-   Business logic below (addExperience, removeExperience,
-   handleChange and all field updates) is unchanged from the
-   original — only markup, structure, and styling are new.
-============================================================ */
+
 
 const cardVariants = {
   hidden: { opacity: 0, y: -8, height: 0 },

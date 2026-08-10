@@ -22,9 +22,8 @@ const DestinationListing = () => {
   const [destinations, setDestinations] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // `search` is what the input shows; `debouncedSearch` is what filtering
-  // actually uses — so fast typing doesn't re-filter the whole list on
-  // every keystroke (this was the main source of the lag).
+
+  
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
 
@@ -81,8 +80,8 @@ const DestinationListing = () => {
     [destinations]
   );
 
-  // Cities narrow to the selected state (if any) so the list stays short
-  // and relevant instead of dumping every city in India up front.
+
+  
   const cities = useMemo(() => {
     const pool = selectedState
       ? destinations.filter((d) => d.state === selectedState)
@@ -99,9 +98,8 @@ const DestinationListing = () => {
     return [...new Set(pool.map((d) => d.area).filter(Boolean))].sort();
   }, [destinations, selectedState, selectedCity]);
 
-  // If the parent filter changes and the child selection no longer
-  // exists in that scope, clear it — prevents a "stuck" filter that
-  // silently returns zero results.
+
+  
   useEffect(() => {
     if (selectedCity && !cities.includes(selectedCity)) setSelectedCity("");
   }, [cities, selectedCity]);

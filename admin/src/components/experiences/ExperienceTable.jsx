@@ -50,12 +50,7 @@ import PaginationControls from "@/hook/Paginationcontrols";
 
 const ITEMS_PER_PAGE = 10;
 
-/* ============================================
-    Helper — read a preview URL off an experience's
-    first image, whichever shape it happens to be in:
-      - { url, public_id }  (current Cloudinary shape)
-      - "https://..."        (legacy plain string)
-============================================ */
+
 const getFirstImageUrl = (exp) => {
   const first = exp?.images?.[0];
   if (!first) return null;
@@ -63,12 +58,7 @@ const getFirstImageUrl = (exp) => {
   return first.url || null;
 };
 
-/* ============================================
-    Column Definitions
 
-    accessor: how to read the raw value off a row
-    (used for sorting)
-============================================ */
 const columns = [
   { id: "select", header: "Select", sortable: false },
   { id: "image", header: "Image", sortable: false },
@@ -143,9 +133,7 @@ const ExperienceTable = ({
     }
   }, [search, experiences]);
 
-  // Keep selection in sync — if an experience disappears from the list
-  // (deleted elsewhere, refetch, etc.) drop its id from the selection
-  // instead of holding a stale reference.
+
   useEffect(() => {
     setSelectedIds((prev) => {
       if (prev.size === 0) return prev;
@@ -225,13 +213,6 @@ const ExperienceTable = ({
     setCurrentPage(1);
   }, [filteredExperiences]);
 
-  /* ==========================================================
-      Row selection (checkboxes)
-      -----------------------------------------------------------
-      Tracked against the filtered+sorted dataset (not just the
-      current page) so "select all" means "everything currently
-      matching the search", same convention as DestinationTable.
-  ========================================================== */
 
   const allFilteredIds = useMemo(
     () => sortedExperiences.map((e) => e._id || e.id),
@@ -292,10 +273,7 @@ const ExperienceTable = ({
 
     setDeletingIds(new Set(ids));
 
-    // If literally every experience that exists is selected (not just
-    // every filtered result), prefer the dedicated "delete all" endpoint
-    // when the parent has wired one up — a single bulk delete instead of
-    // N individual requests.
+ 
     const isEverything =
       !search.trim() && ids.length > 0 && ids.length === experiences.length;
 

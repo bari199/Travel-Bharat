@@ -46,8 +46,7 @@ const StepDot = ({ index, current, total, onClick }) => {
   const Meta = STEP_META[index];
   const Icon = Meta.icon;
 
-  // Only allow navigating to steps already completed (or the current one) —
-  // never skip ahead, so step validation order is never bypassed.
+
   const clickable = index + 1 <= current;
 
   return (
@@ -217,10 +216,7 @@ const ExperienceForm = ({
     return Object.keys(newErrors).length === 0;
   };
 
-  /* ===========================================================
-     Step navigation — same rules as original, direction tracked
-     only for the slide animation (purely visual, no logic change)
-  =========================================================== */
+  
 
   const nextStep = () => {
     if (!validateStep()) return;
@@ -287,9 +283,6 @@ const ExperienceForm = ({
     }
   };
 
-  /* ===========================================================
-     Step → component map — unchanged content, same components
-  =========================================================== */
 
   const stepComponents = [
     <ExperienceBasicInfoSection
@@ -315,7 +308,7 @@ const ExperienceForm = ({
     />,
   ];
 
-  /* Slide animation variants — matches DestinationForm */
+
   const variants = {
     enter: (d) => ({ opacity: 0, x: d * 40 }),
     center: { opacity: 1, x: 0 },

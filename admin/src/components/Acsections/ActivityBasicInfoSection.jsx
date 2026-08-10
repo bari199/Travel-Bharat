@@ -21,11 +21,7 @@ import { motion } from "framer-motion";
 
 import { getDestinations } from "@/services/destinationApi";
 
-/* ============================================================
-   Business logic below (fetchDestinations effect, all
-   setFormData calls) is unchanged from the original —
-   only markup, structure, and styling are new.
-============================================================ */
+
 
 function FieldLabel({ icon: Icon, children }) {
   return (

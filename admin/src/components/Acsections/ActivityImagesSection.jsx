@@ -3,12 +3,8 @@ import { X, Upload, ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AnimatePresence, motion } from "framer-motion";
 
-/* ============================================================
-   Business logic below (handleImageUpload, removeImage) is
-   unchanged from the original — the same file input and the
-   same setFormData shape are used. Only markup, structure,
-   and styling are new.
-============================================================ */
+
+
 
 const gridVariants = {
   hidden: {},

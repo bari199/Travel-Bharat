@@ -308,3 +308,35 @@ export const EXPERIENCES_COLUMNS = [
     ]
   }
 ];
+
+export const EVENTS_COLUMNS = [
+  {
+    heading: "North India",
+    items: [
+      { title: "Kullu Dussehra 2026" },
+      { title: "Dev Deepawali 2026" },
+      { title: "Jaipur Literature Festival 2026" },
+      { title: "Desert Festival 2026" },
+      { title: "Pushkar Camel Fair 2026" },
+    ],
+  },
+  {
+    heading: "North East India",
+    items: [
+      { title: "Kaziranga Elephant Festival 2026" },
+    ],
+  },
+  {
+    heading: "West India",
+    items: [
+      { title: "Goa Carnival 2026" },
+      { title: "Rann Utsav 2026" },
+    ],
+  },
+  {
+    heading: "South India",
+    items: [
+      { title: "Mysuru Dasara 2026" },
+    ],
+  },
+];

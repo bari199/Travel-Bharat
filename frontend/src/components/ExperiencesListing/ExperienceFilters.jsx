@@ -29,13 +29,7 @@ import {
 } from "@/components/ui/accordion";
 import { AnimatePresence, motion } from "framer-motion";
 
-/* ---------------------------------------------------------------------
-   Fixed category list. Exported so ExperienceListing can use the same
-   source of truth when filtering — no more mismatched strings.
-   (Experience.category is a free-text string in the schema, so this
-   is a display/filtering bucket layer on top of it, same pattern as
-   DestinationFilters' normalizeCategory.)
---------------------------------------------------------------------- */
+
 export const CATEGORIES = [
   { value: "Adventure", label: "Adventure", icon: Compass },
   { value: "Trekking", label: "Trekking", icon: Footprints },
@@ -56,8 +50,6 @@ export const normalizeCategory = (raw) => {
   return found ? found.value : "Other";
 };
 
-/* Difficulty pill options — mirrors experienceModel's difficultyLevel
-   free-text field, normalized the same way category is. */
 export const DIFFICULTY_LEVELS = ["Easy", "Moderate", "Challenging", "Difficult"];
 
 export const normalizeDifficulty = (raw) => {
@@ -134,8 +126,7 @@ const PillList = ({ items = [], selected, onSelect, search, setSearch, placehold
   </div>
 );
 
-/* Toggle switch with explicit track colors for BOTH states, so it never
-   blends into the white card the way the theme's default bg-input can. */
+
 const FilterToggle = ({ id, label, icon: Icon, checked, onCheckedChange }) => (
   <div className="flex items-center justify-between">
     <label htmlFor={id} className="text-sm text-gray-600 dark:text-slate-300 cursor-pointer flex items-center gap-1.5">

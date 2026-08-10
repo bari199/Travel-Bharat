@@ -276,9 +276,7 @@ const ExperienceDialog = ({ experience, onClose }) => {
     <Dialog open={!!experience} onOpenChange={onClose}>
       <DialogContent
         hideCloseButton
-        // ⚠️ Inline style wins over ANY default className (e.g. shadcn's
-        // built-in `max-w-lg`) regardless of class merge order. This is
-        // the part that guarantees the dialog actually renders full width.
+       
         style={{
           width: "96vw",
           maxWidth: "1440px",

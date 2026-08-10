@@ -96,14 +96,7 @@ const StarPicker = ({ rating, setRating }) => {
   );
 };
 
-/*
-|--------------------------------------------------------------------------
-| Rich Text Toolbar
-| Wraps selected text with markdown-like markers for bold/italic/underline.
-| We render the final text as plain — this is a simple visual aid only.
-| Swap for a proper rich-text editor (TipTap, etc.) if you need HTML output.
-|--------------------------------------------------------------------------
-*/
+
 const RichToolbar = ({ textareaRef, value, onChange }) => {
   const wrap = (before, after) => {
     const el = textareaRef.current;

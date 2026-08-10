@@ -7,11 +7,11 @@ export const navItems = [
   },
   {
     title: "TripPlan",
-    path: "/blog",
+    path: "/",
   },
   {
     title: "Events",
-    path: "/about",
+    path: "/events",
   },
 ];
 

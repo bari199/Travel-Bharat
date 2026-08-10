@@ -3,8 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { MapPin, Clock, Ruler, IndianRupee, ArrowRight, Gauge } from "lucide-react";
 
-/* Difficulty → color mapping. Falls back to gray for anything
-   unrecognized instead of guessing a severity. */
+
 const DIFFICULTY_STYLES = {
   easy: "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400",
   moderate: "bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400",
@@ -108,6 +107,5 @@ const ExperienceCard = ({ experience }) => {
   );
 };
 
-// Memoized so filter/sort changes elsewhere on the page don't force
-// every card in the grid to re-render.
+
 export default React.memo(ExperienceCard);

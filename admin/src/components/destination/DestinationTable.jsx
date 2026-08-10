@@ -157,17 +157,12 @@ const DestinationTable = ({
     );
   };
 
-  /* ============================================
-      Filtering + Sorting
-      (derived from raw data — same destinations/onDelete
-      props and delete behavior as before)
-  ============================================ */
+
+  
 
   const safeDestinations = Array.isArray(destinations) ? destinations : [];
 
-  // Keep selection in sync with the actual data — if a destination gets
-  // removed from underneath us (deleted elsewhere, refetch, etc.) drop
-  // its id from the selection instead of holding a stale reference.
+
   useEffect(() => {
     setSelectedIds((prev) => {
       if (prev.size === 0) return prev;
@@ -232,14 +227,7 @@ const DestinationTable = ({
     setCurrentPage,
   } = usePagination(sortedData, 10);
 
-  /* ============================================
-      Row selection (checkboxes)
-      -----------------------------------------------------------
-      Selection is tracked against the filtered+sorted dataset
-      (not just the current page) so "select all" really means
-      "everything currently matching the search", and so a user
-      can page through results while keeping earlier picks.
-  ============================================ */
+
 
   const allFilteredIds = useMemo(
     () => sortedData.map((d) => d._id),
@@ -303,10 +291,8 @@ const DestinationTable = ({
 
     setDeletingIds(new Set(ids));
 
-    // If literally every destination that exists is selected (not just
-    // every filtered result), prefer the dedicated "delete all" endpoint
-    // when the parent has wired one up — it's a single fast bulk delete
-    // instead of N individual requests.
+
+    
     const isEverything =
       !globalFilter.trim() &&
       ids.length > 0 &&

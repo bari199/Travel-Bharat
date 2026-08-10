@@ -25,11 +25,7 @@ import { initialEventData } from "./InitialeventsData";
 
 import { createEvent, updateEvent } from "@/services/eventsApi";
 
-/* ===========================================================
-   Image preview helper — event images are stored as plain
-   Cloudinary URL strings on the backend, but the form also
-   needs to preview freshly-picked File objects before upload.
-=========================================================== */
+
 
 const getPreviewUrl = (image, cache) => {
   if (!image) return "";

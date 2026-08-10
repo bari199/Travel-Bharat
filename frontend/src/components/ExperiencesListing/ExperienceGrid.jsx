@@ -20,7 +20,4 @@ const ExperienceGrid = ({ experiences }) => {
   );
 };
 
-// Memoized: only re-renders when the `experiences` array reference
-// actually changes (i.e. after filtering/pagination), not on every
-// keystroke or unrelated state update elsewhere on the page.
 export default React.memo(ExperienceGrid);

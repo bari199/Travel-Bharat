@@ -3,10 +3,8 @@ import { Sun, Moon } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { useTheme } from "@/context/ThemeContext";
 
-/**
- * Light/dark toggle built on shadcn's <Switch>. Meant to sit in the
- * navbar's right-side action cluster, next to the avatar/auth buttons.
- */
+
+
 const ThemeToggle = ({ className = "" }) => {
   const { theme, toggleTheme } = useTheme();
   const isDark = theme === "dark";

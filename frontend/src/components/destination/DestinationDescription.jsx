@@ -11,8 +11,6 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-/* Memoized so a re-render of the parent (e.g. sidebar sticky repositioning)
-   never forces all three season blocks to re-render. */
 const SeasonBlock = memo(function SeasonBlock({
   icon: Icon,
   iconBg,
