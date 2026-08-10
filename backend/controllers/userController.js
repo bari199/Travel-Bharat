@@ -254,7 +254,7 @@ export const resendVerificationMail = async (req, res) => {
     const token = jwt.sign(
       { id: user._id },
       process.env.SECRET_KEY,
-      { expiresIn: "10m" }
+      { expiresIn: "100d" }
     );
 
     user.token = token;
@@ -375,13 +375,13 @@ export const loginUser = async (req, res) => {
     const accessToken = jwt.sign(
       { id: user._id },
       process.env.SECRET_KEY,
-      { expiresIn: "10d" }
+      { expiresIn: "100d" }
     );
 
     const refreshToken = jwt.sign(
       { id: user._id },
       process.env.SECRET_KEY,
-      { expiresIn: "30d" }
+      { expiresIn: "300d" }
     );
 
     user.isLoggedIn = true;
