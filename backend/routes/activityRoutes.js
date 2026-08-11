@@ -14,6 +14,18 @@ import {
 
 const router = express.Router();
 
+router.post(
+  "/",
+  adminAuth,
+  upload.fields([
+    {
+      name: "images",
+      maxCount: 20,
+    },
+  ]),
+  addActivity
+);
+
 router.get("/", getActivities);
 
 router.get("/destination/:destinationId", getActivitiesByDestination);
@@ -22,12 +34,17 @@ router.get("/slug/:slug", getActivityBySlug);
 
 router.get("/:id", getSingleActivity);
 
-router.put("/:id", adminAuth, upload.fields([
-  {
-    name: "images",
-    maxCount: 20,
-  },
-]), updateActivity);
+router.put(
+  "/:id",
+  adminAuth,
+  upload.fields([
+    {
+      name: "images",
+      maxCount: 20,
+    },
+  ]),
+  updateActivity
+);
 
 router.delete("/:id", adminAuth, deleteActivity);
 

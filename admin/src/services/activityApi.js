@@ -160,7 +160,7 @@ export const createActivity = async (data) => {
   const formData = buildFormData(data);
 
   const response = await api.post(
-    "/api/activities",
+    "/activities",
 
     formData,
 
