@@ -1,101 +1,139 @@
 import { Destination } from "../models/destination.js";
 
-// Escape user input before using it inside MongoDB regex
+/*
+ * =========================================================
+ * ESCAPE REGEX
+ * =========================================================
+ */
+
 const escapeRegex = (value = "") => {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 };
 
+/*
+ * =========================================================
+ * NORMALIZE VALUE
+ * =========================================================
+ */
+
+const normalize = (value = "") => {
+  return String(value).trim();
+};
+
+/*
+ * =========================================================
+ * BUILD DESTINATION QUERY
+ * =========================================================
+ */
+
+const buildDestinationQuery = ({
+  state = "",
+  city = "",
+  category = "",
+  search = "",
+}) => {
+  const query = {};
+
+  const cleanState = normalize(state);
+  const cleanCity = normalize(city);
+  const cleanCategory = normalize(category);
+  const cleanSearch = normalize(search);
+
+  /*
+   * STATE
+   */
+
+  if (cleanState) {
+    query.state = {
+      $regex: `^${escapeRegex(cleanState)}$`,
+      $options: "i",
+    };
+  }
+
+  /*
+   * CITY
+   */
+
+  if (cleanCity) {
+    query.city = {
+      $regex: `^${escapeRegex(cleanCity)}$`,
+      $options: "i",
+    };
+  }
+
+  /*
+   * CATEGORY
+   *
+   * Works with both:
+   *
+   * category: "Heritage"
+   *
+   * and:
+   *
+   * category: ["Heritage", "Adventure"]
+   */
+
+  if (cleanCategory) {
+    query.category = {
+      $regex: `^${escapeRegex(cleanCategory)}$`,
+      $options: "i",
+    };
+  }
+
+  /*
+   * DESTINATION SEARCH
+   *
+   * Search only inside the currently selected
+   * State / City / Category context.
+   */
+
+  if (cleanSearch) {
+    query.name = {
+      $regex: escapeRegex(cleanSearch),
+      $options: "i",
+    };
+  }
+
+  return query;
+};
+
+/*
+ * =========================================================
+ * SEARCH DESTINATIONS
+ * =========================================================
+ *
+ * Flow:
+ *
+ * State
+ *   ↓
+ * City
+ *   ↓
+ * Category
+ *   ↓
+ * Destination
+ *
+ * All filters are combined.
+ */
+
 export const searchDestination = async (req, res) => {
   try {
-    const { state = "", city = "", category = "", search = "" } =
-      req.body || {};
+    const {
+      state = "",
+      city = "",
+      category = "",
+      search = "",
+    } = req.body || {};
 
-    /*
-     * ---------------------------------------------------------
-     * BUILD MONGODB QUERY
-     * ---------------------------------------------------------
-     */
-
-    const query = {};
-
-    /*
-     * STATE
-     */
-    if (state.trim()) {
-      query.state = {
-        $regex: state.trim(),
-        $options: "i",
-      };
-    }
-
-    /*
-     * CITY
-     */
-    if (city.trim()) {
-      query.city = {
-        $regex: city.trim(),
-        $options: "i",
-      };
-    }
-
-    /*
-     * CATEGORY
-     */
-    if (category.trim()) {
-      query.category = {
-        $regex: category.trim(),
-        $options: "i",
-      };
-    }
-
-    /*
-     * DESTINATION SEARCH
-     *
-     * Search destination name, city or state.
-     *
-     * Category/state/city filters above are still applied.
-     */
-    if (search.trim()) {
-      query.$or = [
-        {
-          name: {
-            $regex: search.trim(),
-            $options: "i",
-          },
-        },
-        {
-          city: {
-            $regex: search.trim(),
-            $options: "i",
-          },
-        },
-        {
-          state: {
-            $regex: search.trim(),
-            $options: "i",
-          },
-        },
-      ];
-    }
-
-    /*
-     * ---------------------------------------------------------
-     * GET DESTINATIONS FROM MONGODB
-     * ---------------------------------------------------------
-     *
-     * This is the important part:
-     * Search results always come from the current MongoDB data.
-     */
+    const query = buildDestinationQuery({
+      state,
+      city,
+      category,
+      search,
+    });
 
     const destinations = await Destination.find(query)
       .sort({ name: 1 })
       .lean();
-
-    /*
-     * ---------------------------------------------------------
-     * RETURN RESULTS
-     * ---------------------------------------------------------
-     */
 
     return res.status(200).json({
       success: true,
@@ -114,68 +152,193 @@ export const searchDestination = async (req, res) => {
 
 /*
  * =========================================================
- * GET SEARCH OPTIONS
+ * GET CASCADING SEARCH OPTIONS
  * =========================================================
  *
- * This endpoint provides State, City and Category options
- * directly from MongoDB.
+ * IMPORTANT:
  *
- * Therefore SearchBox does NOT depend on old states.js data.
+ * This endpoint is now CONTEXT AWARE.
+ *
+ * No state:
+ *   → all states
+ *
+ * State selected:
+ *   → cities only from that state
+ *
+ * State + City selected:
+ *   → categories only from that state + city
+ *
+ * State + City + Category selected:
+ *   → destinations only from that combination
  */
 
 export const getSearchOptions = async (req, res) => {
   try {
-    const destinations = await Destination.find({})
-      .select("state city category")
-      .lean();
+    const {
+      state = "",
+      city = "",
+      category = "",
+    } = req.query || {};
+
+    const cleanState = normalize(state);
+    const cleanCity = normalize(city);
+    const cleanCategory = normalize(category);
 
     /*
+     * -------------------------------------------------------
      * STATES
+     * -------------------------------------------------------
+     *
+     * States are always global because State is the
+     * first level of the search hierarchy.
      */
+
+    const stateDocuments = await Destination.find({})
+      .select("state")
+      .lean();
 
     const states = [
       ...new Set(
-        destinations
-          .map((item) => item.state?.trim())
+        stateDocuments
+          .map((item) => normalize(item.state))
           .filter(Boolean)
       ),
     ].sort((a, b) => a.localeCompare(b));
 
     /*
-     * CITIES
+     * -------------------------------------------------------
+     * BUILD CONTEXT QUERY
+     * -------------------------------------------------------
      */
+
+    const contextQuery = {};
+
+    /*
+     * State selected
+     */
+
+    if (cleanState) {
+      contextQuery.state = {
+        $regex: `^${escapeRegex(cleanState)}$`,
+        $options: "i",
+      };
+    }
+
+    /*
+     * City selected
+     */
+
+    if (cleanCity) {
+      contextQuery.city = {
+        $regex: `^${escapeRegex(cleanCity)}$`,
+        $options: "i",
+      };
+    }
+
+    /*
+     * Category selected
+     */
+
+    if (cleanCategory) {
+      contextQuery.category = {
+        $regex: `^${escapeRegex(cleanCategory)}$`,
+        $options: "i",
+      };
+    }
+
+    /*
+     * -------------------------------------------------------
+     * CITIES
+     * -------------------------------------------------------
+     *
+     * If state is selected:
+     *
+     * only cities belonging to that state.
+     *
+     * Otherwise:
+     *
+     * all cities.
+     */
+
+    const cityDocuments = await Destination.find(
+      cleanState
+        ? {
+            state: {
+              $regex: `^${escapeRegex(cleanState)}$`,
+              $options: "i",
+            },
+          }
+        : {}
+    )
+      .select("city")
+      .lean();
 
     const cities = [
       ...new Set(
-        destinations
-          .map((item) => item.city?.trim())
+        cityDocuments
+          .map((item) => normalize(item.city))
           .filter(Boolean)
       ),
     ].sort((a, b) => a.localeCompare(b));
 
     /*
+     * -------------------------------------------------------
      * CATEGORIES
+     * -------------------------------------------------------
      *
-     * Handles both:
+     * This is the important fix.
      *
-     * category: "Hill Station"
+     * Category is calculated AFTER applying:
      *
-     * and, if your MongoDB has:
+     * State
+     * +
+     * City
      *
-     * category: ["Hill Station", "Adventure"]
+     * Therefore:
+     *
+     * Kolkata
+     *   → Kolkata categories only
      */
+
+    const categoryDocuments = await Destination.find(
+      cleanState || cleanCity
+        ? {
+            ...(cleanState && {
+              state: {
+                $regex: `^${escapeRegex(cleanState)}$`,
+                $options: "i",
+              },
+            }),
+
+            ...(cleanCity && {
+              city: {
+                $regex: `^${escapeRegex(cleanCity)}$`,
+                $options: "i",
+              },
+            }),
+          }
+        : {}
+    )
+      .select("category")
+      .lean();
 
     const categorySet = new Set();
 
-    destinations.forEach((item) => {
+    categoryDocuments.forEach((item) => {
       if (Array.isArray(item.category)) {
-        item.category.forEach((category) => {
-          if (category?.trim()) {
-            categorySet.add(category.trim());
+        item.category.forEach((categoryItem) => {
+          const value = normalize(categoryItem);
+
+          if (value) {
+            categorySet.add(value);
           }
         });
-      } else if (item.category?.trim()) {
-        categorySet.add(item.category.trim());
+      } else {
+        const value = normalize(item.category);
+
+        if (value) {
+          categorySet.add(value);
+        }
       }
     });
 
@@ -183,11 +346,51 @@ export const getSearchOptions = async (req, res) => {
       a.localeCompare(b)
     );
 
+    /*
+     * -------------------------------------------------------
+     * DESTINATIONS
+     * -------------------------------------------------------
+     *
+     * These are calculated using:
+     *
+     * State
+     * City
+     * Category
+     *
+     * So the destination dropdown is also fully cascading.
+     */
+
+    const destinationDocuments = await Destination.find(
+      contextQuery
+    )
+      .select("name state city category")
+      .sort({ name: 1 })
+      .lean();
+
+    const destinations = [
+      ...new Set(
+        destinationDocuments
+          .map((item) => normalize(item.name))
+          .filter(Boolean)
+      ),
+    ];
+
+    /*
+     * -------------------------------------------------------
+     * RESPONSE
+     * -------------------------------------------------------
+     */
+
     return res.status(200).json({
       success: true,
+
       states,
+
       cities,
+
       categories,
+
+      destinations,
     });
   } catch (error) {
     console.error("Get search options error:", error);
