@@ -1,6 +1,7 @@
 import {
   createContext,
   useContext,
+  useEffect,
   useState,
 } from "react";
 
@@ -8,12 +9,15 @@ export const UserContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
   const [user, setUserState] = useState(() => {
-    const savedUser =
-      localStorage.getItem("user");
+    try {
+      const savedUser = localStorage.getItem("user");
 
-    return savedUser
-      ? JSON.parse(savedUser)
-      : null;
+      return savedUser ? JSON.parse(savedUser) : null;
+    } catch (error) {
+      console.error("Failed to restore user:", error);
+      localStorage.removeItem("user");
+      return null;
+    }
   });
 
   const setUser = (newUser) => {
@@ -29,6 +33,27 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  // Handle logout/authentication invalidation
+  useEffect(() => {
+    const handleAuthLogout = () => {
+      setUserState(null);
+      localStorage.removeItem("user");
+      localStorage.removeItem("accessToken");
+    };
+
+    window.addEventListener(
+      "auth:logout",
+      handleAuthLogout
+    );
+
+    return () => {
+      window.removeEventListener(
+        "auth:logout",
+        handleAuthLogout
+      );
+    };
+  }, []);
+
   return (
     <UserContext.Provider
       value={{
@@ -41,5 +66,4 @@ export const UserProvider = ({ children }) => {
   );
 };
 
-export const getData = () =>
-  useContext(UserContext);
+export const getData = () => useContext(UserContext);
