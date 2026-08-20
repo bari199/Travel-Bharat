@@ -26,76 +26,80 @@ router.get("/google", passport.authenticate("google", {scope:["profile", "email"
 
 
 router.get(
+  "/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+  })
+);
+
+
+// ================================
+// GOOGLE CALLBACK
+// ================================
+
+router.get(
   "/google/callback",
+
   passport.authenticate("google", {
     session: false,
+    failureRedirect: `${process.env.FRONTEND_URL}/login?error=google_failed`,
   }),
+
   async (req, res) => {
     try {
-      const user = req.user;
-
-      // Remove old session
-      await Session.deleteMany({
-        userId: user._id,
-      });
-
-      // Create new session
-      await Session.create({
-        userId: user._id,
-      });
-
-      // Generate Access Token
       const accessToken = jwt.sign(
         {
-          id: user._id,
-          email: user.email,
+          id: req.user._id,
+          email: req.user.email,
         },
         process.env.SECRET_KEY,
         {
-          expiresIn: "100d",
+          expiresIn: "7d",
         }
       );
 
-      // Generate Refresh Token
       const refreshToken = jwt.sign(
         {
-          id: user._id,
-          email: user.email,
+          id: req.user._id,
         },
         process.env.SECRET_KEY,
         {
-          expiresIn: "300d",
+          expiresIn: "30d",
         }
       );
 
-      // Update login status
-      user.isLoggedIn = true;
-      await user.save();
-
-      console.log("✅ Google Login Successful:", user.email);
-
-      res.redirect(
-        `${process.env.CLIENT_URL}/auth-success?accessToken=${accessToken}&refreshToken=${refreshToken}`
+      return res.redirect(
+        `${process.env.FRONTEND_URL}/auth-success?accessToken=${encodeURIComponent(
+          accessToken
+        )}&refreshToken=${encodeURIComponent(refreshToken)}`
       );
     } catch (error) {
-      console.error("❌ Google login error:", error);
+      console.error("Google callback error:", error);
 
-      res.redirect(
-        `${process.env.CLIENT_URL}/login?error=google_failed`
+      return res.redirect(
+        `${process.env.FRONTEND_URL}/login?error=google_failed`
       );
     }
   }
 );
 
-router.get("/me", isAuthenticated, (req, res)=>{
-    res.json({success:true, user:req.user})
-})
+
+// ================================
+// GET CURRENT USER
+// ================================
+
+router.get(
+  "/me",
+  isAuthenticated,
+  (req, res) => {
+    return res.status(200).json({
+      success: true,
+      user: req.user,
+    });
+  }
+);
 
 
-
-
-
-
-router.post("/login",adminLogin);
+router.post("/login", adminLogin);
 
 export default router;
