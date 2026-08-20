@@ -32,44 +32,45 @@ import Experience from "./pages/Experience";
 
 import Event from "@/pages/Event";
 import EventListing from "@/pages/EventListing";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <>
+      <ProtectedRoute>
         <Navbar />
         <Home />
-      </>
+      </ProtectedRoute>
     ),
   },
 
   {
     path: "/destinations/:stateSlug",
     element: (
-      <>
+      <ProtectedRoute>
         <Navbar />
         <DestinationListing />
-      </>
+      </ProtectedRoute>
     ),
   },
   {
   path: "/experience/:id",
   element: (
-    <>
+    <ProtectedRoute>
       <Navbar />
       <Experience />
-    </>
+    </ProtectedRoute>
   ),
 },
 
   {
     path: "/experiences",
     element: (
-      <>
+      <ProtectedRoute>
         <Navbar />
         <ExperienceListing />
-      </>
+      </ProtectedRoute>
     ),
   },
 
@@ -78,20 +79,20 @@ const router = createBrowserRouter([
 {
   path: "/events/:id",
   element: (
-    <>
+    <ProtectedRoute>
       <Navbar />
       <Event />
-    </>
+    </ProtectedRoute>
   ),
 },
 
 {
   path: "/events",
   element: (
-    <>
+    <ProtectedRoute>
       <Navbar />
       <EventListing />
-    </>
+    </ProtectedRoute>
   ),
 },
 
@@ -100,10 +101,10 @@ const router = createBrowserRouter([
   {
     path: "/activity/:slug",
     element: (
-      <>
+      <ProtectedRoute>
         <Navbar />
         <Activity />
-      </>
+      </ProtectedRoute>
     ),
   },
 
@@ -111,10 +112,10 @@ const router = createBrowserRouter([
     // Scoped to a state (all activities in that state)
     path: "/activities/:stateSlug",
     element: (
-      <>
+      <ProtectedRoute>
         <Navbar />
         <ActivityListing />
-      </>
+      </ProtectedRoute>
     ),
   },
 
@@ -122,10 +123,10 @@ const router = createBrowserRouter([
     // Scoped to a state + city
     path: "/activities/:stateSlug/:citySlug",
     element: (
-      <>
+      <ProtectedRoute>
         <Navbar />
         <ActivityListing />
-      </>
+      </ProtectedRoute>
     ),
   },
 
@@ -133,10 +134,10 @@ const router = createBrowserRouter([
     // Unscoped — all activities, filterable via the sidebar
     path: "/activities",
     element: (
-      <>
+      <ProtectedRoute>
         <Navbar />
         <ActivityListing />
-      </>
+      </ProtectedRoute>
     ),
   },
 
@@ -186,20 +187,20 @@ const router = createBrowserRouter([
   {
     path: "/destination/:id",
     element: (
-      <>
+      <ProtectedRoute>
         <Navbar />
         <Destination />
-      </>
+      </ProtectedRoute>
     ),
   },
 
   {
     path: "/profile",
     element: (
-      <>
+      <ProtectedRoute>
         <Navbar />
         <Profile />
-      </>
+      </ProtectedRoute>
     ),
   },
 
