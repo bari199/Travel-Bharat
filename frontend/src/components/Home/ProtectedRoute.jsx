@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { getData } from "../context/userContext";
-import LoginDialog from "../pages/LoginDialog";
+import { getData } from "../../context/userContext";
+import LoginDialog from "../../pages/LoginDialog";
 
 const ProtectedRoute = ({ children }) => {
   const { user } = getData();

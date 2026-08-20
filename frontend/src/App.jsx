@@ -32,16 +32,16 @@ import Experience from "./pages/Experience";
 
 import Event from "@/pages/Event";
 import EventListing from "@/pages/EventListing";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./components/Home/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <ProtectedRoute>
+      <>
         <Navbar />
         <Home />
-      </ProtectedRoute>
+      </>
     ),
   },
 
