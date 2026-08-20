@@ -12,11 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 import { Button } from "@/components/ui/button";
 
@@ -26,11 +22,7 @@ import { Label } from "@/components/ui/label";
 
 import { Link } from "react-router-dom";
 
-import {
-  Eye,
-  EyeOff,
-  Loader2,
-} from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 
 import { toast } from "sonner";
 
@@ -40,20 +32,17 @@ import Google from "../assets/googleLogo.png";
 
 import { motion } from "framer-motion";
 
-const LoginDialog = ({ open, setOpen, showTrigger = true, }) => {
+const LoginDialog = ({ open, setOpen, showTrigger = true }) => {
   const { setUser } = getData();
 
-  const [showPassword, setShowPassword] =
-    useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
-  const [isLoading, setIsLoading] =
-    useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [formData, setFormData] =
-    useState({
-      email: "",
-      password: "",
-    });
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -70,24 +59,16 @@ const LoginDialog = ({ open, setOpen, showTrigger = true, }) => {
     try {
       setIsLoading(true);
 
-      const res = await api.post(
-        "/user/login",
-        formData,
-        {
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-        }
-      );
+      const res = await api.post("/user/login", formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (res.data.success) {
         setUser(res.data.user);
 
-        localStorage.setItem(
-          "accessToken",
-          res.data.accessToken
-        );
+        localStorage.setItem("accessToken", res.data.accessToken);
 
         toast.success(res.data.message);
 
@@ -108,16 +89,12 @@ const LoginDialog = ({ open, setOpen, showTrigger = true, }) => {
   };
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={setOpen}
-    >
+    <Dialog open={open} onOpenChange={setOpen}>
       {showTrigger && (
-      <DialogTrigger asChild>
-
-        <Button
-          variant="outline"
-          className="
+        <DialogTrigger asChild>
+          <Button
+            variant="outline"
+            className="
             rounded-full
             border-orange-200
             hover:bg-orange-50
@@ -128,15 +105,13 @@ const LoginDialog = ({ open, setOpen, showTrigger = true, }) => {
             dark:hover:bg-slate-800
             dark:hover:text-orange-400
           "
-        >
-          Login
-        </Button>
-
-      </DialogTrigger>
+          >
+            Login
+          </Button>
+        </DialogTrigger>
       )}
 
       <DialogContent className="bg-transparent border-none shadow-none p-2 sm:max-w-[390px]">
-
         <motion.div
           initial={{
             opacity: 0,
@@ -152,11 +127,8 @@ const LoginDialog = ({ open, setOpen, showTrigger = true, }) => {
             duration: 0.3,
           }}
         >
-
           <Card className="bg-white border border-orange-100 rounded-3xl shadow-xl dark:bg-slate-900 dark:border-slate-700 dark:shadow-black/40">
-
             <CardHeader className="space-y-2 pb-4">
-
               <CardTitle className="text-2xl text-center font-bold text-orange-600 dark:text-orange-400">
                 Welcome Back
               </CardTitle>
@@ -164,19 +136,12 @@ const LoginDialog = ({ open, setOpen, showTrigger = true, }) => {
               <p className="text-sm text-center text-orange-400 dark:text-slate-400">
                 Login to continue your journey
               </p>
-
             </CardHeader>
 
             <CardContent>
-
-              <form
-                onSubmit={handleSubmit}
-                className="space-y-4"
-              >
-
+              <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Email */}
                 <div className="space-y-2">
-
                   <Label className="text-orange-700 dark:text-slate-300">
                     Email
                   </Label>
@@ -202,14 +167,11 @@ const LoginDialog = ({ open, setOpen, showTrigger = true, }) => {
                       dark:focus-visible:border-orange-500
                     "
                   />
-
                 </div>
 
                 {/* Password */}
                 <div className="space-y-2">
-
                   <div className="flex items-center justify-between">
-
                     <Label className="text-orange-700 dark:text-slate-300">
                       Password
                     </Label>
@@ -226,17 +188,11 @@ const LoginDialog = ({ open, setOpen, showTrigger = true, }) => {
                     >
                       Forgot password?
                     </Link>
-
                   </div>
 
                   <div className="relative">
-
                     <Input
-                      type={
-                        showPassword
-                          ? "text"
-                          : "password"
-                      }
+                      type={showPassword ? "text" : "password"}
                       name="password"
                       value={formData.password}
                       onChange={handleChange}
@@ -260,11 +216,7 @@ const LoginDialog = ({ open, setOpen, showTrigger = true, }) => {
 
                     <button
                       type="button"
-                      onClick={() =>
-                        setShowPassword(
-                          !showPassword
-                        )
-                      }
+                      onClick={() => setShowPassword(!showPassword)}
                       className="
                         absolute
                         right-3
@@ -276,31 +228,20 @@ const LoginDialog = ({ open, setOpen, showTrigger = true, }) => {
                         transition-colors
                       "
                     >
-
                       {showPassword ? (
                         <EyeOff className="h-4 w-4" />
                       ) : (
                         <Eye className="h-4 w-4" />
                       )}
-
                     </button>
-
                   </div>
-
                 </div>
-
               </form>
-
             </CardContent>
 
             <CardFooter className="flex flex-col gap-3">
-
               {/* Login Button */}
-              <motion.div
-                whileTap={{ scale: 0.97 }}
-                className="w-full"
-              >
-
+              <motion.div whileTap={{ scale: 0.97 }} className="w-full">
                 <Button
                   onClick={handleSubmit}
                   disabled={isLoading}
@@ -317,7 +258,6 @@ const LoginDialog = ({ open, setOpen, showTrigger = true, }) => {
                     dark:disabled:text-slate-400
                   "
                 >
-
                   {isLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -326,22 +266,17 @@ const LoginDialog = ({ open, setOpen, showTrigger = true, }) => {
                   ) : (
                     "Login"
                   )}
-
                 </Button>
-
               </motion.div>
 
               {/* Google Login */}
-              <motion.div
-                whileTap={{ scale: 0.97 }}
-                className="w-full"
-              >
-
+              <motion.div whileTap={{ scale: 0.97 }} className="w-full">
                 <Button
+                  type="button"
                   onClick={() =>
                     window.open(
-                      "http://localhost:8000/auth/google",
-                      "_self"
+                      `${import.meta.env.VITE_BACKEND_URL}/api/auth/google`,
+                      "_self",
                     )
                   }
                   variant="outline"
@@ -357,40 +292,24 @@ const LoginDialog = ({ open, setOpen, showTrigger = true, }) => {
                     dark:hover:bg-slate-800
                   "
                 >
-
-                  <img
-                    src={Google}
-                    alt="google"
-                    className="w-4"
-                  />
-
+                  <img src={Google} alt="google" className="w-4" />
                   Login with Google
-
                 </Button>
-
               </motion.div>
 
               <p className="text-xs text-center text-orange-500 dark:text-slate-400">
-
                 Don’t have an account?{" "}
-
                 <Link
                   to={"/signup"}
                   className="font-medium hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300"
                 >
                   Signup
                 </Link>
-
               </p>
-
             </CardFooter>
-
           </Card>
-
         </motion.div>
-
       </DialogContent>
-
     </Dialog>
   );
 };
