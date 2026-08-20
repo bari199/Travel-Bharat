@@ -39,13 +39,10 @@ router.get(
 
 router.get(
   "/google/callback",
-
   passport.authenticate("google", {
     session: false,
-    failureRedirect: `${process.env.FRONTEND_URL}/login?error=google_failed`,
   }),
-
-  async (req, res) => {
+  (req, res) => {
     try {
       const accessToken = jwt.sign(
         {
@@ -68,21 +65,25 @@ router.get(
         }
       );
 
-      return res.redirect(
-        `${process.env.FRONTEND_URL}/auth-success?accessToken=${encodeURIComponent(
-          accessToken
-        )}&refreshToken=${encodeURIComponent(refreshToken)}`
-      );
-    } catch (error) {
-      console.error("Google callback error:", error);
+      console.log("Google authentication successful");
+      console.log("User:", req.user.email);
 
-      return res.redirect(
-        `${process.env.FRONTEND_URL}/login?error=google_failed`
+      res.redirect(
+        `${process.env.CLIENT_URL}/auth-success?accessToken=${accessToken}&refreshToken=${refreshToken}`
+      );
+
+    } catch (error) {
+      console.error(
+        "Google callback error:",
+        error
+      );
+
+      res.redirect(
+        `${process.env.CLIENT_URL}/login?error=google_failed`
       );
     }
   }
 );
-
 
 // ================================
 // GET CURRENT USER

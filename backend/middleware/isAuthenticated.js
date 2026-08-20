@@ -50,17 +50,29 @@
 // }
 
 
+// 
+
+
 import jwt from "jsonwebtoken";
 import { User } from "../models/userModel.js";
 
-export const isAuthenticated = async (req, res, next) => {
+export const isAuthenticated = async (
+  req,
+  res,
+  next
+) => {
   try {
-    const authHeader = req.headers.authorization;
+    const authHeader =
+      req.headers.authorization;
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    if (
+      !authHeader ||
+      !authHeader.startsWith("Bearer ")
+    ) {
       return res.status(401).json({
         success: false,
-        message: "Access token is missing or invalid",
+        message:
+          "Access token is missing or invalid",
       });
     }
 
@@ -84,19 +96,21 @@ export const isAuthenticated = async (req, res, next) => {
     req.userId = user._id;
 
     next();
+
   } catch (error) {
-    console.error("Authentication Error:", error);
 
     if (error.name === "TokenExpiredError") {
       return res.status(401).json({
         success: false,
-        message: "Access token has expired",
+        message:
+          "Access token has expired",
       });
     }
 
     return res.status(401).json({
       success: false,
-      message: "Access token is missing or invalid",
+      message:
+        "Access token is missing or invalid",
     });
   }
 };
