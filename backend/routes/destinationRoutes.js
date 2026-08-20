@@ -1,6 +1,7 @@
 import express from "express";
 import upload from "../middleware/uploadMiddleware.js";
 import adminAuth from "../middleware/authMiddleware.js";
+import { isAuthenticated } from "../middleware/isAuthenticated.js";
 
 /*
 |--------------------------------------------------------------------------
@@ -33,16 +34,16 @@ const destinationUpload = upload.fields([
 router.post("/", adminAuth, destinationUpload, addDestination);
 
 /* GET ALL */
-router.get("/", getDestinations);
+router.get("/", isAuthenticated, getDestinations);
 
 /* GET BY STATE */
-router.get("/state/:stateSlug", getDestinationsByState);
+router.get("/state/:stateSlug",isAuthenticated, getDestinationsByState);
 
 /* DELETE ALL */
 router.delete("/", adminAuth, deleteAllDestinations);
 
 /* GET SINGLE */
-router.get("/:id", getSingleDestination);
+router.get("/:id",isAuthenticated, getSingleDestination);
 
 /* UPDATE */
 router.put("/:id", adminAuth, destinationUpload, updateDestination);
