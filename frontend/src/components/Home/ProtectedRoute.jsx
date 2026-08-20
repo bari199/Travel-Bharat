@@ -1,16 +1,37 @@
-import { getData } from '../context/userContext'
-import React from 'react'
-import { Navigate } from 'react-router-dom'
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { getData } from "../context/userContext";
+import LoginDialog from "../pages/LoginDialog";
 
-const ProtectedRoute = ({children}) => {
-    const {user} = getData()
+const ProtectedRoute = ({ children }) => {
+  const { user } = getData();
+  const location = useLocation();
+
+  const [openLogin, setOpenLogin] = useState(false);
+
+  useEffect(() => {
+    if (!user) {
+      setOpenLogin(true);
+    }
+  }, [user]);
+
+  // User is authenticated
+  if (user) {
+    return children;
+  }
+
+  // User is not authenticated
   return (
-    <div>
-      {
-        user ? children : <Navigate to={'/login'}/>
-      }
-    </div>
-  )
-}
+    <>
+      <LoginDialog
+        open={openLogin}
+        setOpen={setOpenLogin}
+        showTrigger={false}
+      />
 
-export default ProtectedRoute
+      <div className="min-h-screen" />
+    </>
+  );
+};
+
+export default ProtectedRoute;

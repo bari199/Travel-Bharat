@@ -37,13 +37,13 @@ router.post("/", adminAuth, destinationUpload, addDestination);
 router.get("/", isAuthenticated, getDestinations);
 
 /* GET BY STATE */
-router.get("/state/:stateSlug",isAuthenticated, getDestinationsByState);
+router.get("/state/:stateSlug", getDestinationsByState);
 
 /* DELETE ALL */
 router.delete("/", adminAuth, deleteAllDestinations);
 
 /* GET SINGLE */
-router.get("/:id",isAuthenticated, getSingleDestination);
+router.get("/:id", getSingleDestination);
 
 /* UPDATE */
 router.put("/:id", adminAuth, destinationUpload, updateDestination);

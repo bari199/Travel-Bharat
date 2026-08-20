@@ -243,7 +243,6 @@ const LoginDialog = ({ open, setOpen, showTrigger = true }) => {
               {/* Login Button */}
               <motion.div whileTap={{ scale: 0.97 }} className="w-full">
                 <Button
-                  onClick={handleSubmit}
                   disabled={isLoading}
                   className="
                     w-full
