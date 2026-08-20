@@ -34,7 +34,7 @@ const destinationUpload = upload.fields([
 router.post("/", adminAuth, destinationUpload, addDestination);
 
 /* GET ALL */
-router.get("/", isAuthenticated, getDestinations);
+router.get("/", getDestinations);
 
 /* GET BY STATE */
 router.get("/state/:stateSlug", getDestinationsByState);
