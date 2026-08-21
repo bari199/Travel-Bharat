@@ -72,7 +72,7 @@ const LoginDialog = ({
       console.log("Endpoint:", "/api/user/login");
 
       const res = await api.post(
-        "/api/user/login",
+        "/user/login",
         formData
       );
 
