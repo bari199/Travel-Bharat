@@ -393,7 +393,7 @@ const LoginDialog = ({
                     type="button"
                     onClick={() =>
                       window.open(
-                        `${import.meta.env.VITE_BACKEND_URL}/api/auth/google`,
+                        `${import.meta.env.VITE_BACKEND_URL}/auth/google`,
                         "_self"
                       )
                     }
