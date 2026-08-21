@@ -9,7 +9,7 @@ import {
 
 const EventHero = ({ event }) => {
   const heroImage =
-    event?.images?.[0] ||
+    event?.images?.[0]?.url ||
     "https://images.unsplash.com/photo-1492684223066-81342ee5ff30";
 
   const formatDate = (date) => {
