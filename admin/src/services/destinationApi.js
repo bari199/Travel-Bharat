@@ -274,7 +274,7 @@ export const updateDestination =
       buildFormData(data);
 
     const response = await api.put(
-      `/api/destinations/${id}`,
+      `/destinations/${id}`,
       formData,
       {
         headers: {
@@ -294,7 +294,7 @@ export const deleteDestination =
   async (id) => {
     const response =
       await api.delete(
-        `/api/destinations/${id}`
+        `/destinations/${id}`
       );
 
     return response.data;
