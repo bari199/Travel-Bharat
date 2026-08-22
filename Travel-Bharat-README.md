@@ -88,13 +88,13 @@ The application follows a separated frontend / admin / backend architecture so e
 
 ## 🖥️ Product Preview
 
-### Traveler Website — Dark Theme
+### Traveler Website — Light Theme
 
 <p align="center">
   <img src="admin\src\assets\1.png" alt="Travel Bharat landing page dark theme" width="100%" />
 </p>
 
-### Traveler Website — Light Theme
+### Traveler Website — Dark Theme
 
 <p align="center">
   <img src="admin\src\assets\2.png" alt="Travel Bharat landing page light theme" width="100%" />
